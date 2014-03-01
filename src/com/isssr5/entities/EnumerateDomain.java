@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="enumerateDomain")
-public class EnumerateDomain {
+public class EnumerateDomain extends Domain {
 	private ArrayList<String> scalePoint;
 
 	public EnumerateDomain() {
@@ -26,4 +26,12 @@ public class EnumerateDomain {
 		this.scalePoint = scalePoint;
 	}
 
+	public String printScalePointElement(){
+		String ret="";
+		for(int i = 0; i<scalePoint.size(); i++){
+			ret+=scalePoint.get(i)+" ";
+		}
+		return ret;
+	}
+	
 }
