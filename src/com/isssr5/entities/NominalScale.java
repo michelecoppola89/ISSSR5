@@ -1,38 +1,40 @@
 package com.isssr5.entities;
 
-import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-public class NominalScale implements Scale {
-	
+@XmlRootElement(name="nominalScale")
+public class NominalScale {
+
 	private String type;
-	private ArrayList<String> scalePointList;
-	
-	public NominalScale(String type, String domain){
-		System.out.println("ho creato");
+	private EnumerateDomain scalePointList;
+
+	public NominalScale() {
+
+	}
+
+	public NominalScale(String type, EnumerateDomain scalePointList){
 		this.type=type;
-		scalePointList = new ArrayList<String>();
-		scalePointList.add(domain);
+		this.scalePointList=scalePointList;
 		
 	}
 
-	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
-		System.out.println(type);
-		return this.type;
+		return type;
+	}
+	
+	@XmlElement
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	@Override
-	public String getDomain() {
-		// TODO Auto-generated method stub
-		return scalePointList.toString();
+	public EnumerateDomain getScalePointList() {
+		return scalePointList;
 	}
-
-	@Override
-	public void changeDomain(String domain) {
-		// TODO Auto-generated method stub
-		
-
+	
+	@XmlElement
+	public void setScalePointList(EnumerateDomain scalePointList) {
+		this.scalePointList = scalePointList;
 	}
 
 }
