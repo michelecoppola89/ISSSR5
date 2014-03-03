@@ -5,23 +5,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="intervalDomain")
 public class IntervalDomain extends Domain {
-	
 	private Double min;
 	private Double max;
-	
-	public IntervalDomain (){
-		
+
+	public IntervalDomain() {
+
 	}
-	
-	public IntervalDomain(Double min, Double max){
-		this.min=min;
-		this.max=max;
+
+	public IntervalDomain(String type, Double min, Double max) {
+		super(type);
+		this.min = min;
+		this.max = max;
 	}
-	
+
 	public Double getMin() {
 		return min;
 	}
-	@XmlElement
+
+	@XmlElement 
 	public void setMin(Double min) {
 		this.min = min;
 	}
@@ -29,10 +30,9 @@ public class IntervalDomain extends Domain {
 	public Double getMax() {
 		return max;
 	}
-	@XmlElement
+	@XmlElement 
 	public void setMax(Double max) {
 		this.max = max;
 	}
 
-	
 }
