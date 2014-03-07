@@ -45,11 +45,19 @@ public class ExceptionController {
 	public String nullOperandTypeExceptionHandler(){
 		return "err";
 	}
+	
 	@ExceptionHandler(NullOperandModeException.class)
 	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="bad operand mode specified")
 	public String nullOperandModeExceptionHandler(){
 		return "err";
 	}
+	
+	@ExceptionHandler(NullElementaryServiceListException.class)
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="no elementary service specified")
+	public String nullElementaryServiceListHandler(){
+		return "err";
+	}
+
 
 
 	

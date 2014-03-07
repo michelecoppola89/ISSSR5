@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.isssr5.entities.MacroService;
 import com.isssr5.entities.Operand;
+import com.isssr5.exceptions.NullElementaryServiceListException;
 import com.isssr5.exceptions.NullOperandException;
 import com.isssr5.exceptions.NullOperandModeException;
 import com.isssr5.exceptions.NullOperandTypeException;
@@ -35,7 +36,8 @@ public class MacroServiceController {
 	@RequestMapping(value = "/createMacroService", method = RequestMethod.POST)
 	public @ResponseBody
 	String createMacroservice(@RequestBody MacroService ms)
-			throws NullOperandException, NullOperandTypeException, NullOperandModeException {
+			throws NullOperandException, NullOperandTypeException,
+			NullOperandModeException, NullElementaryServiceListException {
 
 		if ((ms.getOperandList() == null) || (ms.getOperandList().size() == 0)) {
 
@@ -60,6 +62,11 @@ public class MacroServiceController {
 
 			}
 
+		}
+		
+		if((ms.getElementaryServices()==null)||(ms.getElementaryServices().size()==0)){
+			throw new NullElementaryServiceListException();
+			
 		}
 
 		String st = "";
