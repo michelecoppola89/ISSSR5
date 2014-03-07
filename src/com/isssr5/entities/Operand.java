@@ -7,11 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "operand")
 public class Operand {
-	private String dataType;// Double or String
+	private String dataType;// "Double" or "String"
 	private ArrayList<Object> dataSeries;
 	private String operandMode; // can be E(enumerate),F(file),DB(database)
 
 	public Operand() {
+
+		operandMode = "F";
 
 	}
 
@@ -49,17 +51,17 @@ public class Operand {
 		this.operandMode = operandMode;
 	}
 
-	String PrintOperand(){
-		
-		String output="";
-		output+="Type: "+dataType+"\nOperandMode: "+operandMode;
-		if(dataSeries!=null) {
-			for(int i=0;i<dataSeries.size();i++) {
-				output+=dataSeries.get(i).toString()+" ";
-					
+	String PrintOperand() {
+
+		String output = "";
+		output += "Type: " + dataType + "\nOperandMode: " + operandMode;
+		if (dataSeries != null) {
+			for (int i = 0; i < dataSeries.size(); i++) {
+				output += dataSeries.get(i).toString() + " ";
+
 			}
 		}
 		return output;
-		
+
 	}
 }

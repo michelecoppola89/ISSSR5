@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.isssr5.entities.MacroService;
 import com.isssr5.entities.Operand;
+import com.isssr5.exceptions.NullOperandException;
+import com.isssr5.exceptions.NullOperandModeException;
+import com.isssr5.exceptions.NullOperandTypeException;
 
 @Controller
 @RequestMapping("/macroService")
@@ -31,7 +34,34 @@ public class MacroServiceController {
 
 	@RequestMapping(value = "/createMacroService", method = RequestMethod.POST)
 	public @ResponseBody
-	String createMacroservice(@RequestBody MacroService ms) {
+	String createMacroservice(@RequestBody MacroService ms)
+			throws NullOperandException, NullOperandTypeException, NullOperandModeException {
+
+		if ((ms.getOperandList() == null) || (ms.getOperandList().size() == 0)) {
+
+			throw new NullOperandException();
+		}
+
+		for (int i = 0; i < ms.getOperandList().size(); i++) {
+			if ((ms.getOperandList().get(i).getDataType() == null)
+					|| (!(ms.getOperandList().get(i).getDataType()
+							.equals("String")) && !(ms.getOperandList().get(i)
+							.getDataType().equals("Double")))) {
+				throw new NullOperandTypeException();
+
+			}
+
+			if ((!(ms.getOperandList().get(i).getOperandMode()
+							.equals("F"))
+							&& !(ms.getOperandList().get(i).getOperandMode()
+									.equals("D")) && !(ms.getOperandList()
+							.get(i).getOperandMode().equals("E")))) {
+				throw new NullOperandModeException();
+
+			}
+
+		}
+
 		String st = "";
 		st += "MacroService ID: " + ms.getIdCode() + "\nElementary Service: "
 				+ ms.printElementaryService() + "\nOperandList:\n"

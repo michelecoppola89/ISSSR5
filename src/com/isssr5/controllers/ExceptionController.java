@@ -34,5 +34,24 @@ public class ExceptionController {
 		return "err";
 	}
 	
+	@ExceptionHandler(NullOperandException.class)
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="no operands specified")
+	public String nullOperandExceptionHandler(){
+		return "err";
+	}
+	
+	@ExceptionHandler(NullOperandTypeException.class)
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="no/bad operand type specified")
+	public String nullOperandTypeExceptionHandler(){
+		return "err";
+	}
+	@ExceptionHandler(NullOperandModeException.class)
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="bad operand mode specified")
+	public String nullOperandModeExceptionHandler(){
+		return "err";
+	}
+
+
+	
 
 }

@@ -1,11 +1,12 @@
 package com.isssr5.exceptions;
 
-public class DomainException extends Exception {
-	
+public class NullOperandModeException extends Exception {
+
 	private static final long serialVersionUID = 1L;
 
-	public DomainException(){
+	public NullOperandModeException() {
 		super();
+		
 	}
 
 }
