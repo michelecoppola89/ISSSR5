@@ -19,26 +19,9 @@ import com.isssr5.exceptions.NullOperandTypeException;
 @RequestMapping("/macroService")
 public class MacroServiceController {
 
-	@RequestMapping(value = "/testMacroService", method = RequestMethod.GET)
-	public @ResponseBody
-	MacroService testMacroservice() {
-		String idCode = "MEAN";
-		Operand op1 = new Operand("Double", null, "E");
-		ArrayList<String> al = new ArrayList<String>();
-		ArrayList<Operand> opList = new ArrayList<Operand>();
-		opList.add(op1);
-		al.add("MEAN");
-		MacroService ms = new MacroService(idCode, opList, al);
-		return ms;
-
-	}
-
-	@RequestMapping(value = "/createMacroService", method = RequestMethod.POST)
-	public @ResponseBody
-	String createMacroservice(@RequestBody MacroService ms)
+	private void checkForMacroServiceAcquisition(MacroService ms)
 			throws NullOperandException, NullOperandTypeException,
-			NullOperandModeException, NullElementaryServiceListException {
-
+			NullOperandModeException {
 		if ((ms.getOperandList() == null) || (ms.getOperandList().size() == 0)) {
 
 			throw new NullOperandException();
@@ -53,21 +36,44 @@ public class MacroServiceController {
 
 			}
 
-			if ((!(ms.getOperandList().get(i).getOperandMode()
-							.equals("F"))
-							&& !(ms.getOperandList().get(i).getOperandMode()
-									.equals("D")) && !(ms.getOperandList()
-							.get(i).getOperandMode().equals("E")))) {
+			if ((!(ms.getOperandList().get(i).getOperandMode().equals("F"))
+					&& !(ms.getOperandList().get(i).getOperandMode()
+							.equals("D")) && !(ms.getOperandList().get(i)
+					.getOperandMode().equals("E")))) {
 				throw new NullOperandModeException();
 
 			}
 
 		}
-		
-		if((ms.getElementaryServices()==null)||(ms.getElementaryServices().size()==0)){
-			throw new NullElementaryServiceListException();
-			
-		}
+
+		// if((ms.getElementaryServices()==null)||(ms.getElementaryServices().size()==0)){
+		// throw new NullElementaryServiceListException();
+		//
+		// }
+
+	}
+
+	@RequestMapping(value = "/testMacroService", method = RequestMethod.GET)
+	public @ResponseBody
+	MacroService testMacroservice() {
+		String idCode = "MEAN";
+		Operand op1 = new Operand("Double", null, "E");
+		ArrayList<MacroService> al = new ArrayList<MacroService>();
+		ArrayList<Operand> opList = new ArrayList<Operand>();
+		opList.add(op1);
+		MacroService ms = new MacroService(idCode, opList, al);
+		ms.setNumOperand(1);
+		return ms;
+
+	}
+
+	@RequestMapping(value = "/createMacroService", method = RequestMethod.POST)
+	public @ResponseBody
+	String createMacroservice(@RequestBody MacroService ms)
+			throws NullOperandException, NullOperandTypeException,
+			NullOperandModeException, NullElementaryServiceListException {
+
+		checkForMacroServiceAcquisition(ms);
 
 		String st = "";
 		st += "MacroService ID: " + ms.getIdCode() + "\nElementary Service: "

@@ -9,57 +9,77 @@ import com.isssr5.exceptions.*;
 
 @ControllerAdvice
 public class ExceptionController {
-	
+
 	@ExceptionHandler(DomainException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="wrong domain")
-	public String domainExceptionHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "wrong domain")
+	public String domainExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(NullDomainException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="null domain")
-	public String nullDomainExceptionHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "null domain")
+	public String nullDomainExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(IntervalDomainException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="min>=max error")
-	public String intervalDomainExceptionHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "min>=max error")
+	public String intervalDomainExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(EnumerateDomainException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="empty scale point error")
-	public String enumerateDomainExceptionHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "empty scale point error")
+	public String enumerateDomainExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(NullOperandException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="no operands specified")
-	public String nullOperandExceptionHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "no operands specified")
+	public String nullOperandExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(NullOperandTypeException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="no/bad operand type specified")
-	public String nullOperandTypeExceptionHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "no/bad operand type specified")
+	public String nullOperandTypeExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(NullOperandModeException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="bad operand mode specified")
-	public String nullOperandModeExceptionHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad operand mode specified")
+	public String nullOperandModeExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(NullElementaryServiceListException.class)
-	@ResponseStatus(value=HttpStatus.BAD_REQUEST,reason="no elementary service specified")
-	public String nullElementaryServiceListHandler(){
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "no elementary service specified")
+	public String nullElementaryServiceListHandler() {
 		return "err";
 	}
 
+	@ExceptionHandler(NullMacroServiceIdException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Missing macro service id")
+	public String nullElementaryServiceListExceptionHandler() {
+		return "err";
+	}
 
-
+	@ExceptionHandler(NullOperationOrderException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Missing parameters for elemantary/macro service specificied")
+	public String nullOperationOrderExceptionHandler() {
+		return "err";
+	}
 	
+	@ExceptionHandler(WrongOperandNumberException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Wrong operand number")
+	public String wrongOperandNumberExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(WrongOperationOrderException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "input parameter for elementary/macro service doesn't exist")
+	public String wrongOperationOrderExceptionHandler() {
+		return "err";
+	}
 
 }
