@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.isssr5.exceptions.NotExistingMacroServiceException;
+
 @XmlRootElement(name = "macroService")
 public class MacroService {
+	
 	private String idCode;
 	private ArrayList<Operand> operandList;
 	private ArrayList<MacroService> elementaryServices;
@@ -70,6 +73,21 @@ public class MacroService {
 	public void setElementaryServices(ArrayList<MacroService> elementaryServices) {
 		this.elementaryServices = elementaryServices;
 	}
+	
+	public void DecodeMacroService(DefaultServicesTable table) throws NotExistingMacroServiceException{
+		
+		if(table.getTable().get(idCode)==null){
+			throw new NotExistingMacroServiceException();
+		} else {
+			
+			
+			//copia tutti i servizi elementari nell'array this.MacroserviceArray
+		}
+	
+		
+	}
+	
+	
 
 	public String printElementaryService() {
 		String output = "";

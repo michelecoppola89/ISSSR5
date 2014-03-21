@@ -1,6 +1,7 @@
 package com.isssr5.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import com.isssr5.exceptions.NullOperandTypeException;
 @Controller
 @RequestMapping("/macroService")
 public class MacroServiceController {
+	
 
 	private void checkForMacroServiceAcquisition(MacroService ms)
 			throws NullOperandException, NullOperandTypeException,
@@ -74,6 +76,8 @@ public class MacroServiceController {
 			NullOperandModeException, NullElementaryServiceListException {
 
 		checkForMacroServiceAcquisition(ms);
+		
+		//ms.decodeMacroService();
 
 		String st = "";
 		st += "MacroService ID: " + ms.getIdCode() + "\nElementary Service: "

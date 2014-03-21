@@ -69,16 +69,22 @@ public class ExceptionController {
 	public String nullOperationOrderExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(WrongOperandNumberException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Wrong operand number")
 	public String wrongOperandNumberExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(WrongOperationOrderException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "input parameter for elementary/macro service doesn't exist")
 	public String wrongOperationOrderExceptionHandler() {
+		return "err";
+	}
+
+	@ExceptionHandler(NotExistingMacroServiceException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "requested macro service does not exist")
+	public String notExistingMacroServiceExceptionHandler() {
 		return "err";
 	}
 
