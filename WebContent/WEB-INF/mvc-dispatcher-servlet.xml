@@ -7,10 +7,10 @@
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
-			<value>/*</value>
+			<value>/WEB-INF/resources/</value>
 		</property>
 		<property name="suffix">
-			<value>.jsp</value>
+			<value>.html</value>
 		</property>
 	</bean>
 </beans>

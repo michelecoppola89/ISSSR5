@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.isssr5.entities.DefaultServicesTable;
 import com.isssr5.entities.MacroService;
 import com.isssr5.entities.Operand;
+import com.isssr5.exceptions.NotExistingMacroServiceException;
 import com.isssr5.exceptions.NullElementaryServiceListException;
 import com.isssr5.exceptions.NullOperandException;
 import com.isssr5.exceptions.NullOperandModeException;
@@ -19,6 +21,7 @@ import com.isssr5.exceptions.NullOperandTypeException;
 @Controller
 @RequestMapping("/macroService")
 public class MacroServiceController {
+	private static DefaultServicesTable dataTable=new DefaultServicesTable();
 	
 
 	private void checkForMacroServiceAcquisition(MacroService ms)
@@ -73,16 +76,20 @@ public class MacroServiceController {
 	public @ResponseBody
 	String createMacroservice(@RequestBody MacroService ms)
 			throws NullOperandException, NullOperandTypeException,
-			NullOperandModeException, NullElementaryServiceListException {
+			NullOperandModeException, NullElementaryServiceListException,
+			NotExistingMacroServiceException {
 
 		checkForMacroServiceAcquisition(ms);
 		
-		//ms.decodeMacroService();
-
+		ms.decodeMacroService(dataTable);
 		String st = "";
+		if(ms.getElementaryServices()!=null)
 		st += "MacroService ID: " + ms.getIdCode() + "\nElementary Service: "
 				+ ms.printElementaryService() + "\nOperandList:\n"
 				+ ms.printOperandList();
+		else
+			st += "MacroService ID: " + ms.getIdCode() + "\nOperandList:\n"
+					+ ms.printOperandList();
 
 		return st;
 	}

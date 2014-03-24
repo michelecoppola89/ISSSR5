@@ -87,5 +87,6 @@ public class ExceptionController {
 	public String notExistingMacroServiceExceptionHandler() {
 		return "err";
 	}
+	
 
 }

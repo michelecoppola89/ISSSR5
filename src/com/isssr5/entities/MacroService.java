@@ -1,15 +1,13 @@
 package com.isssr5.entities;
 
 import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import com.isssr5.exceptions.NotExistingMacroServiceException;
 
 @XmlRootElement(name = "macroService")
 public class MacroService {
-	
+
 	private String idCode;
 	private ArrayList<Operand> operandList;
 	private ArrayList<MacroService> elementaryServices;
@@ -73,26 +71,27 @@ public class MacroService {
 	public void setElementaryServices(ArrayList<MacroService> elementaryServices) {
 		this.elementaryServices = elementaryServices;
 	}
-	
-	public void DecodeMacroService(DefaultServicesTable table) throws NotExistingMacroServiceException{
-		
-		if(table.getTable().get(idCode)==null){
+
+	public void decodeMacroService(DefaultServicesTable table)
+			throws NotExistingMacroServiceException {
+		MacroService m = table.getTable().get(idCode);
+		if (m == null) {
 			throw new NotExistingMacroServiceException();
 		} else {
-			
-			
-			//copia tutti i servizi elementari nell'array this.MacroserviceArray
+			if (m.elementaryServices != null) {
+				this.elementaryServices = new ArrayList<MacroService>(
+						m.elementaryServices);
+				this.operationOrder = new ArrayList<ParameterList>(
+						m.operationOrder);
+			}
 		}
-	
-		
+
 	}
-	
-	
 
 	public String printElementaryService() {
 		String output = "";
 		for (int i = 0; i < elementaryServices.size(); i++)
-			output += elementaryServices.get(i) + " ";
+			output += elementaryServices.get(i).getIdCode() + " ";
 		return output;
 
 	}
@@ -106,31 +105,30 @@ public class MacroService {
 
 		return output;
 	}
-	
+
 	public String printMacroService() {
-		
+
 		String output = "";
-		output+="MacroService ID: "+idCode+"\n";
-		
-		if(elementaryServices!=null){
-			output+="MacroService/Elementary Service list:\n";
-			for(int i=0;i<elementaryServices.size();i++){
+		output += "MacroService ID: " + idCode + "\n";
+
+		if (elementaryServices != null) {
+			output += "MacroService/Elementary Service list:\n";
+			for (int i = 0; i < elementaryServices.size(); i++) {
 				MacroService ms = elementaryServices.get(i);
-				output+="MacroService ID: "+ms.idCode+"\n";
+				output += "MacroService ID: " + ms.idCode + "\n";
 			}
 		}
-		
-		output+="Num operand: "+numOperand+"\n";
-		
-		if(operationOrder!=null){
-			for(int i=0;i<operationOrder.size();i++) {
-				output+="MacroService "+(i+1)+" input parameters: ";
-				output+=operationOrder.get(i).printParameterList();
-				output+="\n";
+
+		output += "Num operand: " + numOperand + "\n";
+
+		if (operationOrder != null) {
+			for (int i = 0; i < operationOrder.size(); i++) {
+				output += "MacroService " + (i + 1) + " input parameters: ";
+				output += operationOrder.get(i).printParameterList();
+				output += "\n";
 			}
-		}
-		else{
-			output+="This MacroService is an elementary service\n";
+		} else {
+			output += "This MacroService is an elementary service\n";
 		}
 		return output;
 	}
