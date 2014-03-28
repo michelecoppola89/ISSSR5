@@ -1,0 +1,316 @@
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Handobook>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+----------------------------------------------A1.1 Scale acquisition----------------------------------------------
+
+-> used HTTP methods:
+
+-GET:the client uses get primitive to test Service and to know xml scale information structure.
+(see example 1)
+-POST: the client uses post primitive to send Service scale informations.
+These informations are contained in the post body in xml form;the 
+informations are:
+		-Type of Domain
+		-scalePoints (if the type domain is:enumerateDomain) or interval ((if the type domain is:intervalDomain))
+(see example 2)
+
+
+-> Monitored errors
+
+-Missing type domain:
+-Missing scale points (if the type domain is:enumerateDomain) or missing interval ((if the type domain is:intervalDomain)
+
+-> Examples
+
+example 1:
+
+client send a http get message with URL: http://localhost:8080/ISSSR5/scale/testNominalScale
+
+response header:
+
+Status Code: 200 OK
+Content-Type: application/xhtml+xml
+Date: Fri, 07 Mar 2014 14:37:06 GMT
+Server: Apache-Coyote/1.1
+Transfer-Encoding: chunked
+
+response body:
+<scale>
+<enumerateDomain>
+<domType>EnumeralDomain</domType>
+<scalePoints>Rosso</scalePoints>
+<scalePoints>Verde</scalePoints>
+<scalePoints>Amaranto</scalePoints>
+</enumerateDomain>
+<type>NominalScale</type>
+</scale>
+
+example 1.2:
+
+client send a http post message with URL: http://localhost:8080/ISSSR5/scale/nominalScale
+
+body:
+
+<scale>
+<enumerateDomain>
+<domType>EnumeralDomain</domType>
+<scalePoints>Rosso</scalePoints>
+<scalePoints>Verde</scalePoints>
+<scalePoints>Amaranto</scalePoints>
+</enumerateDomain>
+<type>NominalScale</type>
+</scale>
+
+and header: 
+context-type:application/xml
+
+response header:
+
+Status Code: 200 OK
+Content-Length: 57
+Content-Type: text/html
+Date: Fri, 07 Mar 2014 14:42:10 GMT
+Server: Apache-Coyote/1.1
+
+body:
+scaleType: NominalScale scalePoint: Rosso Verde Amaranto 
+
+example 2.1:
+
+client send a http get message with URL: http://localhost:8080/ISSSR5/scale/testRatioScale
+
+response header:
+    Status Code: 200 OK
+    Content-Type: application/xhtml+xml
+    Date: Fri, 07 Mar 2014 14:45:39 GMT
+    Server: Apache-Coyote/1.1
+    Transfer-Encoding: chunked
+
+response body:
+<scale>
+<intervalDomain>
+<domType>RatioDomain</domType>
+<max>12.0</max>
+<min>1.0</min>
+</intervalDomain>
+<type>RatioScale</type>
+</scale>
+
+example 2.2:
+client send a http post message with URL:http://localhost:8080/ISSSR5/scale/RatioScale
+
+body:
+<scale>
+<intervalDomain>
+<domType>RatioDomain</domType>
+<max>12.0</max>
+<min>1.0</min>
+</intervalDomain>
+<type>RatioScale</type>
+</scale>
+
+and header: 
+context-type:application/xml
+
+response header:
+Status Code: 200 OK
+Content-Length: 40
+Content-Type: text/html
+Date: Fri, 07 Mar 2014 14:48:50 GMT
+Server: Apache-Coyote/1.1
+
+response body:
+scaleType: RatioScale
+min: 1.0
+max: 12.0
+
+
+
+----------------------------------------------B1.1 Macro Service acquisition----------------------------------------------
+used HTTP methods:
+-GET:the client uses get primitive to test Service and to know xml scale information structure.
+(see example 1)
+
+-POST: the client uses post primitive to send to the Service Macro service informations.
+these informations are contained in the post body in xml form;
+the informations are:
+		-elementary services list
+		-id Code
+		-operand list: each operand element contains operand type and operand mode
+(see example 2)
+
+
+-> Monitored errors
+
+-Missing services list
+-Missing id code
+-Missing operand list: for each operand missing operand type or/end missing operand mode
+ 
+-> Examples
+
+example 1:
+
+client send a http get message with URL: http://localhost:8080/ISSSR5/macroService/testMacroService
+
+response header:
+Status Code: 200 OK
+Content-Type: application/xhtml+xml
+Date: Fri, 07 Mar 2014 14:52:58 GMT
+Server: Apache-Coyote/1.1
+Transfer-Encoding: chunked
+
+Response body:
+<macroService>
+<elementaryServices>MEAN</elementaryServices>
+<idCode>MEAN</idCode>
+<operandList>
+<dataType>Double</dataType>
+<operandMode>E</operandMode>
+</operandList>
+</macroService>
+
+example 1.2
+client send a http post message with URL:http://localhost:8080/ISSSR5/macroService/createMacroService
+
+body:
+<macroService>
+<elementaryServices>MEAN</elementaryServices>
+<idCode>MEAN</idCode>
+<operandList>
+<dataType>Double</dataType>
+<operandMode>E</operandMode>
+</operandList>
+</macroService>
+
+and header: 
+context-type:application/xml
+
+response header:
+Status Code: 200 OK
+Content-Length: 100
+Content-Type: text/html
+Date: Fri, 07 Mar 2014 14:55:33 GMT
+Server: Apache-Coyote/1.1
+
+response body:
+MacroService ID: MEAN
+Elementary Service: MEAN
+OperandList:
+Operand 1: Type: Double
+OperandMode: E
+
+----------------------------------------------B1.4 User macro Service definition----------------------------------------------
+used HTTP methods:
+-GET:the client uses get primitive to test Service and to know xml scale information structure.
+(see example 1)
+
+-POST: the client uses post primitive to create and to store a customized macro service.
+these informations are contained in the post body in xml form;
+the informations are:
+		-name of the new customized macro service
+		-macro services and elementary services that compose the customized macro service
+		-number of operand that the customized macro service use
+		-which operand uses each macro service or elementary service contained in the customized macro service
+(see example 1.2)
+
+
+-> Monitored errors
+
+-Missing customized service name
+-Missing macro services or elementary services
+-Wrong macro services or elementary services
+-Missing operand number
+-Client doesn't specify any operands for one of the macro/elementary services
+-Operand specified for an elmentary or macro service doesn't exists.
+-The number of operand specified by client for an elmentary or macro service doesn't match the number of operands accepted by that macro/elementary service
+-> Examples
+
+example 1.2:
+
+client send a http get message with URL: http://localhost:8080/ISSSR5/macroService/testMacroService
+
+response header:
+Status Code: 200 OK
+Content-Type: application/xhtml+xml
+Date: Fri, 07 Mar 2014 14:52:58 GMT
+Server: Apache-Coyote/1.1
+Transfer-Encoding: chunked
+
+Response body:
+http://localhost:8080/ISSSR5/customizedMacroService/createCustomMacroService
+
+example 1.2
+client send a http post message with URL:http://localhost:8080/ISSSR5/customizedMacroService/testCustomMacroService
+
+body:
+<macroService>
+<elementaryServices>
+<idCode>MEAN</idCode>
+<numOperand>1</numOperand>
+</elementaryServices>
+<elementaryServices>
+<idCode>VAR</idCode>
+<numOperand>1</numOperand>
+</elementaryServices>
+<idCode>CUST1</idCode>
+<numOperand>2</numOperand>
+<operationOrder>
+<parList>1</parList>
+</operationOrder>
+<operationOrder>
+<parList>2</parList>
+</operationOrder>
+</macroService>
+
+and header: 
+context-type:application/xml
+
+response header:
+Status Code: 200 OK
+Content-Length: 100
+Content-Type: text/html
+Date: Fri, 07 Mar 2014 14:55:33 GMT
+Server: Apache-Coyote/1.1
+
+response body:
+
+MacroService ID: CUST1
+MacroService/Elementary Service list:
+MacroService ID: MEAN
+MacroService ID: VAR
+Num operand: 2
+MacroService 1 input parameters: 1
+MacroService 2 input parameters: 2 
+
+example 1.3
+
+<macroService>
+<elementaryServices>
+<idCode>NTTEST</idCode>
+<numOperand>2</numOperand>
+</elementaryServices>
+<elementaryServices>
+<idCode>MEDVAR</idCode>
+<numOperand>2</numOperand>
+</elementaryServices>
+<idCode>THISNAME</idCode>
+<numOperand>2</numOperand>
+<operationOrder>
+<parList>1</parList>
+<parList>2</parList>
+</operationOrder>
+<operationOrder>
+<parList>1</parList>
+<parList>2</parList>
+</operationOrder>
+</macroService>
+
+
+
+
+
+
+
+
+
+
+

@@ -51,7 +51,7 @@ public class Operand {
 		this.operandMode = operandMode;
 	}
 
-	String PrintOperand() {
+	public String PrintOperand() {
 
 		String output = "";
 		output += "Type: " + dataType + "\nOperandMode: " + operandMode;
