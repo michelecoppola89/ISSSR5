@@ -1,5 +1,7 @@
 package com.isssr5.controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
@@ -51,16 +53,22 @@ public class DataSeriesController {
 	public @ResponseBody
 	String dataSeriesAcquisition(@RequestBody Operand op)
 			throws NullOperandTypeException, NullOperandModeException,
-			NullDataSeriesException, BadDataSeriesUrlException, BadOperandInput {
+			NullDataSeriesException, BadDataSeriesUrlException,
+			BadOperandInput, IOException, ClassNotFoundException, SQLException {
 
 		checkDataSeries(op);
+		if (op.getOperandMode().equals("F")) {
+			op.acquisitionFromfile(op.getUrl());
+		} else if(op.getOperandMode().equals("D")){
+			op.acqusitionFromExternalDB();
+		}
 
 		return op.PrintOperand();
 	}
 
 	private void checkDataSeries(Operand op) throws NullOperandTypeException,
 			NullOperandModeException, NullDataSeriesException,
-			BadDataSeriesUrlException, BadOperandInput {
+			BadDataSeriesUrlException, BadOperandInput, NumberFormatException {
 
 		if ((op.getDataType() == null)
 				|| (!(op.getDataType().equals("String")) && !(op.getDataType()
@@ -88,10 +96,17 @@ public class DataSeriesController {
 
 			}
 
-			if (op.getUrl() != null) {
+			if ((op.getUrl() != null) || (op.geteDB() != null)) {
 
 				throw new BadOperandInput();
 
+			}
+			if (op.getDataType().equals("Double")) {
+				for (int i = 0; i < op.getDataSeries().size(); i++) {
+
+					String temp = op.getDataSeries().get(i);
+					Double.parseDouble(temp);
+				}
 			}
 
 		}
@@ -103,12 +118,25 @@ public class DataSeriesController {
 
 			}
 
-			if (op.getDataSeries() != null) {
+			if ((op.getDataSeries() != null) || (op.geteDB() != null)) {
 				throw new BadOperandInput();
 			}
 		}
 
-		// check for databasepath!!!
+		// check for database path!!!
+
+		if (op.getOperandMode().equals("D")) {
+			if (op.geteDB() == null) {
+
+				throw new BadDataSeriesUrlException();
+
+			}
+
+			if ((op.getDataSeries() != null) || (op.getUrl() != null)) {
+				throw new BadOperandInput();
+			}
+		}
 
 	}
+
 }

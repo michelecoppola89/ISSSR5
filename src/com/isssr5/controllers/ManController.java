@@ -14,5 +14,12 @@ public class ManController {
 		return "man";
 
 	}
+	
+	@RequestMapping(value = "/fileExample", method = RequestMethod.GET)
+	public String getFileExample() {
+		return "datafile";
+
+	}
+	
 
 }

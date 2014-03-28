@@ -1,5 +1,8 @@
 package com.isssr5.controllers;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -103,6 +106,23 @@ public class ExceptionController {
 	@ExceptionHandler(BadOperandInput.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad operand input")
 	public String badOperandInputHandler() {
+		return "err";
+	}
+	@ExceptionHandler(IOException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "I/O Exception")
+	public String iOExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(NumberFormatException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "wrong data type")
+	public String numberFormatExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(SQLException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "SQL exception")
+	public String sqlExceptionHandler () {
 		return "err";
 	}
 

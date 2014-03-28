@@ -21,7 +21,7 @@ informations are:
 
 -> Examples
 
-example 1:
+example 1.1:
 
 client send a http get message with URL: http://localhost:8080/ISSSR5/scale/testNominalScale
 
@@ -168,7 +168,7 @@ Response body:
 </operandList>
 </macroService>
 
-example 1.2
+example 2
 client send a http post message with URL:http://localhost:8080/ISSSR5/macroService/createMacroService
 
 body:
@@ -210,7 +210,7 @@ the informations are:
 		-macro services and elementary services that compose the customized macro service
 		-number of operand that the customized macro service use
 		-which operand uses each macro service or elementary service contained in the customized macro service
-(see example 1.2)
+(see example 2)
 
 
 -> Monitored errors
@@ -224,7 +224,7 @@ the informations are:
 -The number of operand specified by client for an elmentary or macro service doesn't match the number of operands accepted by that macro/elementary service
 -> Examples
 
-example 1.2:
+example 1:
 
 client send a http get message with URL: http://localhost:8080/ISSSR5/macroService/testMacroService
 
@@ -238,7 +238,7 @@ Transfer-Encoding: chunked
 Response body:
 http://localhost:8080/ISSSR5/customizedMacroService/createCustomMacroService
 
-example 1.2
+example 2
 client send a http post message with URL:http://localhost:8080/ISSSR5/customizedMacroService/testCustomMacroService
 
 body:
@@ -281,7 +281,7 @@ Num operand: 2
 MacroService 1 input parameters: 1
 MacroService 2 input parameters: 2 
 
-example 1.3
+example 3
 
 <macroService>
 <elementaryServices>
@@ -306,11 +306,355 @@ example 1.3
 
 
 
+----------------------------------------------C1.1&&C1.2 User macro Service definition and acquisition----------------------------------------------
+used HTTP methods:
+-GET:the client uses get primitive to test Service and to know xml scale information structure.
+(see example 1)
+
+-POST: the client uses post primitive to create and to store a operand.
+these informations are contained in the post body in xml form;
+the informations are:
+		-type of operand
+		-information relative to operand ( url if operand mode is file, user and password if operand mode is DB, enumeration if operand mode 			 is enumeration.)
+		
+(see example 2)
+
+
+-> Monitored errors
+-Wrong operand type
+-type of operand and operand information doesn't match.
+-Missing operand type
+-Missing operand information
+(see example 3)
+-> Examples
+
+example 1:
+
+client send a http get message with URL: http://localhost:8080/ISSSR5/dataSeries/testDataSeries1
+
+
+Response body:
+<operand>
+<dataSeries>3.1</dataSeries>
+<dataSeries>4</dataSeries>
+<dataSeries>5.5</dataSeries>
+<dataSeries>8</dataSeries>
+<dataType>Double</dataType>
+<operandMode>E</operandMode>
+</operand>
+
+example 2
+client send a http post message with URL:
+
+body:http://localhost:8080/ISSSR5/dataSeries/acquisition
+
+<operand>
+<dataSeries>3.1</dataSeries>
+<dataSeries>4</dataSeries>
+<dataSeries>5.5</dataSeries>
+<dataSeries>8</dataSeries>
+<dataType>Double</dataType>
+<operandMode>E</operandMode>
+</operand>
+and header: 
+
+
+response body:
+
+
+    Type: Double
+    OperandMode: E
+    Data Series: 3.1 4 5.5 8 
+
+response header:
+
+
+    Status Code: 200 OK
+    Content-Length: 53
+    Content-Type: text/html
+    Date: Fri, 28 Mar 2014 11:43:07 GMT
+    Server: Apache-Coyote/1.1
+
+
+
+example 3
+client send a http post message with URL with wrong body:http://localhost:8080/ISSSR5/dataSeries/acquisition
+
+example 3.1 no data series:
+
+body:
+<operand>
+<dataType>Double</dataType>
+<operandMode>E</operandMode>
+</operand>
+
+response body:
+HTTP Status 400 - bad sent dataseries
+and response header: 
+
+
+    Status Code: 400 Bad Request
+    Connection: close
+    Content-Language: en
+    Content-Length: 1006
+    Content-Type: text/html;charset=utf-8
+    Date: Fri, 28 Mar 2014 11:45:14 GMT
+    Server: Apache-Coyote/1.1
+
+
+example 3.2 no data series:
+
+body:
+<operand>
+<dataSeries>3.1</dataSeries>
+<dataSeries>4</dataSeries>
+<dataSeries>5.5</dataSeries>
+<dataSeries>8</dataSeries>
+<dataType>Double</dataType>
+<operandMode>F</operandMode>
+</operand>
+
+response body:
+HTTP Status 400 - bad dataseries url
+and response header: 
+
+
+   
+
+    Status Code: 400 Bad Request
+    Connection: close
+    Content-Language: en
+    Content-Length: 1004
+    Content-Type: text/html;charset=utf-8
+    Date: Fri, 28 Mar 2014 11:49:05 GMT
+    Server: Apache-Coyote/1.1
+
+
+example 3.3
+body:
+<operand>
+<dataSeries>3.1</dataSeries>
+<dataSeries>4</dataSeries>
+<dataSeries>5.5</dataSeries>
+<dataSeries>8</dataSeries>
+<dataType>Double</dataType>
+<operandMode>asdasd</operandMode>
+</operand>
+response body:
+HTTP Status 400 - bad operand mode specified
+response header:
+
+
+    Status Code: 400 Bad Request
+    Connection: close
+    Content-Language: en
+    Content-Length: 1020
+    Content-Type: text/html;charset=utf-8
+    Date: Fri, 28 Mar 2014 11:50:24 GMT
+    Server: Apache-Coyote/1.1
+
+
+example 3
+The service read from the file
+example 3.1
+client send a http post message with with file operand mode  with url: http://localhost:8080/ISSSR5/dataSeries/acquisition
+The service read from the file (specified with url:localhost:8080/ISSSR5/manual/fileExample )archive data series
+
+body:
+
+<operand>
+<dataType>Double</dataType>
+<operandMode>F</operandMode>
+<url>http://localhost:8080/ISSSR5/manual/fileExample</url>
+</operand>
+
+
+response body:
+
+    Type: Double
+    OperandMode: F
+    Data Series: 12 32 44 33 21 23.9 12.7 89 65 3 33 5 6 54 4 56 456 
+
+
+response header:
+
+
+    Status Code: 200 OK
+    Content-Length: 93
+    Content-Type: text/html
+    Date: Fri, 28 Mar 2014 13:45:38 GMT
+    Server: Apache-Coyote/1.1
+
+
+
+example 3.2 bad url file :
+
+client send a http post message with with file operand mode  with url: http://localhost:8080/ISSSR5/dataSeries/acquisition
+
+body:
+
+<operand>
+<dataType>Double</dataType>
+<operandMode>F</operandMode>
+<url>http://localhost:URL SBAGLIATO</url>
+</operand>
+
+
+response body:
+
+  HTTP Status 400 - I/O Exception
+
+response header:
+
+    Status Code: 400 Bad Request
+    Connection: close
+    Content-Language: en
+    Content-Length: 994
+    Content-Type: text/html;charset=utf-8
+    Date: Fri, 28 Mar 2014 13:53:26 GMT
+    Server: Apache-Coyote/1.1
+
+example 3.3 bad data file :
+client send a http post message with with file operand mode  with url: http://localhost:8080/ISSSR5/dataSeries/acquisition
+The service read from the file (specified with url:localhost:8080/ISSSR5/manual/fileExample )archive data series
+
+body:
+
+<operand>
+<dataType>Double</dataType>
+<operandMode>F</operandMode>
+<url>http://localhost:8080/ISSSR5/manual/fileExample</url>
+</operand>
+
+
+response body:
+
+    Type: Double
+    OperandMode: F
+    Data Series: 12 32 44 33 21 23.9 12.7 89 65 3 33 5 6 54 4 56 456 
+
+
+response header:
+
+
+    Status Code: 200 OK
+    Content-Length: 93
+    Content-Type: text/html
+    Date: Fri, 28 Mar 2014 13:45:38 GMT
+    Server: Apache-Coyote/1.1
+
+Data file:
+
+12
+32
+44
+33
+21
+23.9
+12.7
+COCCODE
+65
+3
+33
+5
+6
+54
+4
+56
+456
+
+
+
+    OperandMode: E
+    Data Series: 3.1 4 5.5 8 
+
+response header:
+
+
+    Status Code: 200 OK
+    Content-Length: 53
+    Content-Type: text/html
+    Date: Fri, 28 Mar 2014 11:43:07 GMT
+    Server: Apache-Coyote/1.1
+
+example 4
+The service read data from external DB.
+
+example 4.1
+url : http://localhost:8080/ISSSR5/dataSeries/acquisition
+
+body request:
+
+<operand>
+<dataType>Double</dataType>
+<operandMode>D</operandMode>
+<eDB>
+<address>jdbc:mysql://localhost:3306/externaldb</address>
+<username>root</username>
+<pwd>root</pwd>
+<query>SELECT value FROM externaldb.new_table;</query>
+</eDB>
+</operand>
+
+body response:
+
+
+
+    Type: Double
+    OperandMode: D
+    Data Series: 4.9 3.8 4.3 9.0 0.3 
+
+header response:
+
+
+
+    Status Code: 200 OK
+    Content-Length: 61
+    Content-Type: text/html
+    Date: Fri, 28 Mar 2014 16:43:48 GMT
+    Server: Apache-Coyote/1.1
 
 
 
 
+example 2
+wrong query to DB
 
+url: http://localhost:8080/ISSSR5/dataSeries/acquisition
+
+body request:
+
+<operand>
+<dataType>Double</dataType>
+<operandMode>D</operandMode>
+<eDB>
+<address>jdbc:mysql://localhost:3306/externaldb</address>
+<username>root</username>
+<pwd>root</pwd>
+<query>SELECT value externaldb.new_table;</query>
+</eDB>
+</operand>
+
+response body:
+
+HTTP Status 400 - SQL exception
+
+type Status report
+
+message SQL exception
+
+description The request sent by the client was syntactically incorrect.
+
+
+header response:
+
+  Status Code: 400 Bad Request
+    Connection: close
+    Content-Language: en
+    Content-Length: 994
+    Content-Type: text/html;charset=utf-8
+    Date: Fri, 28 Mar 2014 16:47:23 GMT
+    Server: Apache-Coyote/1.1
 
 
 
