@@ -8,8 +8,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "operand")
 public class Operand {
 	private String dataType;// "Double" or "String"
-	private ArrayList<Object> dataSeries;
+	private ArrayList<String> dataSeries;
 	private String operandMode; // can be E(enumerate),F(file),DB(database)
+	private String url; // file path or DB path
 
 	public Operand() {
 
@@ -17,11 +18,20 @@ public class Operand {
 
 	}
 
-	public Operand(String dataType, ArrayList<Object> dataSeries,
+	public Operand(String dataType, ArrayList<String> dataSeries,
 			String operandMode) {
 		this.dataType = dataType;
 		this.dataSeries = dataSeries;
 		this.operandMode = operandMode;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	@XmlElement
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public String getDataType() {
@@ -33,12 +43,12 @@ public class Operand {
 		this.dataType = dataType;
 	}
 
-	public ArrayList<Object> getDataSeries() {
+	public ArrayList<String> getDataSeries() {
 		return dataSeries;
 	}
 
 	@XmlElement
-	public void setDataSeries(ArrayList<Object> dataSeries) {
+	public void setDataSeries(ArrayList<String> dataSeries) {
 		this.dataSeries = dataSeries;
 	}
 
@@ -54,8 +64,9 @@ public class Operand {
 	public String PrintOperand() {
 
 		String output = "";
-		output += "Type: " + dataType + "\nOperandMode: " + operandMode;
+		output += "Type: " + dataType + "\nOperandMode: " + operandMode+"\n";
 		if (dataSeries != null) {
+			output+="Data Series: ";
 			for (int i = 0; i < dataSeries.size(); i++) {
 				output += dataSeries.get(i).toString() + " ";
 

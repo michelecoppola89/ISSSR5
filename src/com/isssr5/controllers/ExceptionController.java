@@ -88,5 +88,22 @@ public class ExceptionController {
 		return "err";
 	}
 	
+	@ExceptionHandler(NullDataSeriesException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad sent dataseries")
+	public String nullDataSeriesExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(BadDataSeriesUrlException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad dataseries url")
+	public String badDataSeriesUrlExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(BadOperandInput.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad operand input")
+	public String badOperandInputHandler() {
+		return "err";
+	}
 
 }
