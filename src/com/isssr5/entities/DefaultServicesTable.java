@@ -31,9 +31,13 @@ public class DefaultServicesTable {
 		ArrayList<Integer> ti2 = new ArrayList<Integer>();
 		ti2.add(1);
 		ParameterList pl1= new ParameterList(ti2);
-		ArrayList<ParameterList> ti3=new ArrayList<ParameterList>();
-		ti3.add(pl1);
-		avgvar.setOperationOrder(ti3);
+		ArrayList<Integer> ti3 = new ArrayList<Integer>();
+		ti3.add(1);
+		ParameterList pl2= new ParameterList(ti3);
+		ArrayList<ParameterList> ti4=new ArrayList<ParameterList>();
+		ti4.add(pl1);
+		ti4.add(pl2);
+		avgvar.setOperationOrder(ti4);
 		
 		table.put(avgvar.getIdCode(), avgvar);
 		

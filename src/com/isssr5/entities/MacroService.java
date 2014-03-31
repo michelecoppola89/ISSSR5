@@ -83,6 +83,7 @@ public class MacroService {
 						m.elementaryServices);
 				this.operationOrder = new ArrayList<ParameterList>(
 						m.operationOrder);
+				this.numOperand = m.getNumOperand();
 			}
 		}
 

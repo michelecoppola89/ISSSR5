@@ -83,10 +83,13 @@ public class MacroServiceController {
 		
 		ms.decodeMacroService(dataTable);
 		String st = "";
-		if(ms.getElementaryServices()!=null)
-		st += "MacroService ID: " + ms.getIdCode() + "\nElementary Service: "
-				+ ms.printElementaryService() + "\nOperandList:\n"
-				+ ms.printOperandList();
+		if(ms.getElementaryServices()!=null) {
+//		st += "MacroService ID: " + ms.getIdCode() + "\nElementary Service: "
+//				+ ms.printElementaryService() + "\nOperandList:\n"
+//				+ ms.printOperandList();
+			st += ms.printMacroService();
+			st += "\nOperandList:\n"+ms.printOperandList();
+		}
 		else
 			st += "MacroService ID: " + ms.getIdCode() + "\nOperandList:\n"
 					+ ms.printOperandList();
