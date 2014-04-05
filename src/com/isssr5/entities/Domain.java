@@ -1,10 +1,13 @@
 package com.isssr5.entities;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Inheritance;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="domain")
-public abstract class Domain {
+@Embeddable
+public class Domain {
 	private String domType;
 	public Domain(){
 		

@@ -2,7 +2,10 @@ package com.isssr5.controllers;
 
 import java.util.ArrayList;
 
+import org.hibernate.service.jdbc.connections.internal.UserSuppliedConnectionProviderImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +19,8 @@ import com.isssr5.exceptions.DomainException;
 import com.isssr5.exceptions.EnumerateDomainException;
 import com.isssr5.exceptions.IntervalDomainException;
 import com.isssr5.exceptions.NullDomainException;
+import com.isssr5.service.ScaleTransaction;
+import com.isssr5.service.ServiceUserTransaction;
 
 @Controller
 @RequestMapping("/scale")
@@ -26,7 +31,38 @@ public class ScaleController {
 	static String ORDINAL = "OrdinalScale";
 	static String ENUMDOM = "EnumeralDomain";
 	static String RATIODOM = "RatioDomain";
+	private ScaleTransaction scaleTransaction;
+	private ServiceUserTransaction serviceUserTransaction;
 
+
+	@Autowired
+	public ScaleController(ScaleTransaction scaleTransaction,
+			ServiceUserTransaction serviceUserTransaction) {
+		this.scaleTransaction = scaleTransaction;
+		this.serviceUserTransaction = serviceUserTransaction;
+	}
+
+	@RequestMapping(value = "/{user}/nominalScale", method = RequestMethod.POST)
+	public @ResponseBody
+	String createNominalScale(@RequestBody Scale scale,@PathVariable String user) throws DomainException,
+			EnumerateDomainException, NullDomainException {
+		if (scale.getDom() == null)
+			throw new NullDomainException();
+		if (scale.getDom() instanceof IntervalDomain)
+			throw new DomainException();
+		String string = "";
+		EnumerateDomain d = (EnumerateDomain) scale.getDom();
+		if(d.getScalePoints()==null)
+			throw new NullDomainException();
+		if ((d.getScalePoints().size()==1) && (d.getScalePoints().get(0).equals("")))
+			throw new EnumerateDomainException();
+		scale.setUser(serviceUserTransaction.getUserById(user));
+		scaleTransaction.addScale(scale);
+
+		return string;
+
+	}
+	
 	@RequestMapping(value = "/nominalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createNominalScale(@RequestBody Scale scale) throws DomainException,

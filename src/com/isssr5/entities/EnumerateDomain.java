@@ -2,11 +2,19 @@ package com.isssr5.entities;
 
 import java.util.ArrayList;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name="enumerateDomain")
+@Embeddable
+@Table(name="scale")
 public class EnumerateDomain extends Domain {
-
+	@Column(name="scalePoint")
+	@ElementCollection
 	private ArrayList<String> scalePoints;
 	
 	public EnumerateDomain(){

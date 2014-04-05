@@ -1,11 +1,19 @@
 package com.isssr5.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="intervalDomain")
+@Embeddable
+@Table(name="scale")
 public class IntervalDomain extends Domain {
+	@Column(name="min")
 	private Double min;
+	@Column(name="max")
 	private Double max;
 
 	public IntervalDomain() {
