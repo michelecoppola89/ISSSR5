@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.*;
 
@@ -28,7 +29,7 @@ public class ServiceUser {
 //	@OneToMany(fetch=FetchType.LAZY,mappedBy="user")
 	//private List <MacroService> serviceList= new ArrayList<MacroService>();
 	
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL,fetch = FetchType.EAGER)
 	private List<Scale> scaleList= new ArrayList<Scale>();
 	
 //	@OneToMany(fetch=FetchType.LAZY,mappedBy="user")
@@ -79,7 +80,7 @@ public class ServiceUser {
 	public void setPsw(String psw) {
 		this.psw = psw;
 	}
-	
+	@XmlTransient
 	public List<Scale> getScaleList() {
 		return scaleList;
 	}

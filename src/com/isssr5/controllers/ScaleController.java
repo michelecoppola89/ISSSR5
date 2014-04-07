@@ -1,6 +1,9 @@
 package com.isssr5.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +37,6 @@ public class ScaleController {
 	private ScaleTransaction scaleTransaction;
 	private ServiceUserTransaction serviceUserTransaction;
 
-
 	@Autowired
 	public ScaleController(ScaleTransaction scaleTransaction,
 			ServiceUserTransaction serviceUserTransaction) {
@@ -44,7 +46,8 @@ public class ScaleController {
 
 	@RequestMapping(value = "/{user}/nominalScale", method = RequestMethod.POST)
 	public @ResponseBody
-	String createNominalScale(@RequestBody Scale scale,@PathVariable String user) throws DomainException,
+	String createNominalScale(@RequestBody Scale scale,
+			@PathVariable String user) throws DomainException,
 			EnumerateDomainException, NullDomainException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
@@ -52,9 +55,10 @@ public class ScaleController {
 			throw new DomainException();
 		String string = "";
 		EnumerateDomain d = (EnumerateDomain) scale.getDom();
-		if(d.getScalePoints()==null)
+		if (d.getScalePoints() == null)
 			throw new NullDomainException();
-		if ((d.getScalePoints().size()==1) && (d.getScalePoints().get(0).equals("")))
+		if ((d.getScalePoints().size() == 1)
+				&& (d.getScalePoints().get(0).equals("")))
 			throw new EnumerateDomainException();
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		scale.setUser(u);
@@ -63,7 +67,93 @@ public class ScaleController {
 		return string;
 
 	}
-	
+
+	@RequestMapping(value = "/{user}/ordinalScale", method = RequestMethod.POST)
+	public @ResponseBody
+	String createOrdinalScale(@RequestBody Scale scale,
+			@PathVariable String user) throws DomainException,
+			NullDomainException, EnumerateDomainException {
+		if (scale.getDom() == null)
+			throw new NullDomainException();
+		if (scale.getDom() instanceof IntervalDomain)
+			throw new DomainException();
+		String string = "";
+		EnumerateDomain d = (EnumerateDomain) scale.getDom();
+		if (d.getScalePoints() == null)
+			throw new NullDomainException();
+		if ((d.getScalePoints().size() == 1)
+				&& (d.getScalePoints().get(0).equals("")))
+			throw new EnumerateDomainException();
+
+		// string += "scaleType: " + scale.getType() + "\nscalePoint: "
+		// + d.printScalePoint();
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		scale.setUser(u);
+		scale.getDom().setScale(scale);
+		scaleTransaction.addScale(scale);
+
+		return string;
+
+	}
+
+	@RequestMapping(value = "/{user}/ratioScale", method = RequestMethod.POST)
+	public @ResponseBody
+	String createRatioScale(@RequestBody Scale scale, @PathVariable String user)
+			throws DomainException, IntervalDomainException,
+			NullDomainException {
+
+		if (scale.getDom() == null)
+			throw new NullDomainException();
+		if (scale.getDom() instanceof EnumerateDomain)
+			throw new DomainException();
+		String string = "";
+		IntervalDomain d = (IntervalDomain) scale.getDom();
+		if (d.getMin() == null || d.getMax() == null)
+			throw new NullDomainException();
+		if (d.getMax() <= d.getMin())
+			throw new IntervalDomainException();
+
+		// string += "scaleType: " + scale.getType() + "\nmin: " + d.getMin()
+		// + "\nmax: " + d.getMax();
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		scale.setUser(u);
+		scale.getDom().setScale(scale);
+		scaleTransaction.addScale(scale);
+
+		return string;
+
+	}
+
+	@RequestMapping(value = "/{user}/intervalScale", method = RequestMethod.POST)
+	public @ResponseBody
+	String createIntervalScale(@RequestBody Scale scale,
+			@PathVariable String user) throws NullDomainException,
+			DomainException, IntervalDomainException {
+		if (scale.getDom() == null)
+			throw new NullDomainException();
+		if (scale.getDom() instanceof EnumerateDomain)
+			throw new DomainException();
+		String string = "";
+		IntervalDomain d = (IntervalDomain) scale.getDom();
+		if (d.getMin() == null || d.getMax() == null)
+			throw new NullDomainException();
+		if (d.getMax() <= d.getMin())
+			throw new IntervalDomainException();
+
+		// string += "scaleType: " + scale.getType() + "\nmin: " + d.getMin()
+		// + "\nmax: " + d.getMax();
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		scale.setUser(u);
+		scale.getDom().setScale(scale);
+		scaleTransaction.addScale(scale);
+
+		return string;
+
+	}
+
 	@RequestMapping(value = "/nominalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createNominalScale(@RequestBody Scale scale) throws DomainException,
@@ -74,9 +164,10 @@ public class ScaleController {
 			throw new DomainException();
 		String string = "";
 		EnumerateDomain d = (EnumerateDomain) scale.getDom();
-		if(d.getScalePoints()==null)
+		if (d.getScalePoints() == null)
 			throw new NullDomainException();
-		if ((d.getScalePoints().size()==1) && (d.getScalePoints().get(0).equals("")))
+		if ((d.getScalePoints().size() == 1)
+				&& (d.getScalePoints().get(0).equals("")))
 			throw new EnumerateDomainException();
 		string += "scaleType: " + scale.getType() + "\nscalePoint: "
 				+ d.printScalePoint();
@@ -94,9 +185,10 @@ public class ScaleController {
 			throw new DomainException();
 		String string = "";
 		EnumerateDomain d = (EnumerateDomain) scale.getDom();
-		if(d.getScalePoints()==null)
+		if (d.getScalePoints() == null)
 			throw new NullDomainException();
-		if ((d.getScalePoints().size()==1) && (d.getScalePoints().get(0).equals("")) )
+		if ((d.getScalePoints().size() == 1)
+				&& (d.getScalePoints().get(0).equals("")))
 			throw new EnumerateDomainException();
 		string += "scaleType: " + scale.getType() + "\nscalePoint: "
 				+ d.printScalePoint();
@@ -114,7 +206,7 @@ public class ScaleController {
 			throw new DomainException();
 		String string = "";
 		IntervalDomain d = (IntervalDomain) scale.getDom();
-		if(d.getMin()==null || d.getMax()==null)
+		if (d.getMin() == null || d.getMax() == null)
 			throw new NullDomainException();
 		if (d.getMax() <= d.getMin())
 			throw new IntervalDomainException();
@@ -127,14 +219,15 @@ public class ScaleController {
 	@RequestMapping(value = "/intervalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createIntervalScale(@RequestBody Scale scale)
-			throws NullDomainException, DomainException, IntervalDomainException {
+			throws NullDomainException, DomainException,
+			IntervalDomainException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
 		if (scale.getDom() instanceof EnumerateDomain)
 			throw new DomainException();
 		String string = "";
 		IntervalDomain d = (IntervalDomain) scale.getDom();
-		if(d.getMin()==null || d.getMax()==null)
+		if (d.getMin() == null || d.getMax() == null)
 			throw new NullDomainException();
 		if (d.getMax() <= d.getMin())
 			throw new IntervalDomainException();
@@ -162,6 +255,34 @@ public class ScaleController {
 		Domain dom = new IntervalDomain(RATIODOM, 1.0, 12.0);
 		Scale s = new Scale(RATIO, dom);
 		return s;
+	}
+
+	@XmlRootElement(name = "resumeScale")
+	static class Wrapper{
+		private List<Scale> scaleList;
+		public Wrapper(List<Scale> scaleList){
+			this.scaleList=scaleList;
+			
+		}
+
+		public Wrapper(){
+		}
+
+		public List<Scale> getScaleList() {
+			return scaleList;
+		}
+
+		public void setScaleList(List<Scale> scaleList) {
+			this.scaleList = scaleList;
+		}
+	}
+	@RequestMapping(value = "/{user}/getAllScales", method = RequestMethod.GET)
+	public @ResponseBody
+	Wrapper getAllScales(@PathVariable String user) {
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		System.out.println("grandezza list scale:" + u.getScaleList().size());
+
+		return new Wrapper(u.getScaleList());
 	}
 
 }

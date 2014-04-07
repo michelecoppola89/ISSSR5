@@ -14,16 +14,20 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 @XmlRootElement(name = "domain")
 @Entity
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="discr_dom", discriminatorType=DiscriminatorType.STRING)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "discr_dom", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "domain")
 public class Domain {
 
@@ -32,11 +36,11 @@ public class Domain {
 
 	@Id
 	@GenericGenerator(name = "generator", strategy = "foreign", parameters = @Parameter(name = "property", value = "scale"))
-	@GeneratedValue(generator="generator")
+	@GeneratedValue(generator = "generator")
 	@Column(name = "idScale")
 	private long id;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@PrimaryKeyJoinColumn
 	private Scale scale;
 
@@ -64,6 +68,7 @@ public class Domain {
 		this.domType = domType;
 	}
 
+	@XmlTransient
 	public long getId() {
 		return id;
 	}
@@ -72,6 +77,7 @@ public class Domain {
 		this.id = id;
 	}
 
+	@XmlTransient
 	public Scale getScale() {
 		return scale;
 	}

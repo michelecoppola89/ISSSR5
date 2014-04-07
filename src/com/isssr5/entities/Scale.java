@@ -14,21 +14,27 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 import org.hibernate.annotations.Cascade;
 
 @XmlRootElement(name = "scale")
 @Entity
 @Table(name = "scale")
+
 public class Scale {
 	
 	@Column(name = "scaleType")
 	private String type;
 	
 	@OneToOne(mappedBy="scale",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	
 	private Domain dom;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
@@ -59,7 +65,8 @@ public class Scale {
 	public ServiceUser getUser() {
 		return user;
 	}
-
+	
+	@XmlTransient
 	public void setUser(ServiceUser user) {
 		this.user = user;
 	}
