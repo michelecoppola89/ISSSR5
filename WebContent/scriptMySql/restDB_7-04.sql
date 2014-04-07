@@ -26,7 +26,7 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`custommacroservice` (
   `parameterList` TEXT NULL DEFAULT NULL ,
   `elementaryServiceList` TEXT NULL DEFAULT NULL ,
   `isPrivate` TINYINT(1) NULL DEFAULT NULL ,
-  `order` TEXT NULL ,
+  `order` TEXT NULL DEFAULT NULL ,
   `user` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`idCustomMacroService`) ,
   INDEX `fk_custommacroservice_user1_idx` (`user` ASC) ,
@@ -40,14 +40,34 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
+-- Table `rest5db`.`custommacroservice_has_custommacroservice`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `rest5db`.`custommacroservice_has_custommacroservice` (
+  `idCustomMacroService` VARCHAR(45) NOT NULL ,
+  `idElementaryService` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`idCustomMacroService`, `idElementaryService`) ,
+  INDEX `fk_custommacroservice_has_custommacroservice_custommacroser_idx` (`idElementaryService` ASC) ,
+  INDEX `fk_custommacroservice_has_custommacroservice_custommacroser_idx1` (`idCustomMacroService` ASC) ,
+  CONSTRAINT `fk_custommacroservice_has_custommacroservice_custommacroservi1`
+    FOREIGN KEY (`idCustomMacroService` )
+    REFERENCES `rest5db`.`custommacroservice` (`idCustomMacroService` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_custommacroservice_has_custommacroservice_custommacroservi2`
+    FOREIGN KEY (`idElementaryService` )
+    REFERENCES `rest5db`.`custommacroservice` (`idCustomMacroService` )
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
+
+
+-- -----------------------------------------------------
 -- Table `rest5db`.`scale`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `rest5db`.`scale` (
-  `idScale` INT(11) NOT NULL ,
+  `idScale` INT(11) NOT NULL AUTO_INCREMENT ,
   `scaleType` VARCHAR(45) NULL DEFAULT NULL ,
-  `scalePoint` TEXT NULL DEFAULT NULL ,
-  `min` DECIMAL(10,0) NULL DEFAULT NULL ,
-  `max` DECIMAL(10,0) NULL DEFAULT NULL ,
   `user_user` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`idScale`) ,
   INDEX `fk_scale_user1_idx` (`user_user` ASC) ,
@@ -57,6 +77,7 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`scale` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -88,26 +109,23 @@ DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `rest5db`.`custommacroservice_has_custommacroservice`
+-- Table `rest5db`.`domain`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `rest5db`.`custommacroservice_has_custommacroservice` (
-  `idCustomMacroService` VARCHAR(45) NOT NULL ,
-  `idElementaryService` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`idCustomMacroService`, `idElementaryService`) ,
-  INDEX `fk_custommacroservice_has_custommacroservice_custommacroser_idx` (`idElementaryService` ASC) ,
-  INDEX `fk_custommacroservice_has_custommacroservice_custommacroser_idx1` (`idCustomMacroService` ASC) ,
-  CONSTRAINT `fk_custommacroservice_has_custommacroservice_custommacroservi1`
-    FOREIGN KEY (`idCustomMacroService` )
-    REFERENCES `rest5db`.`custommacroservice` (`idCustomMacroService` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_custommacroservice_has_custommacroservice_custommacroservi2`
-    FOREIGN KEY (`idElementaryService` )
-    REFERENCES `rest5db`.`custommacroservice` (`idCustomMacroService` )
+CREATE  TABLE IF NOT EXISTS `rest5db`.`domain` (
+  `idScale` INT(11) NOT NULL ,
+  `scalePoint` TEXT NULL ,
+  `min` DOUBLE NULL ,
+  `max` DOUBLE NULL ,
+  `discr_dom` VARCHAR(45) NULL ,
+  `domType` VARCHAR(45) NULL ,
+  PRIMARY KEY (`idScale`) ,
+  INDEX `fk_domain_scale1_idx` (`idScale` ASC) ,
+  CONSTRAINT `fk_domain_scale1`
+    FOREIGN KEY (`idScale` )
+    REFERENCES `rest5db`.`scale` (`idScale` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
+ENGINE = InnoDB;
 
 USE `rest5db` ;
 

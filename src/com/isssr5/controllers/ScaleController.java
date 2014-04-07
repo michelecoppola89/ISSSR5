@@ -2,7 +2,6 @@ package com.isssr5.controllers;
 
 import java.util.ArrayList;
 
-import org.hibernate.service.jdbc.connections.internal.UserSuppliedConnectionProviderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +14,7 @@ import com.isssr5.entities.Domain;
 import com.isssr5.entities.EnumerateDomain;
 import com.isssr5.entities.IntervalDomain;
 import com.isssr5.entities.Scale;
+import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.DomainException;
 import com.isssr5.exceptions.EnumerateDomainException;
 import com.isssr5.exceptions.IntervalDomainException;
@@ -56,9 +56,10 @@ public class ScaleController {
 			throw new NullDomainException();
 		if ((d.getScalePoints().size()==1) && (d.getScalePoints().get(0).equals("")))
 			throw new EnumerateDomainException();
-		scale.setUser(serviceUserTransaction.getUserById(user));
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		scale.setUser(u);
+		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
-
 		return string;
 
 	}

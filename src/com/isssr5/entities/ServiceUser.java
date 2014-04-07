@@ -1,8 +1,11 @@
 package com.isssr5.entities;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,13 +23,14 @@ public class ServiceUser {
 	private String userid;
 	@Column(name = "psw")
 	private String psw;
-	
-	
+		
 	
 //	@OneToMany(fetch=FetchType.LAZY,mappedBy="user")
 	//private List <MacroService> serviceList= new ArrayList<MacroService>();
-	//@OneToMany(mappedBy="user")
-//	private List<Scale> scaleList= new ArrayList<Scale>();
+	
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	private List<Scale> scaleList= new ArrayList<Scale>();
+	
 //	@OneToMany(fetch=FetchType.LAZY,mappedBy="user")
 //	private List<Operand> dataSeriesList= new ArrayList<Operand>();
 
@@ -39,14 +43,6 @@ public class ServiceUser {
 //		this.serviceList = serviceList;
 //	}
 //
-//	public List<Scale> getScaleList() {
-//		return scaleList;
-//	}
-//
-//	@XmlElement
-//	public void setScaleList(ArrayList<Scale> scaleList) {
-//		this.scaleList = scaleList;
-//	}
 //
 //	public List<Operand> getDataSeriesList() {
 //		return dataSeriesList;
@@ -82,6 +78,14 @@ public class ServiceUser {
 	@XmlElement
 	public void setPsw(String psw) {
 		this.psw = psw;
+	}
+	
+	public List<Scale> getScaleList() {
+		return scaleList;
+	}
+
+	public void setScaleList(List<Scale> scaleList) {
+		this.scaleList = scaleList;
 	}
 	
 
