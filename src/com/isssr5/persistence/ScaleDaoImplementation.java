@@ -33,4 +33,10 @@ public class ScaleDaoImplementation implements ScaleDao {
 
 	}
 
+	@Override
+	public Scale findScaleById(long idScale) {
+		
+		return (Scale) sessionFactory.getCurrentSession().get(Scale.class, idScale);
+	}
+
 }

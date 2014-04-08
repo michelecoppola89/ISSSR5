@@ -3,6 +3,7 @@ package com.isssr5.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,9 @@ public class ScaleController {
 	@RequestMapping(value = "/{user}/nominalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createNominalScale(@RequestBody Scale scale,
-			@PathVariable String user) throws DomainException,
-			EnumerateDomainException, NullDomainException {
+			@PathVariable String user, HttpServletResponse response)
+			throws DomainException, EnumerateDomainException,
+			NullDomainException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
 		if (scale.getDom() instanceof IntervalDomain)
@@ -64,6 +66,9 @@ public class ScaleController {
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
+		
+		response.setHeader("Location", "/scale/" + u.getUserid()
+				+ "/getScaleById/" + scale.getId());
 		return string;
 
 	}
@@ -71,7 +76,7 @@ public class ScaleController {
 	@RequestMapping(value = "/{user}/ordinalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createOrdinalScale(@RequestBody Scale scale,
-			@PathVariable String user) throws DomainException,
+			@PathVariable String user, HttpServletResponse response) throws DomainException,
 			NullDomainException, EnumerateDomainException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
@@ -92,6 +97,9 @@ public class ScaleController {
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
+		
+		response.setHeader("Location", "/scale/" + u.getUserid()
+				+ "/getScaleById/" + scale.getId());
 
 		return string;
 
@@ -99,7 +107,7 @@ public class ScaleController {
 
 	@RequestMapping(value = "/{user}/ratioScale", method = RequestMethod.POST)
 	public @ResponseBody
-	String createRatioScale(@RequestBody Scale scale, @PathVariable String user)
+	String createRatioScale(@RequestBody Scale scale, @PathVariable String user, HttpServletResponse response)
 			throws DomainException, IntervalDomainException,
 			NullDomainException {
 
@@ -121,6 +129,9 @@ public class ScaleController {
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
+		
+		response.setHeader("Location", "/scale/" + u.getUserid()
+				+ "/getScaleById/" + scale.getId());
 
 		return string;
 
@@ -129,7 +140,7 @@ public class ScaleController {
 	@RequestMapping(value = "/{user}/intervalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createIntervalScale(@RequestBody Scale scale,
-			@PathVariable String user) throws NullDomainException,
+			@PathVariable String user,HttpServletResponse response) throws NullDomainException,
 			DomainException, IntervalDomainException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
@@ -149,6 +160,9 @@ public class ScaleController {
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
+		
+		response.setHeader("Location", "/scale/" + u.getUserid()
+				+ "/getScaleById/" + scale.getId());
 
 		return string;
 
@@ -249,6 +263,12 @@ public class ScaleController {
 		return s;
 	}
 
+	@RequestMapping(value = "/{user}/getScaleById/{scaleId}", method = RequestMethod.GET)
+	public @ResponseBody
+	Scale getScaleById(@PathVariable String user, @PathVariable long scaleId) {
+		return scaleTransaction.findScaleById(scaleId);
+	}
+
 	@RequestMapping(value = "/testRatioScale", method = RequestMethod.GET)
 	public @ResponseBody
 	Scale testRatioScale() {
@@ -258,14 +278,15 @@ public class ScaleController {
 	}
 
 	@XmlRootElement(name = "resumeScale")
-	static class Wrapper{
+	static class Wrapper {
 		private List<Scale> scaleList;
-		public Wrapper(List<Scale> scaleList){
-			this.scaleList=scaleList;
-			
+
+		public Wrapper(List<Scale> scaleList) {
+			this.scaleList = scaleList;
+
 		}
 
-		public Wrapper(){
+		public Wrapper() {
 		}
 
 		public List<Scale> getScaleList() {
@@ -276,6 +297,7 @@ public class ScaleController {
 			this.scaleList = scaleList;
 		}
 	}
+
 	@RequestMapping(value = "/{user}/getAllScales", method = RequestMethod.GET)
 	public @ResponseBody
 	Wrapper getAllScales(@PathVariable String user) {

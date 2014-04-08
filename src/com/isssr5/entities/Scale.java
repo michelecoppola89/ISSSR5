@@ -1,8 +1,10 @@
 package com.isssr5.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,41 +12,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
-import org.hibernate.annotations.Cascade;
-
 @XmlRootElement(name = "scale")
 @Entity
 @Table(name = "scale")
-
 public class Scale {
-	
-	@Column(name = "scaleType")
-	private String type;
-	
-	@OneToOne(mappedBy="scale",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	
-	private Domain dom;
-	
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name = "user_user",nullable=false)
-	private ServiceUser user;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idScale", nullable = false)
 	private long id;
+
+	@Column(name = "scaleType")
+	private String type;
+
+	@OneToOne(mappedBy = "scale", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Domain dom;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_user", nullable = false)
+	private ServiceUser user;
+
+	@OneToMany(mappedBy = "scale", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Operand> operandList = new ArrayList<Operand>();
 
 	public Scale() {
 
@@ -54,23 +51,23 @@ public class Scale {
 		this.type = type;
 		this.dom = dom;
 	}
-		
-	
+
 	public Scale(String type, Domain dom, ServiceUser user) {
 		this.type = type;
 		this.dom = dom;
 		this.user = user;
 	}
 
+	@XmlTransient
 	public ServiceUser getUser() {
 		return user;
 	}
+
 	
-	@XmlTransient
 	public void setUser(ServiceUser user) {
 		this.user = user;
 	}
-
+	
 	public String getType() {
 		return type;
 	}
@@ -98,6 +95,15 @@ public class Scale {
 	@XmlElement
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	@XmlTransient
+	public List<Operand> getOperandList() {
+		return operandList;
+	}
+
+	public void setOperandList(List<Operand> operandList) {
+		this.operandList = operandList;
 	}
 
 }

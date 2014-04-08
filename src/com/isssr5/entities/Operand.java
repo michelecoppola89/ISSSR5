@@ -8,15 +8,51 @@ import java.util.ArrayList;
 import java.net.URLConnection;
 import java.sql.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "operand")
+@Entity
+@Table(name = "dataseries")
 public class Operand {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "iddataSeries", nullable = false)
+	private long id;
+
+	@ManyToOne
+	@JoinColumn(name = "user", nullable = false)
+	private ServiceUser user;
+
+	@Column(name = "operandType")
 	private String dataType;// "Double" or "String"
+
+	@Column(name = "dataseries")
 	private ArrayList<String> dataSeries;
-	private String operandMode; // can be E(enumerate),F(file),DB(database)
+
+	@Column(name = "operandMode")
+	private String operandMode; // can be E(enumerate),F(file),D(database)
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "idScale", nullable = false)
+	private Scale scale;
+
+	@Transient
 	private String url; // file path
+
+	@Transient
 	private ExternalDB eDB;
 
 	public Operand() {
@@ -75,6 +111,31 @@ public class Operand {
 	@XmlElement
 	public void seteDB(ExternalDB eDB) {
 		this.eDB = eDB;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	@XmlTransient
+	public ServiceUser getUser() {
+		return user;
+	}
+
+	public void setUser(ServiceUser user) {
+		this.user = user;
+	}
+
+	public Scale getScale() {
+		return scale;
+	}
+
+	public void setScale(Scale scale) {
+		this.scale = scale;
 	}
 
 	public String PrintOperand() {

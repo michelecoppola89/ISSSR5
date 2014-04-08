@@ -4,22 +4,41 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.isssr5.entities.Operand;
+import com.isssr5.entities.Scale;
+import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.BadDataSeriesUrlException;
 import com.isssr5.exceptions.BadOperandInput;
 import com.isssr5.exceptions.NullDataSeriesException;
 import com.isssr5.exceptions.NullOperandModeException;
 import com.isssr5.exceptions.NullOperandTypeException;
+import com.isssr5.service.OperandTransaction;
+import com.isssr5.service.ScaleTransaction;
+import com.isssr5.service.ServiceUserTransaction;
 
 @Controller
 @RequestMapping("/dataSeries")
 public class DataSeriesController {
+	
+	private ServiceUserTransaction servireUserTransaction;
+	private OperandTransaction operandTransaction;
+	private ScaleTransaction scaleTransaction;
+	
+	@Autowired
+	public DataSeriesController(ServiceUserTransaction servireUserTransaction,
+			OperandTransaction operandTransaction, ScaleTransaction scaleTransaction) {
+		this.servireUserTransaction = servireUserTransaction;
+		this.operandTransaction = operandTransaction;
+		this.scaleTransaction= scaleTransaction;
+	}
 
 	@RequestMapping(value = "/testDataSeries1", method = RequestMethod.GET)
 	public @ResponseBody
@@ -48,10 +67,21 @@ public class DataSeriesController {
 		return op;
 
 	}
-
-	@RequestMapping(value = "/acquisition", method = RequestMethod.POST)
+	
+	
+	@RequestMapping(value = "/{user}/getOperandById/{operandId}", method = RequestMethod.GET)
 	public @ResponseBody
-	String dataSeriesAcquisition(@RequestBody Operand op)
+	Operand getOperandById(@PathVariable String user, @PathVariable long operandId) {
+		return operandTransaction.findOperandById(operandId);
+
+	}
+
+	
+	
+
+	@RequestMapping(value = "/echoAcquisition", method = RequestMethod.POST)
+	public @ResponseBody
+	String dataSeriesEchoAcquisition(@RequestBody Operand op)
 			throws NullOperandTypeException, NullOperandModeException,
 			NullDataSeriesException, BadDataSeriesUrlException,
 			BadOperandInput, IOException, ClassNotFoundException, SQLException {
@@ -65,6 +95,35 @@ public class DataSeriesController {
 
 		return op.PrintOperand();
 	}
+	
+	@RequestMapping(value = "/{user}/{idscale}/acquisition", method = RequestMethod.POST)
+	public @ResponseBody
+	String dataSeriesAcquisition(@RequestBody Operand op, @PathVariable String user, @PathVariable long idscale)
+			throws NullOperandTypeException, NullOperandModeException,
+			NullDataSeriesException, BadDataSeriesUrlException,
+			BadOperandInput, IOException, ClassNotFoundException, SQLException {
+
+		checkDataSeries(op);
+		if (op.getOperandMode().equals("F")) {
+			op.acquisitionFromfile(op.getUrl());
+		} else if(op.getOperandMode().equals("D")){
+			op.acqusitionFromExternalDB();
+		}
+	
+		//System.out.println("Before SetUser");
+		op.setUser(servireUserTransaction.getUserById(user));
+		//System.out.println("Before SetScale");
+		op.setScale(scaleTransaction.findScaleById(idscale));
+		//System.out.println("Before addOperand");
+		operandTransaction.addOperand(op);
+		//System.out.println("After addOperand");
+		
+		//System.out.println("IdOperand "+op.getId());
+		
+
+		return op.PrintOperand();
+	}
+
 
 	private void checkDataSeries(Operand op) throws NullOperandTypeException,
 			NullOperandModeException, NullDataSeriesException,

@@ -85,8 +85,8 @@ DEFAULT CHARACTER SET = latin1;
 -- Table `rest5db`.`dataseries`
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `rest5db`.`dataseries` (
-  `iddataSeries` INT(11) NOT NULL ,
-  `operandMode` CHAR(1) NULL DEFAULT NULL ,
+  `iddataSeries` INT(11) NOT NULL AUTO_INCREMENT ,
+  `operandMode` VARCHAR(45) NULL DEFAULT NULL ,
   `operandType` VARCHAR(45) NULL DEFAULT NULL ,
   `dataseries` TEXT NULL DEFAULT NULL ,
   `idScale` INT(11) NOT NULL ,
@@ -113,11 +113,11 @@ DEFAULT CHARACTER SET = latin1;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `rest5db`.`domain` (
   `idScale` INT(11) NOT NULL ,
-  `scalePoint` TEXT NULL ,
-  `min` DOUBLE NULL ,
-  `max` DOUBLE NULL ,
-  `discr_dom` VARCHAR(45) NULL ,
-  `domType` VARCHAR(45) NULL ,
+  `scalePoint` TEXT NULL DEFAULT NULL ,
+  `min` DOUBLE NULL DEFAULT NULL ,
+  `max` DOUBLE NULL DEFAULT NULL ,
+  `discr_dom` VARCHAR(45) NULL DEFAULT NULL ,
+  `domType` VARCHAR(45) NULL DEFAULT NULL ,
   PRIMARY KEY (`idScale`) ,
   INDEX `fk_domain_scale1_idx` (`idScale` ASC) ,
   CONSTRAINT `fk_domain_scale1`
@@ -125,7 +125,8 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`domain` (
     REFERENCES `rest5db`.`scale` (`idScale` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 USE `rest5db` ;
 
