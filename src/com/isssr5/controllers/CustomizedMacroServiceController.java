@@ -45,7 +45,9 @@ public class CustomizedMacroServiceController {
 		}
 
 		for (int i = 0; i < ms.getOperationOrder().size(); i++) {
-			MacroService el = ms.getElementaryServices().get(i);
+			String el = ms.getElementaryServices().get(i);
+			
+			
 			if (ms.getOperationOrder().get(i)
 					.checkParameterListSize(el.getNumOperand()) == false)
 				throw new WrongOperandNumberException();

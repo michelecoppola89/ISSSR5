@@ -10,7 +10,7 @@ public class MacroService {
 
 	private String idCode;
 	private ArrayList<Operand> operandList;
-	private ArrayList<MacroService> elementaryServices;
+	private ArrayList<String> elementaryServices;
 	private ArrayList<ParameterList> operationOrder;
 	private int numOperand;
 
@@ -19,7 +19,7 @@ public class MacroService {
 	}
 
 	public MacroService(String idCode, ArrayList<Operand> operandList,
-			ArrayList<MacroService> elementaryServices) {
+			ArrayList<String> elementaryServices) {
 		this.idCode = idCode;
 		this.operandList = operandList;
 		this.elementaryServices = elementaryServices;
@@ -63,12 +63,12 @@ public class MacroService {
 		this.operandList = operandList;
 	}
 
-	public ArrayList<MacroService> getElementaryServices() {
+	public ArrayList<String> getElementaryServices() {
 		return elementaryServices;
 	}
 
 	@XmlElement
-	public void setElementaryServices(ArrayList<MacroService> elementaryServices) {
+	public void setElementaryServices(ArrayList<String> elementaryServices) {
 		this.elementaryServices = elementaryServices;
 	}
 
@@ -79,7 +79,7 @@ public class MacroService {
 			throw new NotExistingMacroServiceException();
 		} else {
 			if (m.elementaryServices != null) {
-				this.elementaryServices = new ArrayList<MacroService>(
+				this.elementaryServices = new ArrayList<String>(
 						m.elementaryServices);
 				this.operationOrder = new ArrayList<ParameterList>(
 						m.operationOrder);
@@ -92,7 +92,7 @@ public class MacroService {
 	public String printElementaryService() {
 		String output = "";
 		for (int i = 0; i < elementaryServices.size(); i++)
-			output += elementaryServices.get(i).getIdCode() + " ";
+			output += elementaryServices.get(i) + " ";
 		return output;
 
 	}
@@ -115,8 +115,7 @@ public class MacroService {
 		if (elementaryServices != null) {
 			output += "MacroService/Elementary Service list:\n";
 			for (int i = 0; i < elementaryServices.size(); i++) {
-				MacroService ms = elementaryServices.get(i);
-				output += "MacroService ID: " + ms.idCode + "\n";
+				output += "MacroService ID: " + elementaryServices.get(i)+ "\n";
 			}
 		}
 

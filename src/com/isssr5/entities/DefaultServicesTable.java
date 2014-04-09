@@ -7,7 +7,7 @@ public class DefaultServicesTable {
 	
 	private HashMap<String, MacroService> table;
 	
-	public DefaultServicesTable(){
+	private DefaultServicesTable(){
 		
 		table= new HashMap<String, MacroService>();
 		
@@ -23,9 +23,9 @@ public class DefaultServicesTable {
 		MacroService avgvar=new MacroService("AVGVAR",null,null);
 		avgvar.setNumOperand(1);
 		
-		ArrayList<MacroService> ti1= new ArrayList<MacroService>();
-		ti1.add(avg);
-		ti1.add(var);
+		ArrayList<String> ti1= new ArrayList<String>();
+		ti1.add("AVG");
+		ti1.add("VAR");
 		avgvar.setElementaryServices(ti1);
 		
 		ArrayList<Integer> ti2 = new ArrayList<Integer>();
@@ -50,6 +50,13 @@ public class DefaultServicesTable {
 
 	public void setTable(HashMap<String, MacroService> table) {
 		this.table = table;
+	}
+	
+	public DefaultServicesTable createDefaultServiceTable(){
+		if(table==null)
+			return new DefaultServicesTable();
+		else
+		return this;
 	}
 	
 	
