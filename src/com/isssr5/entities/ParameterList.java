@@ -1,13 +1,16 @@
 package com.isssr5.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "parameterList")
-public class ParameterList {
+public class ParameterList implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	private ArrayList<Integer> parList;
 
 	public ParameterList() {

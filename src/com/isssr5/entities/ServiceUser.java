@@ -27,8 +27,9 @@ public class ServiceUser {
 	@Column(name = "psw")
 	private String psw;
 
-	// @OneToMany(fetch=FetchType.LAZY,mappedBy="user")
-	// private List <MacroService> serviceList= new ArrayList<MacroService>();
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<MacroService> serviceList = new ArrayList<MacroService>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -55,7 +56,7 @@ public class ServiceUser {
 		this.userid = userid;
 		this.psw = psw;
 	}
-	
+
 	@XmlTransient
 	public List<Operand> getDataSeriesList() {
 		return dataSeriesList;
@@ -91,6 +92,15 @@ public class ServiceUser {
 
 	public void setScaleList(List<Scale> scaleList) {
 		this.scaleList = scaleList;
+	}
+	
+	@XmlTransient
+	public List<MacroService> getServiceList() {
+		return serviceList;
+	}
+
+	public void setServiceList(List<MacroService> serviceList) {
+		this.serviceList = serviceList;
 	}
 
 }

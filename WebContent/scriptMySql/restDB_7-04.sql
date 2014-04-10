@@ -26,36 +26,12 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`custommacroservice` (
   `parameterList` TEXT NULL DEFAULT NULL ,
   `elementaryServiceList` TEXT NULL DEFAULT NULL ,
   `isPrivate` TINYINT(1) NULL DEFAULT NULL ,
-  `order` TEXT NULL DEFAULT NULL ,
   `user` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`idCustomMacroService`) ,
   INDEX `fk_custommacroservice_user1_idx` (`user` ASC) ,
   CONSTRAINT `fk_custommacroservice_user1`
     FOREIGN KEY (`user` )
     REFERENCES `rest5db`.`user` (`user` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = latin1;
-
-
--- -----------------------------------------------------
--- Table `rest5db`.`custommacroservice_has_custommacroservice`
--- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `rest5db`.`custommacroservice_has_custommacroservice` (
-  `idCustomMacroService` VARCHAR(45) NOT NULL ,
-  `idElementaryService` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`idCustomMacroService`, `idElementaryService`) ,
-  INDEX `fk_custommacroservice_has_custommacroservice_custommacroser_idx` (`idElementaryService` ASC) ,
-  INDEX `fk_custommacroservice_has_custommacroservice_custommacroser_idx1` (`idCustomMacroService` ASC) ,
-  CONSTRAINT `fk_custommacroservice_has_custommacroservice_custommacroservi1`
-    FOREIGN KEY (`idCustomMacroService` )
-    REFERENCES `rest5db`.`custommacroservice` (`idCustomMacroService` )
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_custommacroservice_has_custommacroservice_custommacroservi2`
-    FOREIGN KEY (`idElementaryService` )
-    REFERENCES `rest5db`.`custommacroservice` (`idCustomMacroService` )
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
@@ -77,7 +53,7 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`scale` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -105,6 +81,7 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`dataseries` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = latin1;
 
 

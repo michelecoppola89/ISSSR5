@@ -2,7 +2,6 @@ package com.isssr5.controllers;
 
 import java.util.ArrayList;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.isssr5.entities.DefaultServicesTable;
 import com.isssr5.entities.MacroService;
-import com.isssr5.entities.Operand;
 import com.isssr5.exceptions.NotExistingMacroServiceException;
 import com.isssr5.exceptions.NullElementaryServiceListException;
 import com.isssr5.exceptions.NullOperandException;
@@ -21,8 +19,8 @@ import com.isssr5.exceptions.NullOperandTypeException;
 @Controller
 @RequestMapping("/macroService")
 public class MacroServiceController {
-	private static DefaultServicesTable dataTable=new DefaultServicesTable();
-	
+	private static DefaultServicesTable dataTable = DefaultServicesTable
+			.getInstance();
 
 	private void checkForMacroServiceAcquisition(MacroService ms)
 			throws NullOperandException, NullOperandTypeException,
@@ -58,19 +56,19 @@ public class MacroServiceController {
 
 	}
 
-	@RequestMapping(value = "/testMacroService", method = RequestMethod.GET)
-	public @ResponseBody
-	MacroService testMacroservice() {
-		String idCode = "MEAN";
-		Operand op1 = new Operand("Double", null, "E");
-		ArrayList<MacroService> al = new ArrayList<MacroService>();
-		ArrayList<Operand> opList = new ArrayList<Operand>();
-		opList.add(op1);
-		MacroService ms = new MacroService(idCode, opList, al);
-		ms.setNumOperand(1);
-		return ms;
-
-	}
+	// @RequestMapping(value = "/testMacroService", method = RequestMethod.GET)
+	// public @ResponseBody
+	// MacroService testMacroservice() {
+	// String idCode = "MEAN";
+	// Operand op1 = new Operand("Double", null, "E");
+	// ArrayList<MacroService> al = new ArrayList<MacroService>();
+	// ArrayList<Operand> opList = new ArrayList<Operand>();
+	// opList.add(op1);
+	// MacroService ms = new MacroService(idCode, opList, al);
+	// ms.setNumOperand(1);
+	// return ms;
+	//
+	// }
 
 	@RequestMapping(value = "/createMacroService", method = RequestMethod.POST)
 	public @ResponseBody
@@ -80,17 +78,17 @@ public class MacroServiceController {
 			NotExistingMacroServiceException {
 
 		checkForMacroServiceAcquisition(ms);
-		
+
 		ms.decodeMacroService(dataTable);
 		String st = "";
-		if(ms.getElementaryServices()!=null) {
-//		st += "MacroService ID: " + ms.getIdCode() + "\nElementary Service: "
-//				+ ms.printElementaryService() + "\nOperandList:\n"
-//				+ ms.printOperandList();
+		if (ms.getElementaryServices() != null) {
+			// st += "MacroService ID: " + ms.getIdCode() +
+			// "\nElementary Service: "
+			// + ms.printElementaryService() + "\nOperandList:\n"
+			// + ms.printOperandList();
 			st += ms.printMacroService();
-			st += "\nOperandList:\n"+ms.printOperandList();
-		}
-		else
+			st += "\nOperandList:\n" + ms.printOperandList();
+		} else
 			st += "MacroService ID: " + ms.getIdCode() + "\nOperandList:\n"
 					+ ms.printOperandList();
 
