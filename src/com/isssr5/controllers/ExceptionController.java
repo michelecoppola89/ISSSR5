@@ -125,5 +125,13 @@ public class ExceptionController {
 	public String sqlExceptionHandler () {
 		return "err";
 	}
+	
+	
+	@ExceptionHandler(RequestedMacroServiceIsPrivateException.class)
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Requested MacroService is private")
+	public String requestedMacroServiceIsPrivateExceptionHandler () {
+		return "err";
+	}
+
 
 }

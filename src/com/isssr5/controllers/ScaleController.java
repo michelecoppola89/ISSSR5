@@ -69,6 +69,7 @@ public class ScaleController {
 		
 		response.setHeader("Location", "/scale/" + u.getUserid()
 				+ "/getScaleById/" + scale.getId());
+		
 		return string;
 
 	}

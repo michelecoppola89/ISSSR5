@@ -23,6 +23,7 @@ import com.isssr5.exceptions.NotExistingMacroServiceException;
 import com.isssr5.exceptions.NullElementaryServiceListException;
 import com.isssr5.exceptions.NullMacroServiceIdException;
 import com.isssr5.exceptions.NullOperationOrderException;
+import com.isssr5.exceptions.RequestedMacroServiceIsPrivateException;
 import com.isssr5.exceptions.WrongOperandNumberException;
 import com.isssr5.exceptions.WrongOperationOrderException;
 import com.isssr5.service.MacroServiceTransaction;
@@ -156,10 +157,14 @@ public class CustomizedMacroServiceController {
 	@RequestMapping(value = "/{user}/getCustomizeMacroServiceById/{macroServiceId}", method = RequestMethod.GET)
 	public @ResponseBody
 	MacroService getCustomizedMacroServiceById(@PathVariable String user,
-			@PathVariable String macroServiceId) {
-		return macroServiceTransaction.findMacroServiceById(macroServiceId);
+			@PathVariable String macroServiceId) throws RequestedMacroServiceIsPrivateException {
+		MacroService ms=macroServiceTransaction.findMacroServiceById(macroServiceId);
+		if(ms.getIs_private()==true){
+			if(!(ms.getUser().getUserid().equals(user))) throw new RequestedMacroServiceIsPrivateException();
+		}
+		return ms;
 	}
-	
+
 	@XmlRootElement(name = "resumeCustomizedMacroService")
 	static class Wrapper {
 		private List<MacroService> customizedMacroServiceList;
@@ -176,7 +181,8 @@ public class CustomizedMacroServiceController {
 			return customizedMacroServiceList;
 		}
 
-		public void setCustomizedMacroServiceList(List<MacroService> customizedMacroServiceList) {
+		public void setCustomizedMacroServiceList(
+				List<MacroService> customizedMacroServiceList) {
 			this.customizedMacroServiceList = customizedMacroServiceList;
 		}
 	}
@@ -188,6 +194,5 @@ public class CustomizedMacroServiceController {
 
 		return new Wrapper(u.getServiceList());
 	}
-
 
 }

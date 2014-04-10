@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ParameterList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private ArrayList<Integer> parList;
 
 	public ParameterList() {
@@ -41,18 +41,21 @@ public class ParameterList implements Serializable {
 	public boolean checkParameterList(int totalNumParameter) {
 
 		boolean ret = true;
-		for (int i = 0; i < parList.size() && ret; i++) {
-			if (parList.get(i) > totalNumParameter)
-				ret = false;
-		}
+		if (parList != null) {
+			for (int i = 0; i < parList.size() && ret; i++) {
+				if (parList.get(i) > totalNumParameter)
+					ret = false;
+			}
+		} else
+			ret = false;
 		return ret;
 	}
 
 	public boolean checkParameterListSize(int acceptedNumParameter) {
 
-		if(parList.size()!=acceptedNumParameter)
+		if (parList.size() != acceptedNumParameter)
 			return false;
-		else 
+		else
 			return true;
 	}
 
