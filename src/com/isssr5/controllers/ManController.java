@@ -36,6 +36,12 @@ public class ManController {
 		return "man";
 
 	}
+	
+	@RequestMapping(value = "/indexManual", method = RequestMethod.GET)
+	public String getIndexMan() {
+		return "handbook";
+
+	}
 
 	@RequestMapping(value = "/fileExample", method = RequestMethod.GET)
 	public String getFileExample() {
