@@ -42,6 +42,9 @@ public class MacroService {
 	@Column(name="isPrivate")
 	private boolean is_private;
 	
+	@Column(name = "keywords")
+	private ArrayList<String> keywords;
+	
 	@ManyToOne
 	@JoinColumn(name="user", nullable= false)
 	private ServiceUser user;
@@ -122,6 +125,14 @@ public class MacroService {
 	}
 	
 	
+	public ArrayList<String> getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(ArrayList<String> keywords) {
+		this.keywords = keywords;
+	}
+
 	@XmlTransient
 	public ServiceUser getUser() {
 		return user;

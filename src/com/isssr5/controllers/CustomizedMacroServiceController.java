@@ -247,5 +247,7 @@ public class CustomizedMacroServiceController {
 
 		return new Wrapper(macroServiceTransaction.findPrivateMacroServiceById(user));
 	}
+	
+	
 
 }

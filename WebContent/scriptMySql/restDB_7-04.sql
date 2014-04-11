@@ -27,6 +27,7 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`custommacroservice` (
   `elementaryServiceList` TEXT NULL DEFAULT NULL ,
   `isPrivate` TINYINT(1) NULL DEFAULT NULL ,
   `user` VARCHAR(45) NOT NULL ,
+  `keywords` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`idCustomMacroService`) ,
   INDEX `fk_custommacroservice_user1_idx` (`user` ASC) ,
   CONSTRAINT `fk_custommacroservice_user1`
@@ -53,7 +54,6 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`scale` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = latin1;
 
 
@@ -81,7 +81,6 @@ CREATE  TABLE IF NOT EXISTS `rest5db`.`dataseries` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = latin1;
 
 

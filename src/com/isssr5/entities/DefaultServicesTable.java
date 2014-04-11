@@ -15,10 +15,18 @@ public class DefaultServicesTable {
 
 		MacroService avg = new MacroService("AVG", null, null);
 		avg.setNumOperand(1);
+		avg.setDescription("Calculate mean");
+		ArrayList<String> avg_key = new ArrayList<String>();
+		avg_key.add("mean");
+		avg.setKeywords(avg_key);
 		table.put(avg.getIdCode(), avg);
 
 		MacroService var = new MacroService("VAR", null, null);
 		var.setNumOperand(1);
+		var.setDescription("Calculate variance");
+		ArrayList<String> var_key = new ArrayList<String>();
+		var_key.add("variance");
+		var.setKeywords(var_key);
 		table.put(var.getIdCode(), var);
 
 		MacroService avgvar = new MacroService("AVGVAR", null, null);
@@ -28,6 +36,11 @@ public class DefaultServicesTable {
 		ti1.add("AVG");
 		ti1.add("VAR");
 		avgvar.setElementaryServices(ti1);
+		avgvar.setDescription("Calculate mean and variance");
+		ArrayList<String> avgvar_key = new ArrayList<String>();
+		avgvar_key.add("variance");
+		avgvar_key.add("mean");
+		avgvar.setKeywords(avgvar_key);
 
 		ArrayList<Integer> ti2 = new ArrayList<Integer>();
 		ti2.add(1);
