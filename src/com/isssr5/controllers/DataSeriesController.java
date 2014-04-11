@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,9 @@ import com.isssr5.entities.Scale;
 import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.BadDataSeriesUrlException;
 import com.isssr5.exceptions.BadOperandInput;
+import com.isssr5.exceptions.NotExistingOperandException;
+import com.isssr5.exceptions.NotExistingScaleException;
+import com.isssr5.exceptions.NotExistingUserException;
 import com.isssr5.exceptions.NullDataSeriesException;
 import com.isssr5.exceptions.NullOperandModeException;
 import com.isssr5.exceptions.NullOperandTypeException;
@@ -27,17 +33,18 @@ import com.isssr5.service.ServiceUserTransaction;
 @Controller
 @RequestMapping("/dataSeries")
 public class DataSeriesController {
-	
+
 	private ServiceUserTransaction servireUserTransaction;
 	private OperandTransaction operandTransaction;
 	private ScaleTransaction scaleTransaction;
-	
+
 	@Autowired
 	public DataSeriesController(ServiceUserTransaction servireUserTransaction,
-			OperandTransaction operandTransaction, ScaleTransaction scaleTransaction) {
+			OperandTransaction operandTransaction,
+			ScaleTransaction scaleTransaction) {
 		this.servireUserTransaction = servireUserTransaction;
 		this.operandTransaction = operandTransaction;
-		this.scaleTransaction= scaleTransaction;
+		this.scaleTransaction = scaleTransaction;
 	}
 
 	@RequestMapping(value = "/testDataSeries1", method = RequestMethod.GET)
@@ -67,17 +74,23 @@ public class DataSeriesController {
 		return op;
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{user}/getOperandById/{operandId}", method = RequestMethod.GET)
 	public @ResponseBody
-	Operand getOperandById(@PathVariable String user, @PathVariable long operandId) {
-		return operandTransaction.findOperandById(operandId);
+	Operand getOperandById(@PathVariable String user,
+			@PathVariable long operandId) throws NotExistingUserException,
+			NotExistingOperandException {
+		ServiceUser u = servireUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+		Operand o = operandTransaction.findOperandById(operandId);
+		if (o == null)
+			throw new NotExistingOperandException();
+		if (!o.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+		return o;
 
 	}
-
-	
-	
 
 	@RequestMapping(value = "/echoAcquisition", method = RequestMethod.POST)
 	public @ResponseBody
@@ -89,41 +102,43 @@ public class DataSeriesController {
 		checkDataSeries(op);
 		if (op.getOperandMode().equals("F")) {
 			op.acquisitionFromfile(op.getUrl());
-		} else if(op.getOperandMode().equals("D")){
+		} else if (op.getOperandMode().equals("D")) {
 			op.acqusitionFromExternalDB();
 		}
 
 		return op.PrintOperand();
 	}
-	
+
 	@RequestMapping(value = "/{user}/{idscale}/acquisition", method = RequestMethod.POST)
 	public @ResponseBody
-	String dataSeriesAcquisition(@RequestBody Operand op, @PathVariable String user, @PathVariable long idscale)
+	String dataSeriesAcquisition(@RequestBody Operand op,
+			@PathVariable String user, @PathVariable long idscale,HttpServletResponse response)
 			throws NullOperandTypeException, NullOperandModeException,
 			NullDataSeriesException, BadDataSeriesUrlException,
-			BadOperandInput, IOException, ClassNotFoundException, SQLException {
+			BadOperandInput, IOException, ClassNotFoundException, SQLException,
+			NotExistingUserException, NotExistingScaleException {
 
 		checkDataSeries(op);
 		if (op.getOperandMode().equals("F")) {
 			op.acquisitionFromfile(op.getUrl());
-		} else if(op.getOperandMode().equals("D")){
+		} else if (op.getOperandMode().equals("D")) {
 			op.acqusitionFromExternalDB();
 		}
-	
-		//System.out.println("Before SetUser");
-		op.setUser(servireUserTransaction.getUserById(user));
-		//System.out.println("Before SetScale");
-		op.setScale(scaleTransaction.findScaleById(idscale));
-		//System.out.println("Before addOperand");
+		ServiceUser u = servireUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+		op.setUser(u);
+		Scale s = scaleTransaction.findScaleById(idscale);
+		if (s == null)
+			throw new NotExistingScaleException();
+		if (!s.getUser().getUserid().equals(user))
+			throw new NotExistingScaleException();
+		op.setScale(s);
 		operandTransaction.addOperand(op);
-		//System.out.println("After addOperand");
-		
-		//System.out.println("IdOperand "+op.getId());
-		
-
+		response.setHeader("Location", "/dataSeries/" + u.getUserid()
+				+ "/getOperandById/" + op.getId());
 		return op.PrintOperand();
 	}
-
 
 	private void checkDataSeries(Operand op) throws NullOperandTypeException,
 			NullOperandModeException, NullDataSeriesException,

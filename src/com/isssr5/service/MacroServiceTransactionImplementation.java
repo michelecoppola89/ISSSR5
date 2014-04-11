@@ -1,5 +1,7 @@
 package com.isssr5.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,18 @@ public class MacroServiceTransactionImplementation implements MacroServiceTransa
 	@Transactional
 	public MacroService findMacroServiceById(String macroServiceId) {
 		return macroServiceDao.findMacroServiceById(macroServiceId);
+	}
+
+	@Override
+	@Transactional
+	public List<MacroService> findPublicMacroService() {
+		return macroServiceDao.findPublicMacroService();
+	}
+
+	@Override
+	@Transactional
+	public List<MacroService> findPrivateMacroServiceById(String UserId) {
+		return macroServiceDao.findPrivateMacroServiceById(UserId);
 	}
 
 }

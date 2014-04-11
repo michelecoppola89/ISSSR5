@@ -1,5 +1,8 @@
 package com.isssr5.persistence;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,6 +42,27 @@ public class MacroServiceDaoImplementation implements MacroServiceDao {
 
 		return (MacroService) sessionFactory.getCurrentSession().get(
 				MacroService.class, macroServiceId);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MacroService> findPublicMacroService() {
+		String hql="FROM MacroService WHERE is_private = :isprivate";
+		Query query= sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("isprivate", false);
+		
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MacroService> findPrivateMacroServiceById(String UserId) {
+		String hql="FROM MacroService WHERE is_private = :isprivate AND user.userid= :UserId";
+		Query query= sessionFactory.getCurrentSession().createQuery(hql);
+		query.setParameter("isprivate", true);
+		query.setParameter("UserId", UserId);
+		
+		return query.list();
 	}
 
 }

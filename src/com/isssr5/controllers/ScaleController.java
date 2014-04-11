@@ -22,6 +22,9 @@ import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.DomainException;
 import com.isssr5.exceptions.EnumerateDomainException;
 import com.isssr5.exceptions.IntervalDomainException;
+import com.isssr5.exceptions.NotExistingMacroServiceException;
+import com.isssr5.exceptions.NotExistingScaleException;
+import com.isssr5.exceptions.NotExistingUserException;
 import com.isssr5.exceptions.NullDomainException;
 import com.isssr5.service.ScaleTransaction;
 import com.isssr5.service.ServiceUserTransaction;
@@ -50,7 +53,7 @@ public class ScaleController {
 	String createNominalScale(@RequestBody Scale scale,
 			@PathVariable String user, HttpServletResponse response)
 			throws DomainException, EnumerateDomainException,
-			NullDomainException {
+			NullDomainException, NotExistingUserException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
 		if (scale.getDom() instanceof IntervalDomain)
@@ -63,6 +66,8 @@ public class ScaleController {
 				&& (d.getScalePoints().get(0).equals("")))
 			throw new EnumerateDomainException();
 		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if(u==null)
+			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
@@ -78,7 +83,7 @@ public class ScaleController {
 	public @ResponseBody
 	String createOrdinalScale(@RequestBody Scale scale,
 			@PathVariable String user, HttpServletResponse response) throws DomainException,
-			NullDomainException, EnumerateDomainException {
+			NullDomainException, EnumerateDomainException, NotExistingUserException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
 		if (scale.getDom() instanceof IntervalDomain)
@@ -95,6 +100,8 @@ public class ScaleController {
 		// + d.printScalePoint();
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if(u==null)
+			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
@@ -110,7 +117,7 @@ public class ScaleController {
 	public @ResponseBody
 	String createRatioScale(@RequestBody Scale scale, @PathVariable String user, HttpServletResponse response)
 			throws DomainException, IntervalDomainException,
-			NullDomainException {
+			NullDomainException, NotExistingUserException {
 
 		if (scale.getDom() == null)
 			throw new NullDomainException();
@@ -127,6 +134,8 @@ public class ScaleController {
 		// + "\nmax: " + d.getMax();
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if(u==null)
+			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
@@ -142,7 +151,7 @@ public class ScaleController {
 	public @ResponseBody
 	String createIntervalScale(@RequestBody Scale scale,
 			@PathVariable String user,HttpServletResponse response) throws NullDomainException,
-			DomainException, IntervalDomainException {
+			DomainException, IntervalDomainException, NotExistingUserException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
 		if (scale.getDom() instanceof EnumerateDomain)
@@ -158,6 +167,8 @@ public class ScaleController {
 		// + "\nmax: " + d.getMax();
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if(u==null)
+			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
@@ -266,8 +277,19 @@ public class ScaleController {
 
 	@RequestMapping(value = "/{user}/getScaleById/{scaleId}", method = RequestMethod.GET)
 	public @ResponseBody
-	Scale getScaleById(@PathVariable String user, @PathVariable long scaleId) {
-		return scaleTransaction.findScaleById(scaleId);
+	Scale getScaleById(@PathVariable String user, @PathVariable long scaleId)
+			throws NotExistingUserException, NotExistingScaleException {
+		ServiceUser u=serviceUserTransaction.getUserById(user);
+		if(u==null)
+			throw new NotExistingUserException();
+		Scale s=scaleTransaction.findScaleById(scaleId);
+		if(s==null)
+		{
+			throw new NotExistingScaleException();
+		}
+		if(!s.getUser().getUserid().equals(user))
+			throw new NotExistingScaleException();
+		return s;
 	}
 
 	@RequestMapping(value = "/testRatioScale", method = RequestMethod.GET)
@@ -301,8 +323,10 @@ public class ScaleController {
 
 	@RequestMapping(value = "/{user}/getAllScales", method = RequestMethod.GET)
 	public @ResponseBody
-	Wrapper getAllScales(@PathVariable String user) {
+	Wrapper getAllScales(@PathVariable String user) throws NotExistingUserException {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if(u==null)
+			throw new NotExistingUserException();
 		System.out.println("grandezza list scale:" + u.getScaleList().size());
 
 		return new Wrapper(u.getScaleList());

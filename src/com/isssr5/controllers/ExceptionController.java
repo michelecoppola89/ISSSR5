@@ -90,48 +90,69 @@ public class ExceptionController {
 	public String notExistingMacroServiceExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(NullDataSeriesException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad sent dataseries")
 	public String nullDataSeriesExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(BadDataSeriesUrlException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad dataseries url")
 	public String badDataSeriesUrlExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(BadOperandInput.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "bad operand input")
 	public String badOperandInputHandler() {
 		return "err";
 	}
+
 	@ExceptionHandler(IOException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "I/O Exception")
 	public String iOExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(NumberFormatException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "wrong data type")
 	public String numberFormatExceptionHandler() {
 		return "err";
 	}
-	
+
 	@ExceptionHandler(SQLException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "SQL exception")
-	public String sqlExceptionHandler () {
-		return "err";
-	}
-	
-	
-	@ExceptionHandler(RequestedMacroServiceIsPrivateException.class)
-	@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Requested MacroService is private")
-	public String requestedMacroServiceIsPrivateExceptionHandler () {
+	public String sqlExceptionHandler() {
 		return "err";
 	}
 
+	@ExceptionHandler(RequestedMacroServiceIsPrivateException.class)
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "Requested MacroService is private")
+	public String requestedMacroServiceIsPrivateExceptionHandler() {
+		return "err";
+	}
+
+	@ExceptionHandler(PrivateElementaryServiceException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Private elementary services in a public custom macro service")
+	public String PrivateElementaryServiceExceptionHandler() {
+		return "err";
+	}
+	@ExceptionHandler(NotExistingScaleException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Scale doesn't exist")
+	public String NotExistingScaleExceptionExceptionHandler() {
+		return "err";
+	}
+	@ExceptionHandler(NotExistingOperandException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Operand doesn't exist")
+	public String NotExistingOperandExceptionExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(NotExistingUserException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "User doesn't exist")
+	public String NotExistingUserExceptionHandler() {
+		return "err";
+	}
 
 }
