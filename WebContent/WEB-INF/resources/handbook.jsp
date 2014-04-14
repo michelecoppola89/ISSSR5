@@ -7,39 +7,76 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<%@ page isELIgnored="false" %>
+
+<script type="text/javascript">
+	function getMacroServicePage() {
+		var elem = document.getElementById("sMacroService");
+		
+		var userstring = '${username}';
+		var strUser = elem.options[elem.selectedIndex].value;
+		if(strUser == "all_def") {
+			window.location.href = "http://localhost:8080/ISSSR5/manual/getAllDefaultElementaryService";
+		}
+		else if(strUser == "all_priv"){		
+			window.location.href = "http://localhost:8080/ISSSR5/manual/"+userstring+"/getAllPrivateCustomizedMacroService";
+		}
+		else if(strUser == "all_publ") {
+			window.location.href = "http://localhost:8080/ISSSR5/manual/getAllPublicCustomizedMacroService";
+		}
+		
+	}
+	
+	function getMacroServicePageByKeyword() {
+		var elem = document.getElementById("keyword");
+		var elem_select = document.getElementById("sMacroServiceKey");
+		var strUser = elem_select.options[elem_select.selectedIndex].value;
+		var k = elem.value;
+		var userstring = '${username}';
+		if(strUser=="all_def") {
+			window.location.href = "http://localhost:8080/ISSSR5/manual/getDefaultKeyword/"+k;
+		}
+		else if(strUser=="all_priv") {
+			window.location.href = "http://localhost:8080/ISSSR5/manual/"+userstring+"/getPrivateKeywords/"+k;
+		}
+		else if(strUser=="all_publ") {
+			window.location.href = "http://localhost:8080/ISSSR5/manual/getPublicByKeywords/"+k;
+		}
+		
+		
+	}
+</script>
+
 </head>
 <body bgcolor="e3d268">
 
 
 	<H1 align="center">
-		Welcome in Statistics 5! <BR> <IMG SRC="five.png" BORDER=3
-			HEIGHT=200 WIDTH=191 align="middle">
+		Welcome <c:out value="${username}"></c:out> in Statistics 5! <BR> 
+		<!-- <IMG SRC="/resources/five.png" BORDER=3
+			HEIGHT=200 WIDTH=191 align="middle"> -->
 	</H1>
 	<HR WIDTH="100%">
 	<H2 align="center">
 		Get all MacroService <BR> 
-		<select>
-			<option value="all_publ">Public customize MacroService</option>
+		<select id="sMacroService">
+			<option value="all_publ">All Public MacroService</option>
 			<option value="all_priv">Private customize MacroService</option>
 			<option value="all_def">Default Elementary Service</option>
-		</select> 
+		</select>
+		<button id="btMs" onclick="getMacroServicePage()">Get MacroService</button> 
 		<BR>
 		<H2 align="center">
 		Search MacroService by KeyWord <BR> 
-		<select>
-			<option value="publ_key">Public customized MacroService</option>
-			<option value="priv_key">Private customize MacroService</option>
-			<option value="def_key">Default Elementary Service</option>
+		<input id="keyword" type="text" size="25" value="Insert keyword here">
+		<select id="sMacroServiceKey">
+			<option value="all_publ">All Public MacroService</option>
+			<option value="all_priv">Private customize MacroService</option>
+			<option value="all_def">Default Elementary Service</option>
 		</select>
-		<form action="demo_form.asp">
-			Insert the keyword: <input type="search" name="googlesearch"><br>
-			
-		</form>
+		<button id="btMsKey" onclick="getMacroServicePageByKeyword()">Get MacroService</button>
 		
-		<form action="demo_form.asp">
-			Insert user: <input type="search" name="googlesearch"><br>
-			
-		</form>
 		
 	</H2>
 	<HR WIDTH="100%">
@@ -134,7 +171,7 @@
 	<BR> Transfer-Encoding: chunked body:
 	<BR>
 	<textarea style="color: black; background-color: e3d268;" rows="10"
-		cols="40" style="border: none;" disabled="disabled">
+		cols="40" style="border: none;"  disabled="true">
 	 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
     <scale>
     <enumerateDomain>

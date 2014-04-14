@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+
+
+	<security:http create-session="stateless">
+		<security:http-basic />
+		<security:intercept-url pattern="/manual/**" access="ROLE_USER" />
+	</security:http>
+
+	
+	<!-- <security:authentication-manager> <security:authentication-provider> 
+		<security:user-service id="userService"> <security:user name="taldeitali" 
+		password="password" authorities="ROLE_USER" /> </security:user-service> </security:authentication-provider> 
+		</security:authentication-manager> -->
+
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<security:jdbc-user-service id="userService"
+				data-source-ref="dataSource"
+				users-by-username-query="select user,psw,true from user where user=?"
+				authorities-by-username-query="select user,'ROLE_USER' from user where user=?" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+
+
+</beans>

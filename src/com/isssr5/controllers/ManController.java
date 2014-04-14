@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +40,13 @@ public class ManController {
 	}
 	
 	@RequestMapping(value = "/indexManual", method = RequestMethod.GET)
-	public String getIndexMan() {
-		return "handbook";
+	public ModelAndView getIndexMan() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		ModelAndView model = new ModelAndView("handbook");
+		String username = auth.getName();
+		System.out.println(auth.getName());
+		model.addObject("username", username);
+		return model;
 
 	}
 
