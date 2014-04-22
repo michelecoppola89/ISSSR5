@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.descriptive.rank.Median;
+
 import com.isssr5.exceptions.NotExistingMacroServiceException;
 
 @XmlRootElement(name = "macroService")
@@ -39,17 +42,16 @@ public class MacroService {
 	@Column(name = "description")
 	private String description;
 
-	@Column(name="isPrivate")
+	@Column(name = "isPrivate")
 	private boolean is_private;
-	
+
 	@Column(name = "keywords")
 	private ArrayList<String> keywords;
-	
+
 	@ManyToOne
-	@JoinColumn(name="user", nullable= false)
+	@JoinColumn(name = "user", nullable = false)
 	private ServiceUser user;
 
-	
 	public MacroService() {
 		numOperand = 0;
 	}
@@ -123,8 +125,7 @@ public class MacroService {
 	public void setIs_private(boolean is_private) {
 		this.is_private = is_private;
 	}
-	
-	
+
 	public ArrayList<String> getKeywords() {
 		return keywords;
 	}
@@ -141,7 +142,6 @@ public class MacroService {
 	public void setUser(ServiceUser user) {
 		this.user = user;
 	}
-
 
 	public void decodeMacroService(DefaultServicesTable table)
 			throws NotExistingMacroServiceException {
@@ -204,5 +204,89 @@ public class MacroService {
 		}
 		return output;
 	}
+
+	/*---------------------------------DESCRIPTIVE STATISTICS---------------------------------------------*/
+
+	public Double compute_mean(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getMean();
+	}
+
+	public Double compute_variance(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getVariance();
+	}
+	
+	public Double compute_geometricMean(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getGeometricMean();
+	}
+	
+	
+	public Double compute_minValue(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getMin();
+	}
+
+	
+	public Double compute_maxValue(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getMax();
+	}
+	
+	
+	public Double compute_standardDeviation(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getStandardDeviation();
+	}
+	
+	
+	public Double compute_median(Operand op) {
+		
+		
+		double values []= new double[op.getDataSeries().size()];
+		
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			values[i]= Double.parseDouble(op.getDataSeries().get(i));
+		}
+		
+		Median median = new Median();
+		
+		return median.evaluate(values);
+
+	}
+
+
+
 
 }
