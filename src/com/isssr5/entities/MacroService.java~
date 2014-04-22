@@ -1,8 +1,11 @@
 package com.isssr5.entities;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
 
+import java.util.ArrayList;
+<<<<<<< HEAD
+import java.util.List;
+=======
+import java.util.Arrays;
+>>>>>>> 47b00b88930c91b0c2d66dee3c98be1c80fee73b
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -213,6 +216,7 @@ public class MacroService {
 		return output;
 	}
 
+<<<<<<< HEAD
 	// Hypothesis parametric test
 
 	// return dataSeries array of double from Operand object
@@ -468,7 +472,7 @@ public class MacroService {
 		classes.add(observed4);
 		return TestUtils.oneWayAnovaTest(classes, alpha);
 	}
-
+=======
 	// utilizzabile per i dati almeno ordinali
 	// esempio di utilizzo:
 	// Calculate 95% confidence interval
@@ -595,5 +599,5 @@ public class MacroService {
      */
 
 
-
+>>>>>>> 47b00b88930c91b0c2d66dee3c98be1c80fee73b
 }
