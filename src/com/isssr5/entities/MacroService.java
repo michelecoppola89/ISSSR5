@@ -214,7 +214,6 @@ public class MacroService {
 	// Calculate 95% confidence interval
 	// double ci = calcMeanCI(stats, 0.95);
 	// System.out.println(String.format("Confidence inteval 95%%: %f", ci);
-	// RITORNA UN DOUBLE NON UN RESULT COME ERA STATO DECISO
 	Double Confidence_Interval(Operand op, double level) {
 		SummaryStatistics stats = new SummaryStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -247,6 +246,7 @@ public class MacroService {
      * @throws MathIllegalArgumentException if {@code data} does not have length
      *         at least 2
      */
+	// cambiare da real distribution a stringa in input
     public double kolmogorovSmirnovStatistic(RealDistribution distribution, double[] data) {
         final int n = data.length;
         final double nd = n;
