@@ -24,6 +24,9 @@ import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.inference.TestUtils;
 
+import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
+import org.apache.commons.math3.stat.descriptive.rank.Median;
+
 import com.isssr5.exceptions.NotExistingMacroServiceException;
 
 @XmlRootElement(name = "macroService")
@@ -212,6 +215,7 @@ public class MacroService {
 		}
 		return output;
 	}
+
 
 	// Hypothesis parametric test
 
@@ -593,6 +597,89 @@ public class MacroService {
      * @return p-value associated with the null hypothesis that {@code x} and
      *         {@code y} represent samples from the same distribution
      */
+
+	/*---------------------------------DESCRIPTIVE STATISTICS---------------------------------------------*/
+
+	public Double compute_mean(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getMean();
+	}
+
+	public Double compute_variance(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getVariance();
+	}
+	
+	public Double compute_geometricMean(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getGeometricMean();
+	}
+	
+	
+	public Double compute_minValue(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getMin();
+	}
+
+	
+	public Double compute_maxValue(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getMax();
+	}
+	
+	
+	public Double compute_standardDeviation(Operand op) {
+
+		DescriptiveStatistics stat = new DescriptiveStatistics();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			stat.addValue(Double.parseDouble(op.getDataSeries().get(i)));
+		}
+
+		return stat.getStandardDeviation();
+	}
+	
+	
+	public Double compute_median(Operand op) {
+		
+		
+		double values []= new double[op.getDataSeries().size()];
+		
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			values[i]= Double.parseDouble(op.getDataSeries().get(i));
+		}
+		
+		Median median = new Median();
+		
+		return median.evaluate(values);
+
+	}
+
+
 
 
 
