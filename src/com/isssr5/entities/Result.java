@@ -10,15 +10,15 @@ import org.hibernate.property.MapAccessor;
 @XmlRootElement(name = "Result")
 public class Result {
 	private MacroService macroService;
-	private int idOperand;
+	private List<Long> operandIds = new ArrayList<Long>();
 	private List<ResultValue> resultValueList = new ArrayList<ResultValue>();
 	public Result() {
 		
 	}
 	
-public Result( MacroService ms, int idO, List<ResultValue> rV) {
+public Result( MacroService ms, List<Long> idO, List<ResultValue> rV) {
 	macroService=ms;
-	idOperand=idO;
+	 operandIds=idO;
 	resultValueList=rV;
 		
 	}
@@ -28,12 +28,12 @@ public Result( MacroService ms, int idO, List<ResultValue> rV) {
 	public void setMacroService(MacroService macroService) {
 		this.macroService = macroService;
 	}
-	public int getIdOperand() {
-		return idOperand;
+	public List<Long> getIdOperand() {
+		return operandIds;
 	}
 	@XmlElement
-	public void setIdOperand(int idOperand) {
-		this.idOperand = idOperand;
+	public void setIdOperand(List<Long> operandIds) {
+		this.operandIds = operandIds;
 	}
 	public List<ResultValue> getResultValueList() {
 		return resultValueList;

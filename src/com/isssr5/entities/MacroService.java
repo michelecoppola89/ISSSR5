@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,16 +13,16 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 import org.apache.commons.math3.util.MathArrays;
+import org.apache.commons.math3.distribution.LogNormalDistribution;
 import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.exception.MathIllegalArgumentException;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.commons.math3.util.FastMath;
-
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.stat.inference.TestUtils;
-
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 
@@ -478,7 +477,7 @@ public class MacroService {
 	// Calculate 95% confidence interval
 	// double ci = calcMeanCI(stats, 0.95);
 	// System.out.println(String.format("Confidence inteval 95%%: %f", ci);
-	Double Confidence_Interval(Operand op, double level) {
+	public double Confidence_Interval(Operand op, double level) {
 		SummaryStatistics stats = new SummaryStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
 			stats.addValue(Double.parseDouble((op.getDataSeries().get(i))));
@@ -511,12 +510,19 @@ public class MacroService {
      *         at least 2
      */
 	// cambiare da real distribution a stringa in input
-    public double kolmogorovSmirnovStatistic(RealDistribution distribution, double[] data) {
-        final int n = data.length;
+    public double kolmogorovSmirnovStatistic(String dist, Operand op) {
+    	double[] data= new double[op.getDataSeries().size()];
+    	for (int i = 0; i < op.getDataSeries().size(); i++) {
+    		data[i]=Double.parseDouble((op.getDataSeries().get(i)));
+		}
+    	
+    	final int n = data.length;
         final double nd = n;
         final double[] dataCopy = new double[n];
         System.arraycopy(data, 0, dataCopy, 0, n);
         Arrays.sort(dataCopy);
+        LogNormalDistribution distribution=new LogNormalDistribution();
+        //---------------------------------------------------------
         double d = 0d;
         for (int i = 1; i <= n; i++) {
             final double yi = distribution.cumulativeProbability(dataCopy[i - 1]);
@@ -543,7 +549,15 @@ public class MacroService {
      * @throws MathIllegalArgumentException if either {@code x} or {@code y}
      *         does not have length at least 2.
      */
-    public double kolmogorovSmirnovStatistic(double[] x, double[] y) {
+    public double kolmogorovSmirnovStatistic(Operand op1, Operand op2) {
+    	double[] x= new double[op1.getDataSeries().size()];
+    	for (int i = 0; i < op1.getDataSeries().size(); i++) {
+    		x[i]=Double.parseDouble((op1.getDataSeries().get(i)));
+		}
+    	double[] y= new double[op2.getDataSeries().size()];
+    	for (int i = 0; i < op2.getDataSeries().size(); i++) {
+    		y[i]=Double.parseDouble((op2.getDataSeries().get(i)));
+		}
         // Copy and sort the sample arrays
         final double[] sx = MathArrays.copyOf(x);
         final double[] sy = MathArrays.copyOf(y);
