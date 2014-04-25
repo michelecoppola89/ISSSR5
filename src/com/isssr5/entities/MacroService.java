@@ -600,7 +600,7 @@ public class MacroService {
 
 	/*---------------------------------DESCRIPTIVE STATISTICS---------------------------------------------*/
 
-	public Double compute_mean(Operand op) {
+	public static Double compute_mean(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -610,7 +610,7 @@ public class MacroService {
 		return stat.getMean();
 	}
 
-	public Double compute_variance(Operand op) {
+	public static Double compute_variance(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -620,7 +620,7 @@ public class MacroService {
 		return stat.getVariance();
 	}
 	
-	public Double compute_geometricMean(Operand op) {
+	public static Double compute_geometricMean(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -631,7 +631,7 @@ public class MacroService {
 	}
 	
 	
-	public Double compute_minValue(Operand op) {
+	public static Double compute_minValue(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -642,7 +642,7 @@ public class MacroService {
 	}
 
 	
-	public Double compute_maxValue(Operand op) {
+	public static Double compute_maxValue(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -653,7 +653,7 @@ public class MacroService {
 	}
 	
 	
-	public Double compute_standardDeviation(Operand op) {
+	public static Double compute_standardDeviation(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -664,7 +664,7 @@ public class MacroService {
 	}
 	
 	
-	public Double compute_median(Operand op) {
+	public static Double compute_median(Operand op) {
 		
 		
 		double values []= new double[op.getDataSeries().size()];

@@ -12,6 +12,7 @@ public class Result {
 	private MacroService macroService;
 	private int idOperand;
 	private List<ResultValue> resultValueList = new ArrayList<ResultValue>();
+	
 	public Result() {
 		
 	}
