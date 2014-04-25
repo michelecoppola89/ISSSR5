@@ -1,6 +1,7 @@
 package com.isssr5.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.math3.exception.DimensionMismatchException;
 import org.apache.commons.math3.exception.OutOfRangeException;
@@ -56,7 +57,11 @@ public class ParametricTestController {
 		res_ret.add(res1);
 
 		ret.setResultValueList(res_ret);
-		ret.setIdOperand(op1);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(op1));
+
+		ret.setIdOperand(list_id);
 		return ret;
 	}
 
@@ -91,8 +96,12 @@ public class ParametricTestController {
 		ResultValue res1 = new ResultValue("TTEST_ALPHA_2SIDED",
 				result.toString());
 		res_ret.add(res1);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(op1));
 
-		ret.setIdOperand(op1);
+
+		ret.setIdOperand(list_id);
 		ret.setResultValueList(res_ret);
 		return ret;
 	}
@@ -129,8 +138,12 @@ public class ParametricTestController {
 		ResultValue res1 = new ResultValue("TTEST_PVALUE_2SIDED",
 				result.toString());
 		res_ret.add(res1);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(op1));
 
-		ret.setIdOperand(op1);
+
+		ret.setIdOperand(list_id);
 		ret.setResultValueList(res_ret);
 		return ret;
 	}
@@ -167,8 +180,12 @@ public class ParametricTestController {
 		ResultValue res1 = new ResultValue("TTEST_1SIDED_LESSEQUAL",
 				result.toString());
 		res_ret.add(res1);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(op1));
 
-		ret.setIdOperand(op1);
+
+		ret.setIdOperand(list_id);
 		ret.setResultValueList(res_ret);
 		return ret;
 	}
@@ -205,8 +222,12 @@ public class ParametricTestController {
 		ResultValue res1 = new ResultValue("TTEST_1SIDED_GREATEREQUAL",
 				result.toString());
 		res_ret.add(res1);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(op1));
 
-		ret.setIdOperand(op1);
+
+		ret.setIdOperand(list_id);
 		ret.setResultValueList(res_ret);
 		return ret;
 	}

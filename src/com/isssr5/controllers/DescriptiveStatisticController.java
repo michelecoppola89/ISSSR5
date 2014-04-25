@@ -41,7 +41,10 @@ public class DescriptiveStatisticController {
 	Result mean(@PathVariable String user, @PathVariable int id1) {
 		
 		Operand op= operandTransaction.findOperandById(id1);
-		Result res= new Result(null, id1, null);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(id1));
+		Result res= new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 		
 		ResultValue rv= new ResultValue();
@@ -63,7 +66,10 @@ public class DescriptiveStatisticController {
 	Result variance(@PathVariable String user, @PathVariable int id1) {
 		
 		Operand op= operandTransaction.findOperandById(id1);
-		Result res= new Result(null, id1, null);
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(id1));
+
+		Result res= new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 		
 		ResultValue rv= new ResultValue();
@@ -85,7 +91,11 @@ public class DescriptiveStatisticController {
 	Result geometricMean(@PathVariable String user, @PathVariable int id1) {
 		
 		Operand op= operandTransaction.findOperandById(id1);
-		Result res= new Result(null, id1, null);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(id1));
+
+		Result res= new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 		
 		ResultValue rv= new ResultValue();
@@ -107,7 +117,10 @@ public class DescriptiveStatisticController {
 	Result minValue(@PathVariable String user, @PathVariable int id1) {
 		
 		Operand op= operandTransaction.findOperandById(id1);
-		Result res= new Result(null, id1, null);
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(id1));
+
+		Result res= new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 		
 		ResultValue rv= new ResultValue();
@@ -129,7 +142,11 @@ public class DescriptiveStatisticController {
 	Result maxValue(@PathVariable String user, @PathVariable int id1) {
 		
 		Operand op= operandTransaction.findOperandById(id1);
-		Result res= new Result(null, id1, null);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(id1));
+
+		Result res= new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 		
 		ResultValue rv= new ResultValue();
@@ -151,7 +168,11 @@ public class DescriptiveStatisticController {
 	Result standardDeviation(@PathVariable String user, @PathVariable int id1) {
 		
 		Operand op= operandTransaction.findOperandById(id1);
-		Result res= new Result(null, id1, null);
+		
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(id1));
+
+		Result res= new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 		
 		ResultValue rv= new ResultValue();
@@ -172,7 +193,10 @@ public class DescriptiveStatisticController {
 	Result median(@PathVariable String user, @PathVariable int id1) {
 		
 		Operand op= operandTransaction.findOperandById(id1);
-		Result res= new Result(null, id1, null);
+		List<Long> list_id= new ArrayList<Long>();
+		list_id.add(new Long(id1));
+
+		Result res= new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 		
 		ResultValue rv= new ResultValue();

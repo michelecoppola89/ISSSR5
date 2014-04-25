@@ -168,5 +168,12 @@ public class ExceptionController {
 	public String DimensionMismatchExceptionHandler() {
 		return "err";
 	}
+	
+	@ExceptionHandler(WrongScaleForMacroServiceId.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Wrong Scale for MacroService Id")
+	public String WrongScaleForMacroServiceIdExceptionHandler() {
+		return "err";
+	}
+
 
 }

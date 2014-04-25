@@ -12,7 +12,7 @@ import org.hibernate.property.MapAccessor;
 @XmlRootElement(name = "Result")
 public class Result {
 	private MacroService macroService;
-	private long idOperand;
+	private List<Long> idOperand= new ArrayList<Long>();
 	private List<ResultValue> resultValueList = new ArrayList<ResultValue>();
 
 	
@@ -20,9 +20,9 @@ public class Result {
 
 	}
 
-	public Result(MacroService ms, long idO, List<ResultValue> rV) {
+	public Result(MacroService ms, List<Long> list_id, List<ResultValue> rV) {
 		macroService = ms;
-		idOperand = idO;
+		idOperand = list_id;
 		resultValueList = rV;
 
 	}
@@ -35,12 +35,12 @@ public class Result {
 		this.macroService = macroService;
 	}
 
-	public long getIdOperand() {
+	public List<Long> getIdOperand() {
 		return idOperand;
 	}
 
 	@XmlElement
-	public void setIdOperand(long idOperand) {
+	public void setIdOperand(List<Long> idOperand) {
 		this.idOperand = idOperand;
 	}
 
