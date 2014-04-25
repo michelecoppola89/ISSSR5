@@ -21,9 +21,9 @@ public class ResultValue {
 	}
 
 
-	@XmlElement
+	@XmlElement(name="idCode")
 	public void setOperand(String operand) {
-		operand = operand;
+		this.operand = operand;
 	}
 
 

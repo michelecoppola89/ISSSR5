@@ -3,6 +3,8 @@ package com.isssr5.controllers;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import org.apache.commons.math3.exception.DimensionMismatchException;
+import org.apache.commons.math3.exception.OutOfRangeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -152,6 +154,18 @@ public class ExceptionController {
 	@ExceptionHandler(NotExistingUserException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "User doesn't exist")
 	public String NotExistingUserExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(OutOfRangeException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Alpha is not in the range (0,0.5]")
+	public String OutOfRangeExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(DimensionMismatchException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Sample dimesion mismatch")
+	public String DimensionMismatchExceptionHandler() {
 		return "err";
 	}
 
