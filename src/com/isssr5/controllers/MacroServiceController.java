@@ -1,8 +1,8 @@
 package com.isssr5.controllers;
 
-import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,10 +15,12 @@ import com.isssr5.exceptions.NullElementaryServiceListException;
 import com.isssr5.exceptions.NullOperandException;
 import com.isssr5.exceptions.NullOperandModeException;
 import com.isssr5.exceptions.NullOperandTypeException;
+import com.isssr5.service.MacroServiceTransaction;
 
 @Controller
 @RequestMapping("/macroService")
 public class MacroServiceController {
+	private MacroServiceTransaction macroServiceTransaction;
 	private static DefaultServicesTable dataTable = DefaultServicesTable
 			.getInstance();
 

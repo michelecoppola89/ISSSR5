@@ -15,7 +15,6 @@ import com.isssr5.entities.Operand;
 import com.isssr5.entities.Result;
 import com.isssr5.entities.ResultValue;
 import com.isssr5.service.OperandTransaction;
-import com.isssr5.service.ScaleTransaction;
 import com.isssr5.service.ServiceUserTransaction;
 
 @Controller

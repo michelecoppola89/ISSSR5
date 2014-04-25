@@ -22,7 +22,6 @@ import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.DomainException;
 import com.isssr5.exceptions.EnumerateDomainException;
 import com.isssr5.exceptions.IntervalDomainException;
-import com.isssr5.exceptions.NotExistingMacroServiceException;
 import com.isssr5.exceptions.NotExistingScaleException;
 import com.isssr5.exceptions.NotExistingUserException;
 import com.isssr5.exceptions.NullDomainException;

@@ -4,6 +4,9 @@ package com.isssr5.exceptions;
 // services 
 public class PrivateElementaryServiceException extends Exception {
 
+	
+	private static final long serialVersionUID = 1L;
+
 	public PrivateElementaryServiceException() {
 
 	}
