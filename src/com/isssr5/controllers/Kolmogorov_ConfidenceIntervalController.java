@@ -20,64 +20,65 @@ import com.isssr5.entities.Result;
 import com.isssr5.entities.ResultValue;
 import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.NotExistingUserException;
+import com.isssr5.exceptions.WrongDistributionException;
 import com.isssr5.service.MacroServiceTransaction;
 import com.isssr5.service.OperandTransaction;
 import com.isssr5.service.ServiceUserTransaction;
 @Controller
-@RequestMapping("/scale")
+@RequestMapping("/NonParametricTest")
 public class Kolmogorov_ConfidenceIntervalController {
 	private ServiceUserTransaction serviceUserTransaction;
-	private MacroServiceTransaction macroServiceTransaction;
 	private OperandTransaction operandTransaction;
 
-	@RequestMapping(value = "/1SampleKolmogrov/{user}/{msId}/{opId}/{level}", method = RequestMethod.GET)
+	@RequestMapping(value = "/ConfidenceInterval/{user}/{opId}/{level}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result getConfidenceInterval(@PathVariable String user,
 			@PathVariable String msId, @PathVariable long opId,
 			@PathVariable double level) {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		MacroService ms = macroServiceTransaction.findMacroServiceById(msId);
 		Operand op = operandTransaction.findOperandById(opId);
 		List<Long> operands = new ArrayList<Long>();
 		operands.add(opId);
 		List<ResultValue> resultValues = new ArrayList<ResultValue>();
-		resultValues.add(ConfidenceInterval(ms, op, level));
-		Result result = new Result(ms, operands, resultValues);
+		resultValues.add(ConfidenceInterval(op, level));
+		Result result = new Result(null,operands, resultValues);
 
 		return result;
 	}
 
-	ResultValue ConfidenceInterval(MacroService ms, Operand op, double level) {
+	ResultValue ConfidenceInterval(Operand op, double level) {
 
-		ResultValue rv = new ResultValue(ms.getIdCode(), Double.toString(ms
+		ResultValue rv = new ResultValue("ConfidenceInterval", Double.toString(MacroService
 				.Confidence_Interval(op, level)));
 		return rv;
 
 	}
 
-	@RequestMapping(value = "/1SampleKolmogrov/{user}/{msId}/{opId}/{distribution}", method = RequestMethod.GET)
+	@RequestMapping(value = "/1SampleKolmogrov/{user}/{opId}/{distribution}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result getOneSampleKolmogrov(@PathVariable String user, @PathVariable String msId,
-			@PathVariable long opId, @PathVariable String distribution) {
+			@PathVariable long opId, @PathVariable String distribution) throws WrongDistributionException {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		MacroService ms = macroServiceTransaction.findMacroServiceById(msId);
 		Operand op = operandTransaction.findOperandById(opId);
 		List<Long> operands = new ArrayList<Long>();
 		operands.add(opId);
 		List<ResultValue> resultValues = new ArrayList<ResultValue>();
-		resultValues.add(OneSampleKolmogorovSmirnov(ms,distribution,op));
-		Result result = new Result(ms,operands,resultValues);
+		if(distribution.equals("lognormal")||distribution.equals("uniform")||distribution.equals("normal"))
+		resultValues.add(OneSampleKolmogorovSmirnov(distribution,op));
+		else
+			throw new WrongDistributionException();
+		Result result = new Result(null,operands,resultValues);
 
 		return result;
-	}
 
-	ResultValue OneSampleKolmogorovSmirnov(MacroService ms,
-			String distribution, Operand op) {
+	}
+	
+
+	ResultValue OneSampleKolmogorovSmirnov(String distribution, Operand op) {
 		List<Long> operands = new ArrayList<Long>();
 		operands.add(op.getId());
 
-		ResultValue rv = new ResultValue(ms.getIdCode(), Double.toString(ms
-				.kolmogorovSmirnovStatistic(distribution, op)));
+		ResultValue rv = new ResultValue("1SampleKolmogrov", Double.toString(MacroService.kolmogorovSmirnovStatistic(distribution, op)));
 		return rv;
 
 	}
@@ -86,22 +87,21 @@ public class Kolmogorov_ConfidenceIntervalController {
 	Result getOneSampleKolmogrov(@PathVariable String user, @PathVariable String msId,
 			@PathVariable long op1Id,@PathVariable long op2Id, @PathVariable String distribution) {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		MacroService ms = macroServiceTransaction.findMacroServiceById(msId);
 		Operand op1 = operandTransaction.findOperandById(op1Id);
 		Operand op2 = operandTransaction.findOperandById(op2Id);
 		List<Long> operands = new ArrayList<Long>();
 		operands.add(op1Id);
 		operands.add(op2Id);
 		List<ResultValue> resultValues = new ArrayList<ResultValue>();
-		resultValues.add(TwoSampleKolmogorovSmirnov(ms,op1,op2));
-		Result result = new Result(ms,operands,resultValues);
+		resultValues.add(TwoSampleKolmogorovSmirnov(op1,op2));
+		Result result = new Result(null,operands,resultValues);
 
 		return result;
 	}
-	ResultValue TwoSampleKolmogorovSmirnov(MacroService ms, Operand op1,
+	ResultValue TwoSampleKolmogorovSmirnov(Operand op1,
 			Operand op2) {
 
-		ResultValue rv = new ResultValue(null, Double.toString(ms
+		ResultValue rv = new ResultValue(null, Double.toString(MacroService
 				.kolmogorovSmirnovStatistic(op1, op2)));
 		return rv;
 
