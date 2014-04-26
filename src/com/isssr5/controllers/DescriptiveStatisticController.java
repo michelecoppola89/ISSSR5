@@ -26,21 +26,19 @@ import com.isssr5.service.ServiceUserTransaction;
 @RequestMapping("/descriptiveStatistic")
 public class DescriptiveStatisticController {
 
-	private OperandTransaction operandTransaction;
-	private ServiceUserTransaction serviceUserTransaction;
+	private static OperandTransaction operandTransaction;
+	private static ServiceUserTransaction serviceUserTransaction;
 
 	@Autowired
 	public DescriptiveStatisticController(
 			OperandTransaction operandTransaction,
 			ServiceUserTransaction servireUserTransaction) {
-		this.operandTransaction = operandTransaction;
-		this.serviceUserTransaction = servireUserTransaction;
+		DescriptiveStatisticController.operandTransaction = operandTransaction;
+		DescriptiveStatisticController.serviceUserTransaction = servireUserTransaction;
 
 	}
 
-	@RequestMapping(value = "/{user}/mean/{id1}", method = RequestMethod.GET)
-	public @ResponseBody
-	Result mean(@PathVariable String user, @PathVariable int id1)
+	public static Result get_mean(String user, int id1)
 			throws NotExistingUserException, NotExistingOperandException,
 			WrongScaleForMacroServiceId {
 
@@ -75,9 +73,17 @@ public class DescriptiveStatisticController {
 
 	}
 
-	@RequestMapping(value = "/{user}/variance/{id1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{user}/mean/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result variance(@PathVariable String user, @PathVariable int id1)
+	Result mean(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		return get_mean(user, id1);
+
+	}
+
+	public static Result get_variance(String user, int id1)
 			throws NotExistingUserException, NotExistingOperandException,
 			WrongScaleForMacroServiceId {
 
@@ -113,9 +119,17 @@ public class DescriptiveStatisticController {
 
 	}
 
-	@RequestMapping(value = "/{user}/geometricMean/{id1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{user}/variance/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result geometricMean(@PathVariable String user, @PathVariable int id1)
+	Result variance(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		return get_variance(user, id1);
+
+	}
+
+	public static Result get_geometricMean(String user, int id1)
 			throws NotExistingUserException, NotExistingOperandException,
 			WrongScaleForMacroServiceId {
 
@@ -151,9 +165,17 @@ public class DescriptiveStatisticController {
 
 	}
 
-	@RequestMapping(value = "/{user}/min/{id1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{user}/geometricMean/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result minValue(@PathVariable String user, @PathVariable int id1)
+	Result geometricMean(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		return get_geometricMean(user, id1);
+
+	}
+
+	public static Result get_minValue(String user, int id1)
 			throws NotExistingOperandException, NotExistingUserException,
 			WrongScaleForMacroServiceId {
 
@@ -189,9 +211,17 @@ public class DescriptiveStatisticController {
 
 	}
 
-	@RequestMapping(value = "/{user}/max/{id1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{user}/min/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result maxValue(@PathVariable String user, @PathVariable int id1)
+	Result minValue(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingOperandException, NotExistingUserException,
+			WrongScaleForMacroServiceId {
+
+		return get_minValue(user, id1);
+
+	}
+
+	public static Result get_maxValue(String user, int id1)
 			throws NotExistingUserException, NotExistingOperandException,
 			WrongScaleForMacroServiceId {
 
@@ -227,9 +257,17 @@ public class DescriptiveStatisticController {
 
 	}
 
-	@RequestMapping(value = "/{user}/stdDeviation/{id1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{user}/max/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result standardDeviation(@PathVariable String user, @PathVariable int id1)
+	Result maxValue(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		return get_maxValue(user, id1);
+
+	}
+
+	public static Result get_standardDeviation(String user, int id1)
 			throws NotExistingUserException, NotExistingOperandException,
 			WrongScaleForMacroServiceId {
 
@@ -265,9 +303,17 @@ public class DescriptiveStatisticController {
 
 	}
 
-	@RequestMapping(value = "/{user}/median/{id1}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{user}/stdDeviation/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result median(@PathVariable String user, @PathVariable int id1)
+	Result standardDeviation(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		return get_standardDeviation(user, id1);
+
+	}
+
+	public static Result get_median(String user, int id1)
 			throws NotExistingUserException, NotExistingOperandException,
 			WrongScaleForMacroServiceId {
 
@@ -301,6 +347,15 @@ public class DescriptiveStatisticController {
 
 		return res;
 
+	}
+
+	@RequestMapping(value = "/{user}/median/{id1}", method = RequestMethod.GET)
+	public @ResponseBody
+	Result median(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		return get_median(user, id1);
 	}
 
 }

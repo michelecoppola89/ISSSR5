@@ -13,47 +13,47 @@ public class DefaultServicesTable {
 
 		table = new HashMap<String, MacroService>();
 
-		MacroService avg = new MacroService("AVG", null, null);
-		avg.setNumOperand(1);
-		avg.setDescription("Calculate mean");
-		ArrayList<String> avg_key = new ArrayList<String>();
-		avg_key.add("mean");
-		avg.setKeywords(avg_key);
-		table.put(avg.getIdCode(), avg);
-
-		MacroService var = new MacroService("VAR", null, null);
-		var.setNumOperand(1);
-		var.setDescription("Calculate variance");
-		ArrayList<String> var_key = new ArrayList<String>();
-		var_key.add("variance");
-		var.setKeywords(var_key);
-		table.put(var.getIdCode(), var);
-
-		MacroService avgvar = new MacroService("AVGVAR", null, null);
-		avgvar.setNumOperand(1);
-
-		ArrayList<String> ti1 = new ArrayList<String>();
-		ti1.add("AVG");
-		ti1.add("VAR");
-		avgvar.setElementaryServices(ti1);
-		avgvar.setDescription("Calculate mean and variance");
-		ArrayList<String> avgvar_key = new ArrayList<String>();
-		avgvar_key.add("variance");
-		avgvar_key.add("mean");
-		avgvar.setKeywords(avgvar_key);
-
-		ArrayList<Integer> ti2 = new ArrayList<Integer>();
-		ti2.add(1);
-		ParameterList pl1 = new ParameterList(ti2);
-		ArrayList<Integer> ti3 = new ArrayList<Integer>();
-		ti3.add(1);
-		ParameterList pl2 = new ParameterList(ti3);
-		ArrayList<ParameterList> ti4 = new ArrayList<ParameterList>();
-		ti4.add(pl1);
-		ti4.add(pl2);
-		avgvar.setOperationOrder(ti4);
-
-		table.put(avgvar.getIdCode(), avgvar);
+//		MacroService avg = new MacroService("AVG", null, null);
+//		avg.setNumOperand(1);
+//		avg.setDescription("Calculate mean");
+//		ArrayList<String> avg_key = new ArrayList<String>();
+//		avg_key.add("mean");
+//		avg.setKeywords(avg_key);
+//		table.put(avg.getIdCode(), avg);
+//
+//		MacroService var = new MacroService("VAR", null, null);
+//		var.setNumOperand(1);
+//		var.setDescription("Calculate variance");
+//		ArrayList<String> var_key = new ArrayList<String>();
+//		var_key.add("variance");
+//		var.setKeywords(var_key);
+//		table.put(var.getIdCode(), var);
+//
+//		MacroService avgvar = new MacroService("AVGVAR", null, null);
+//		avgvar.setNumOperand(1);
+//
+//		ArrayList<String> ti1 = new ArrayList<String>();
+//		ti1.add("AVG");
+//		ti1.add("VAR");
+//		avgvar.setElementaryServices(ti1);
+//		avgvar.setDescription("Calculate mean and variance");
+//		ArrayList<String> avgvar_key = new ArrayList<String>();
+//		avgvar_key.add("variance");
+//		avgvar_key.add("mean");
+//		avgvar.setKeywords(avgvar_key);
+//
+//		ArrayList<Integer> ti2 = new ArrayList<Integer>();
+//		ti2.add(1);
+//		ParameterList pl1 = new ParameterList(ti2);
+//		ArrayList<Integer> ti3 = new ArrayList<Integer>();
+//		ti3.add(1);
+//		ParameterList pl2 = new ParameterList(ti3);
+//		ArrayList<ParameterList> ti4 = new ArrayList<ParameterList>();
+//		ti4.add(pl1);
+//		ti4.add(pl2);
+//		avgvar.setOperationOrder(ti4);
+//
+//		table.put(avgvar.getIdCode(), avgvar);
 
 		// add elementary services for hypothesis parametric test
 		add_TTEST_STAT();
@@ -76,6 +76,17 @@ public class DefaultServicesTable {
 		add_ONEWAY_ANOVA_ALPHA_3OP();
 		add_ONEWAY_ANOVA_PVALUE_4OP();
 		add_ONEWAY_ANOVA_ALPHA_4OP();
+		
+		
+		
+		// add elementary services for descriptive statistic
+		add_geometricMean();
+		add_maxValue();
+		add_mean();
+		add_median();
+		add_minValue();
+		add_stdDeviation();
+		add_variance();
 	}
 
 	public static DefaultServicesTable getInstance() {
@@ -553,6 +564,160 @@ public class DefaultServicesTable {
 
 		table.put(ms.getIdCode(), ms);
 	}
+	
+	
+	private void add_mean() {
+		MacroService ms = new MacroService();
+		String description = "Performs mean on a data sample <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/mean/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("mean");
+		keywords.add("sample");
+		
+
+		ms.setIdCode("mean");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+
+	
+	private void add_variance() {
+		MacroService ms = new MacroService();
+		String description = "Performs variance on a data sample <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/variance/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("variance");
+		keywords.add("sample");
+		
+
+		ms.setIdCode("variance");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+
+	private void add_geometricMean() {
+		MacroService ms = new MacroService();
+		String description = "Performs geometric mean on a data sample <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/geometricMean/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("geometric");
+		keywords.add("sample");
+		keywords.add("mean");
+		
+
+		ms.setIdCode("geometricMean");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+	
+	
+	private void add_minValue() {
+		MacroService ms = new MacroService();
+		String description = "Performs minimum value on a data sample <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/min/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("min");
+		keywords.add("minimum");
+		keywords.add("value");
+		
+
+		ms.setIdCode("min");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+	
+	
+	private void add_maxValue() {
+		MacroService ms = new MacroService();
+		String description = "Performs maximum value on a data sample <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/max/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("max");
+		keywords.add("maximum");
+		keywords.add("value");
+		
+
+		ms.setIdCode("max");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+	
+	
+	private void add_stdDeviation() {
+		MacroService ms = new MacroService();
+		String description = "Performs standard deviation on a data sample <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/max/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("standard");
+		keywords.add("deviation");
+		keywords.add("sample");
+		
+
+		ms.setIdCode("stdDeviation");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+	
+	private void add_median() {
+		MacroService ms = new MacroService();
+		String description = "Performs maximum value on a data sample <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/median/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("median");
+		keywords.add("sample");
+	
+		
+
+		ms.setIdCode("median");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+
+
+
+	
 	
 	
 
