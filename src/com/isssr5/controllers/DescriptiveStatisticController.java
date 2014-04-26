@@ -14,6 +14,9 @@ import com.isssr5.entities.MacroService;
 import com.isssr5.entities.Operand;
 import com.isssr5.entities.Result;
 import com.isssr5.entities.ResultValue;
+import com.isssr5.entities.ServiceUser;
+import com.isssr5.exceptions.NotExistingOperandException;
+import com.isssr5.exceptions.NotExistingUserException;
 import com.isssr5.service.OperandTransaction;
 import com.isssr5.service.ServiceUserTransaction;
 
@@ -22,194 +25,264 @@ import com.isssr5.service.ServiceUserTransaction;
 public class DescriptiveStatisticController {
 
 	private OperandTransaction operandTransaction;
-	private ServiceUserTransaction servireUserTransaction;
-	
+	private ServiceUserTransaction serviceUserTransaction;
 
 	@Autowired
 	public DescriptiveStatisticController(
 			OperandTransaction operandTransaction,
 			ServiceUserTransaction servireUserTransaction) {
 		this.operandTransaction = operandTransaction;
-		this.servireUserTransaction = servireUserTransaction;
+		this.serviceUserTransaction = servireUserTransaction;
 
 	}
 
-	
 	@RequestMapping(value = "/{user}/mean/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result mean(@PathVariable String user, @PathVariable int id1) {
-		
-		Operand op= operandTransaction.findOperandById(id1);
-		
-		List<Long> list_id= new ArrayList<Long>();
+	Result mean(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException {
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+		Operand op = operandTransaction.findOperandById(id1);
+
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+
+		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
-		Result res= new Result(null, list_id, null);
+		Result res = new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
-		
-		ResultValue rv= new ResultValue();
-		
+
+		ResultValue rv = new ResultValue();
+
 		rv.setOperand(String.valueOf(id1));
 		rv.setValue(String.valueOf(MacroService.compute_mean(op)));
-		
+
 		listVal.add(rv);
-		
+
 		res.setResultValueList(listVal);
 
 		return res;
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{user}/variance/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result variance(@PathVariable String user, @PathVariable int id1) {
-		
-		Operand op= operandTransaction.findOperandById(id1);
-		List<Long> list_id= new ArrayList<Long>();
+	Result variance(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException {
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+		Operand op = operandTransaction.findOperandById(id1);
+
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+
+		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 
-		Result res= new Result(null, list_id, null);
+		Result res = new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
-		
-		ResultValue rv= new ResultValue();
-		
+
+		ResultValue rv = new ResultValue();
+
 		rv.setOperand(String.valueOf(id1));
 		rv.setValue(String.valueOf(MacroService.compute_variance(op)));
-		
+
 		listVal.add(rv);
-		
+
 		res.setResultValueList(listVal);
 
 		return res;
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{user}/geometricMean/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result geometricMean(@PathVariable String user, @PathVariable int id1) {
-		
-		Operand op= operandTransaction.findOperandById(id1);
-		
-		List<Long> list_id= new ArrayList<Long>();
+	Result geometricMean(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException {
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+		Operand op = operandTransaction.findOperandById(id1);
+
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+
+		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 
-		Result res= new Result(null, list_id, null);
+		Result res = new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
-		
-		ResultValue rv= new ResultValue();
-		
+
+		ResultValue rv = new ResultValue();
+
 		rv.setOperand(String.valueOf(id1));
 		rv.setValue(String.valueOf(MacroService.compute_geometricMean(op)));
-		
+
 		listVal.add(rv);
-		
+
 		res.setResultValueList(listVal);
 
 		return res;
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{user}/min/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result minValue(@PathVariable String user, @PathVariable int id1) {
-		
-		Operand op= operandTransaction.findOperandById(id1);
-		List<Long> list_id= new ArrayList<Long>();
+	Result minValue(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingOperandException, NotExistingUserException {
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+		Operand op = operandTransaction.findOperandById(id1);
+
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+
+		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 
-		Result res= new Result(null, list_id, null);
+		Result res = new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
-		
-		ResultValue rv= new ResultValue();
-		
+
+		ResultValue rv = new ResultValue();
+
 		rv.setOperand(String.valueOf(id1));
 		rv.setValue(String.valueOf(MacroService.compute_minValue(op)));
-		
+
 		listVal.add(rv);
-		
+
 		res.setResultValueList(listVal);
 
 		return res;
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{user}/max/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result maxValue(@PathVariable String user, @PathVariable int id1) {
+	Result maxValue(@PathVariable String user, @PathVariable int id1) throws NotExistingUserException, NotExistingOperandException {
 		
-		Operand op= operandTransaction.findOperandById(id1);
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+
+		Operand op = operandTransaction.findOperandById(id1);
 		
-		List<Long> list_id= new ArrayList<Long>();
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+
+
+		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 
-		Result res= new Result(null, list_id, null);
+		Result res = new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
-		
-		ResultValue rv= new ResultValue();
-		
+
+		ResultValue rv = new ResultValue();
+
 		rv.setOperand(String.valueOf(id1));
 		rv.setValue(String.valueOf(MacroService.compute_maxValue(op)));
-		
+
 		listVal.add(rv);
-		
+
 		res.setResultValueList(listVal);
 
 		return res;
 
 	}
-	
-	
+
 	@RequestMapping(value = "/{user}/stdDeviation/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result standardDeviation(@PathVariable String user, @PathVariable int id1) {
+	Result standardDeviation(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException {
 		
-		Operand op= operandTransaction.findOperandById(id1);
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+
+		Operand op = operandTransaction.findOperandById(id1);
 		
-		List<Long> list_id= new ArrayList<Long>();
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+
+
+		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 
-		Result res= new Result(null, list_id, null);
+		Result res = new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
-		
-		ResultValue rv= new ResultValue();
-		
+
+		ResultValue rv = new ResultValue();
+
 		rv.setOperand(String.valueOf(id1));
 		rv.setValue(String.valueOf(MacroService.compute_standardDeviation(op)));
-		
+
 		listVal.add(rv);
-		
+
 		res.setResultValueList(listVal);
 
 		return res;
 
 	}
-	
+
 	@RequestMapping(value = "/{user}/median/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result median(@PathVariable String user, @PathVariable int id1) {
+	Result median(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException {
 		
-		Operand op= operandTransaction.findOperandById(id1);
-		List<Long> list_id= new ArrayList<Long>();
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+
+		Operand op = operandTransaction.findOperandById(id1);
+		
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+
+		
+		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 
-		Result res= new Result(null, list_id, null);
+		Result res = new Result(null, list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
-		
-		ResultValue rv= new ResultValue();
-		
+
+		ResultValue rv = new ResultValue();
+
 		rv.setOperand(String.valueOf(id1));
 		rv.setValue(String.valueOf(MacroService.compute_median(op)));
-		
+
 		listVal.add(rv);
-		
+
 		res.setResultValueList(listVal);
 
 		return res;
 
 	}
-
 
 }
