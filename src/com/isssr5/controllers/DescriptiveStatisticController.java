@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.isssr5.entities.EnumerateDomain;
 import com.isssr5.entities.MacroService;
 import com.isssr5.entities.Operand;
 import com.isssr5.entities.Result;
@@ -17,6 +18,7 @@ import com.isssr5.entities.ResultValue;
 import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.NotExistingOperandException;
 import com.isssr5.exceptions.NotExistingUserException;
+import com.isssr5.exceptions.WrongScaleForMacroServiceId;
 import com.isssr5.service.OperandTransaction;
 import com.isssr5.service.ServiceUserTransaction;
 
@@ -39,7 +41,8 @@ public class DescriptiveStatisticController {
 	@RequestMapping(value = "/{user}/mean/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result mean(@PathVariable String user, @PathVariable int id1)
-			throws NotExistingUserException, NotExistingOperandException {
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
@@ -51,6 +54,8 @@ public class DescriptiveStatisticController {
 			throw new NotExistingOperandException();
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
+		if (op.getScale().getDom() instanceof EnumerateDomain)
+			throw new WrongScaleForMacroServiceId();
 
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
@@ -73,7 +78,8 @@ public class DescriptiveStatisticController {
 	@RequestMapping(value = "/{user}/variance/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result variance(@PathVariable String user, @PathVariable int id1)
-			throws NotExistingUserException, NotExistingOperandException {
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
@@ -85,6 +91,8 @@ public class DescriptiveStatisticController {
 			throw new NotExistingOperandException();
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
+		if (op.getScale().getDom() instanceof EnumerateDomain)
+			throw new WrongScaleForMacroServiceId();
 
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
@@ -108,7 +116,8 @@ public class DescriptiveStatisticController {
 	@RequestMapping(value = "/{user}/geometricMean/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result geometricMean(@PathVariable String user, @PathVariable int id1)
-			throws NotExistingUserException, NotExistingOperandException {
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
@@ -120,6 +129,8 @@ public class DescriptiveStatisticController {
 			throw new NotExistingOperandException();
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
+		if (op.getScale().getDom() instanceof EnumerateDomain)
+			throw new WrongScaleForMacroServiceId();
 
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
@@ -143,7 +154,8 @@ public class DescriptiveStatisticController {
 	@RequestMapping(value = "/{user}/min/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result minValue(@PathVariable String user, @PathVariable int id1)
-			throws NotExistingOperandException, NotExistingUserException {
+			throws NotExistingOperandException, NotExistingUserException,
+			WrongScaleForMacroServiceId {
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
@@ -155,6 +167,8 @@ public class DescriptiveStatisticController {
 			throw new NotExistingOperandException();
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
+		if (op.getScale().getDom() instanceof EnumerateDomain)
+			throw new WrongScaleForMacroServiceId();
 
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
@@ -177,20 +191,22 @@ public class DescriptiveStatisticController {
 
 	@RequestMapping(value = "/{user}/max/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
-	Result maxValue(@PathVariable String user, @PathVariable int id1) throws NotExistingUserException, NotExistingOperandException {
-		
+	Result maxValue(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
 			throw new NotExistingUserException();
 
-
 		Operand op = operandTransaction.findOperandById(id1);
-		
+
 		if (op == null)
 			throw new NotExistingOperandException();
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
-
+		if (op.getScale().getDom() instanceof EnumerateDomain)
+			throw new WrongScaleForMacroServiceId();
 
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
@@ -214,20 +230,21 @@ public class DescriptiveStatisticController {
 	@RequestMapping(value = "/{user}/stdDeviation/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result standardDeviation(@PathVariable String user, @PathVariable int id1)
-			throws NotExistingUserException, NotExistingOperandException {
-		
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
 			throw new NotExistingUserException();
 
-
 		Operand op = operandTransaction.findOperandById(id1);
-		
+
 		if (op == null)
 			throw new NotExistingOperandException();
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
-
+		if (op.getScale().getDom() instanceof EnumerateDomain)
+			throw new WrongScaleForMacroServiceId();
 
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
@@ -251,21 +268,22 @@ public class DescriptiveStatisticController {
 	@RequestMapping(value = "/{user}/median/{id1}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result median(@PathVariable String user, @PathVariable int id1)
-			throws NotExistingUserException, NotExistingOperandException {
-		
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
 			throw new NotExistingUserException();
 
-
 		Operand op = operandTransaction.findOperandById(id1);
-		
+
 		if (op == null)
 			throw new NotExistingOperandException();
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
+		if (op.getScale().getDom() instanceof EnumerateDomain)
+			throw new WrongScaleForMacroServiceId();
 
-		
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 

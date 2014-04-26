@@ -932,7 +932,8 @@ public class ParametricTestController {
 	Result getOneWayAnovaPValueUrl(@PathVariable String userid,
 			@PathVariable long op1, @PathVariable long op2,
 			@PathVariable long op3, @PathVariable long op4)
-			throws NotExistingUserException, NotExistingOperandException, WrongScaleForMacroServiceId {
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
 
 		return getOneWayAnovaPValue(userid, op1, op2, op3, op4);
 	}
@@ -940,7 +941,8 @@ public class ParametricTestController {
 	// idCode: ONEWAY_ANOVA_ALPHA_4OP
 	public static Result getOneWayAnovaAlpha(String userid, long op1, long op2,
 			long op3, long op4, double alpha) throws NotExistingUserException,
-			NotExistingOperandException, OutOfRangeException, WrongScaleForMacroServiceId {
+			NotExistingOperandException, OutOfRangeException,
+			WrongScaleForMacroServiceId {
 
 		ServiceUser user = serviceUserTransaction.getUserById(userid);
 		if (user == null)
