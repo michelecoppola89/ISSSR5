@@ -536,9 +536,9 @@ public class DefaultServicesTable {
 		MacroService ms = new MacroService();
 		String description = "Performs an ANOVA test, evaluating the null hypothesis that there"
 				+ " is no difference among the means of 4 data sample with {id_op1}, {id_op2}, {id_op3} and {id_op4}.<BR>"
-				+ "The confidence level is 1-{alpha}"
+				+ "The confidence level is 1-{alpha}<BR>"
 				+ "Usage: GET method<BR>"
-				+ "http://localhost:8080/ISSSR5/parametricTest/root/ONEWAY_ANOVA_ALPHA_3OP/{id_op1}/{id_op2}/{id_op3}/{id_op4}/{alpha}/";
+				+ "http://localhost:8080/ISSSR5/parametricTest/{userid}/ONEWAY_ANOVA_ALPHA_3OP/{id_op1}/{id_op2}/{id_op3}/{id_op4}/{alpha}/";
 
 		ArrayList<String> keywords = new ArrayList<String>();
 		keywords.add("ANOVA");
