@@ -76,8 +76,8 @@ public class CustomizedMacroServiceController {
 			throw new WrongOperandNumberException();
 		if (ms.getOperationOrder() == null || ms.getOperationOrder().isEmpty())
 			throw new NullOperationOrderException();
-		if (ms.getOperationOrder().size() != ms.getNumOperand())
-			throw new WrongOperandNumberException();
+		if (ms.getOperationOrder().size() != ms.getElementaryServices().size())
+			throw new WrongOperationOrderException();
 
 		for (int i = 0; i < ms.getOperationOrder().size(); i++) {
 			if (ms.getOperationOrder().get(i)

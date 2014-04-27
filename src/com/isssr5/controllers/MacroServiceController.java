@@ -16,9 +16,11 @@ import com.isssr5.entities.MacroService;
 import com.isssr5.entities.Result;
 import com.isssr5.entities.ResultValue;
 import com.isssr5.entities.ServiceUser;
+import com.isssr5.exceptions.NotExistingMacroServiceException;
 import com.isssr5.exceptions.NotExistingOperandException;
 import com.isssr5.exceptions.NotExistingUserException;
 import com.isssr5.exceptions.WrongDistributionException;
+import com.isssr5.exceptions.WrongOperandNumberException;
 import com.isssr5.exceptions.WrongScaleForMacroServiceId;
 import com.isssr5.service.MacroServiceTransaction;
 import com.isssr5.service.ServiceUserTransaction;
@@ -38,8 +40,7 @@ public class MacroServiceController {
 	private MacroServiceTransaction macroServiceTransaction;
 	private ServiceUserTransaction serviceUserTransaction;
 
-	// private static DefaultServicesTable dataTable = DefaultServicesTable
-	// .getInstance();
+
 
 	@RequestMapping(value = "/{userId}/resolve/{msId}/{parameters}", method = RequestMethod.GET)
 	public @ResponseBody
@@ -47,7 +48,8 @@ public class MacroServiceController {
 			@PathVariable String msId, @PathVariable String parameters)
 			throws NotExistingUserException, NumberFormatException,
 			NotExistingOperandException, WrongDistributionException,
-			OutOfRangeException, WrongScaleForMacroServiceId {
+			OutOfRangeException, WrongScaleForMacroServiceId,
+			NotExistingMacroServiceException, WrongOperandNumberException {
 		List<ResultValue> resultVList = new ArrayList<ResultValue>();
 		ResolveMacroService(userId, msId, parameters, resultVList);
 		Result result = new Result();
@@ -60,17 +62,23 @@ public class MacroServiceController {
 			String parameters, List<ResultValue> results)
 			throws NotExistingUserException, NumberFormatException,
 			NotExistingOperandException, WrongDistributionException,
-			OutOfRangeException, WrongScaleForMacroServiceId {
-		// List<Long> idOperands = new ArrayList<Long>();
-		StringTokenizer st = new StringTokenizer(parameters, ",");
+			OutOfRangeException, WrongScaleForMacroServiceId,
+			NotExistingMacroServiceException, WrongOperandNumberException {
+
+		StringTokenizer st = new StringTokenizer(parameters, "_");
 		List<String> parametersArray = new ArrayList<String>();
 		while (st.hasMoreElements()) {
 			parametersArray.add((st.nextElement().toString()));
 		}
-		MacroService ms = macroServiceTransaction.findMacroServiceById(user);
+		MacroService ms = macroServiceTransaction.findMacroServiceById(msId);
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
 			throw new NotExistingUserException();
+		if (ms == null) {
+			throw new NotExistingMacroServiceException();
+		}
+		if(ms.getNumOperand()!=parametersArray.size())
+			throw new WrongOperandNumberException();
 
 		List<String> services = new ArrayList<String>();
 		services = ms.getElementaryServices();
@@ -86,7 +94,7 @@ public class MacroServiceController {
 				List<String> operandsOfElemService = new ArrayList<String>();
 				for (int m = 0; m < tempOrder.size(); m++) {
 					operandsOfElemService.add(parametersArray.get(tempOrder
-							.get(m) + 1));
+							.get(m) - 1));
 
 				}
 				rValue = ResolveElementaryService(user, services.get(i),
@@ -94,19 +102,15 @@ public class MacroServiceController {
 				results.add(rValue);
 
 			} else {
-				for (int l = 0; l < tempMs.getElementaryServices().size(); l++) {
-					List<Integer> tempOrder;
-					String String1 = "";
-					tempOrder = ms.getOperationOrder().get(i).getParList();
-					for (int n = 0; n < tempOrder.size(); n++) {
-						String1 += parametersArray.get(tempOrder.get(n) + 1);
-						if (n < tempOrder.size() - 1)
-							String1 += ",";
-
-					}
-					ResolveMacroService(user, msId, String1, results);
+				List<Integer> tempOrder;
+				String String1 = "";
+				tempOrder = ms.getOperationOrder().get(i).getParList();
+				for (int n = 0; n < tempOrder.size(); n++) {
+					String1 += parametersArray.get(tempOrder.get(n) - 1);
+					if (n < tempOrder.size() - 1)
+						String1 += "_";
 				}
-
+				ResolveMacroService(user, tempMs.getIdCode(), String1, results);
 			}
 
 		}
@@ -190,7 +194,6 @@ public class MacroServiceController {
 					Long.parseLong(parametersArray.get(0)),
 					Long.parseLong(parametersArray.get(1)),
 					Double.parseDouble(parametersArray.get(0)));
-		// GLI ULTIMI TRE METODI ESISTEVANO DOPPI SIA CON LONG CHE CON DOUBLE
 
 		else if (service.equals("TTEST_STAT_2SIDED_EQVAR"))
 			return ParametricTestController.getTTestStatTwoSidedEqVar(user,
@@ -240,7 +243,6 @@ public class MacroServiceController {
 					Long.parseLong(parametersArray.get(1)),
 					Long.parseLong(parametersArray.get(2)),
 					Long.parseLong(parametersArray.get(3)));
-		// ULTIME TRE HANNO DUE METODI UGUALI
 
 		else if (service.equals("ONEWAY_ANOVA_ALPHA_4OP"))
 			return ParametricTestController.getOneWayAnovaAlpha(user,
@@ -282,6 +284,5 @@ public class MacroServiceController {
 			return null;
 
 	}
-
 
 }
