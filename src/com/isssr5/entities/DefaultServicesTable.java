@@ -696,7 +696,7 @@ public class DefaultServicesTable {
 	
 	private void add_median() {
 		MacroService ms = new MacroService();
-		String description = "Performs maximum value on a data sample <BR>"
+		String description = "Performs median value on a data sample <BR>"
 				+ "Usage: GET method<BR>"
 				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/median/{id1}";
 

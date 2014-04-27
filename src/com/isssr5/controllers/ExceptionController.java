@@ -174,6 +174,12 @@ public class ExceptionController {
 	public String WrongScaleForMacroServiceIdExceptionHandler() {
 		return "err";
 	}
+	
+	@ExceptionHandler(WrongDistributionException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Wrong distribution name")
+	public String WrongDistributionExceptionHandler() {
+		return "err";
+	}
 
 
 }
