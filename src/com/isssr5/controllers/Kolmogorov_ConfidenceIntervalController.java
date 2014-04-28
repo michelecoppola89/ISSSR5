@@ -110,7 +110,7 @@ public class Kolmogorov_ConfidenceIntervalController {
 		if (!op.getUser().getUserid().equals(user))
 			throw new NotExistingOperandException();
 		List<Long> operands = new ArrayList<Long>();
-		operands.add(opId);
+
 		List<ResultValue> resultValues = new ArrayList<ResultValue>();
 		if (distribution.equals("lognormal") || distribution.equals("uniform")
 				|| distribution.equals("normal")) {
@@ -129,7 +129,7 @@ public class Kolmogorov_ConfidenceIntervalController {
 
 	}
 
-	@RequestMapping(value = "/2SampleKolmogrov/{user}/{msId}/{op1Id}/{op2Id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/2SampleKolmogrov/{user}/{op1Id}/{op2Id}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result getTwoSampleKolmogrovUrl(@PathVariable String user,
 			@PathVariable long op1Id, @PathVariable long op2Id) throws NotExistingUserException,

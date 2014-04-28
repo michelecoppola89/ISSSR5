@@ -13,48 +13,6 @@ public class DefaultServicesTable {
 
 		table = new HashMap<String, MacroService>();
 
-//		MacroService avg = new MacroService("AVG", null, null);
-//		avg.setNumOperand(1);
-//		avg.setDescription("Calculate mean");
-//		ArrayList<String> avg_key = new ArrayList<String>();
-//		avg_key.add("mean");
-//		avg.setKeywords(avg_key);
-//		table.put(avg.getIdCode(), avg);
-//
-//		MacroService var = new MacroService("VAR", null, null);
-//		var.setNumOperand(1);
-//		var.setDescription("Calculate variance");
-//		ArrayList<String> var_key = new ArrayList<String>();
-//		var_key.add("variance");
-//		var.setKeywords(var_key);
-//		table.put(var.getIdCode(), var);
-//
-//		MacroService avgvar = new MacroService("AVGVAR", null, null);
-//		avgvar.setNumOperand(1);
-//
-//		ArrayList<String> ti1 = new ArrayList<String>();
-//		ti1.add("AVG");
-//		ti1.add("VAR");
-//		avgvar.setElementaryServices(ti1);
-//		avgvar.setDescription("Calculate mean and variance");
-//		ArrayList<String> avgvar_key = new ArrayList<String>();
-//		avgvar_key.add("variance");
-//		avgvar_key.add("mean");
-//		avgvar.setKeywords(avgvar_key);
-//
-//		ArrayList<Integer> ti2 = new ArrayList<Integer>();
-//		ti2.add(1);
-//		ParameterList pl1 = new ParameterList(ti2);
-//		ArrayList<Integer> ti3 = new ArrayList<Integer>();
-//		ti3.add(1);
-//		ParameterList pl2 = new ParameterList(ti3);
-//		ArrayList<ParameterList> ti4 = new ArrayList<ParameterList>();
-//		ti4.add(pl1);
-//		ti4.add(pl2);
-//		avgvar.setOperationOrder(ti4);
-//
-//		table.put(avgvar.getIdCode(), avgvar);
-
 		// add elementary services for hypothesis parametric test
 		add_TTEST_STAT();
 		add_TTEST_ALPHA_2SIDED();
@@ -77,7 +35,10 @@ public class DefaultServicesTable {
 		add_ONEWAY_ANOVA_PVALUE_4OP();
 		add_ONEWAY_ANOVA_ALPHA_4OP();
 		
-		
+		// non parametric test
+		add_ConfidenceInterval();
+		add_1SampleKolmogrov();
+		add_2SampleKolmogrov();
 		
 		// add elementary services for descriptive statistic
 		add_geometricMean();
@@ -708,6 +669,72 @@ public class DefaultServicesTable {
 
 		ms.setIdCode("median");
 		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+	
+	private void add_ConfidenceInterval() {
+		MacroService ms = new MacroService();
+		String description = "Performs confidence interval on a data sample <BR>"
+				+ "Return half width of confidence interval centered on sample mean <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/ConfidenceInterval/{user}/{opId}/{level}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("confidence interval");
+		keywords.add("mean");
+	
+		
+
+		ms.setIdCode("ConfidenceInterval");
+		ms.setNumOperand(2);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+	
+	private void add_1SampleKolmogrov() {
+		MacroService ms = new MacroService();
+		String description = "Return statistic for Kolmogorov-Smironov test <BR>"
+				+ "{distribution} should be uniform, normal or lognormal."
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/1SampleKolmogrov/{user}/{opId}/{distribution}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("kolmogorov");
+		keywords.add("distribution");
+	
+		
+
+		ms.setIdCode("1SampleKolmogrov");
+		ms.setNumOperand(2);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+	
+	private void add_2SampleKolmogrov() {
+		MacroService ms = new MacroService();
+		String description = "Return statistic for Kolmogorov-Smironov test to verify null hypothesis"
+				+ " that 2 samples have the same distribution <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/2SampleKolmogrov/{user}/{msId}/{op1Id}/{op2Id}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("kolmogorov");
+		keywords.add("distribution");
+	
+		
+
+		ms.setIdCode("2SampleKolmogrov");
+		ms.setNumOperand(2);
 		ms.setDescription(description);
 		ms.setIs_private(false);
 		ms.setKeywords(keywords);

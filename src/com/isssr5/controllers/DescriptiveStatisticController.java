@@ -62,7 +62,7 @@ public class DescriptiveStatisticController {
 
 		ResultValue rv = new ResultValue();
 
-		rv.setOperand(String.valueOf(id1));
+		rv.setOperand("mean");
 		rv.setValue(String.valueOf(MacroService.compute_mean(op)));
 
 		listVal.add(rv);
@@ -108,7 +108,7 @@ public class DescriptiveStatisticController {
 
 		ResultValue rv = new ResultValue();
 
-		rv.setOperand(String.valueOf(id1));
+		rv.setOperand("variance");
 		rv.setValue(String.valueOf(MacroService.compute_variance(op)));
 
 		listVal.add(rv);
@@ -154,7 +154,7 @@ public class DescriptiveStatisticController {
 
 		ResultValue rv = new ResultValue();
 
-		rv.setOperand(String.valueOf(id1));
+		rv.setOperand("geometricMean");
 		rv.setValue(String.valueOf(MacroService.compute_geometricMean(op)));
 
 		listVal.add(rv);
@@ -200,7 +200,7 @@ public class DescriptiveStatisticController {
 
 		ResultValue rv = new ResultValue();
 
-		rv.setOperand(String.valueOf(id1));
+		rv.setOperand("min");
 		rv.setValue(String.valueOf(MacroService.compute_minValue(op)));
 
 		listVal.add(rv);
@@ -246,7 +246,7 @@ public class DescriptiveStatisticController {
 
 		ResultValue rv = new ResultValue();
 
-		rv.setOperand(String.valueOf(id1));
+		rv.setOperand("max");
 		rv.setValue(String.valueOf(MacroService.compute_maxValue(op)));
 
 		listVal.add(rv);
@@ -292,7 +292,7 @@ public class DescriptiveStatisticController {
 
 		ResultValue rv = new ResultValue();
 
-		rv.setOperand(String.valueOf(id1));
+		rv.setOperand("stdDeviation");
 		rv.setValue(String.valueOf(MacroService.compute_standardDeviation(op)));
 
 		listVal.add(rv);
@@ -338,7 +338,7 @@ public class DescriptiveStatisticController {
 
 		ResultValue rv = new ResultValue();
 
-		rv.setOperand(String.valueOf(id1));
+		rv.setOperand("median");
 		rv.setValue(String.valueOf(MacroService.compute_median(op)));
 
 		listVal.add(rv);
