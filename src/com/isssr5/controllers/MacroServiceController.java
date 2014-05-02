@@ -19,6 +19,7 @@ import com.isssr5.entities.ServiceUser;
 import com.isssr5.exceptions.NotExistingMacroServiceException;
 import com.isssr5.exceptions.NotExistingOperandException;
 import com.isssr5.exceptions.NotExistingUserException;
+import com.isssr5.exceptions.RequestedMacroServiceIsPrivateException;
 import com.isssr5.exceptions.WrongDistributionException;
 import com.isssr5.exceptions.WrongOperandNumberException;
 import com.isssr5.exceptions.WrongScaleForMacroServiceId;
@@ -49,7 +50,8 @@ public class MacroServiceController {
 			throws NotExistingUserException, NumberFormatException,
 			NotExistingOperandException, WrongDistributionException,
 			OutOfRangeException, WrongScaleForMacroServiceId,
-			NotExistingMacroServiceException, WrongOperandNumberException {
+			NotExistingMacroServiceException, WrongOperandNumberException,
+			RequestedMacroServiceIsPrivateException {
 		List<ResultValue> resultVList = new ArrayList<ResultValue>();
 		ResolveMacroService(userId, msId, parameters, resultVList);
 		Result result = new Result();
@@ -63,7 +65,7 @@ public class MacroServiceController {
 			throws NotExistingUserException, NumberFormatException,
 			NotExistingOperandException, WrongDistributionException,
 			OutOfRangeException, WrongScaleForMacroServiceId,
-			NotExistingMacroServiceException, WrongOperandNumberException {
+			NotExistingMacroServiceException, WrongOperandNumberException, RequestedMacroServiceIsPrivateException {
 
 		StringTokenizer st = new StringTokenizer(parameters, "_");
 		List<String> parametersArray = new ArrayList<String>();
@@ -74,9 +76,10 @@ public class MacroServiceController {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
 			throw new NotExistingUserException();
-		if (ms == null) {
+		if (ms == null) 
 			throw new NotExistingMacroServiceException();
-		}
+		if(ms.getIs_private()==true && !ms.getUser().getUserid().equals(user))
+			throw new RequestedMacroServiceIsPrivateException();
 		if(ms.getNumOperand()!=parametersArray.size())
 			throw new WrongOperandNumberException();
 
@@ -124,17 +127,17 @@ public class MacroServiceController {
 			WrongScaleForMacroServiceId {
 
 		if (service.equals("ConfidenceInterval"))
-			return Kolmogorov_ConfidenceIntervalController
+			return ConfidenceIntervalController
 					.getConfidenceInterval(user,
 							Long.parseLong(parametersArray.get(0)),
 							Double.parseDouble(parametersArray.get(1)));
 		else if (service.equals("1SampleKolmogrov"))
-			return Kolmogorov_ConfidenceIntervalController
+			return NonParametricTestController
 					.getOneSampleKolmogrov(user,
 							Long.parseLong(parametersArray.get(0)),
 							parametersArray.get(1));
 		else if (service.equals("2SampleKolmogrov"))
-			return Kolmogorov_ConfidenceIntervalController
+			return NonParametricTestController
 					.getTwoSampleKolmogrov(user,
 							Long.parseLong(parametersArray.get(0)),
 							Long.parseLong(parametersArray.get(0)));

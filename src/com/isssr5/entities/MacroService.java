@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -41,9 +40,6 @@ public class MacroService {
 	@Column(name = "idCustomMacroService")
 	private String idCode;
 
-	@Transient
-	private ArrayList<Operand> operandList;
-
 	@Column(name = "elementaryServiceList")
 	private ArrayList<String> elementaryServices;
 
@@ -70,10 +66,9 @@ public class MacroService {
 		numOperand = 0;
 	}
 
-	public MacroService(String idCode, ArrayList<Operand> operandList,
+	public MacroService(String idCode, 
 			ArrayList<String> elementaryServices) {
 		this.idCode = idCode;
-		this.operandList = operandList;
 		this.elementaryServices = elementaryServices;
 		numOperand = 0;
 
@@ -104,15 +99,6 @@ public class MacroService {
 	@XmlElement
 	public void setIdCode(String idCode) {
 		this.idCode = idCode;
-	}
-
-	public ArrayList<Operand> getOperandList() {
-		return operandList;
-	}
-
-	@XmlElement
-	public void setOperandList(ArrayList<Operand> operandList) {
-		this.operandList = operandList;
 	}
 
 	public ArrayList<String> getElementaryServices() {
@@ -180,16 +166,6 @@ public class MacroService {
 			output += elementaryServices.get(i) + " ";
 		return output;
 
-	}
-
-	public String printOperandList() {
-		String output = "";
-		for (int i = 0; i < operandList.size(); i++) {
-			output += "Operand " + (i + 1) + ": "
-					+ operandList.get(i).PrintOperand() + "\n";
-		}
-
-		return output;
 	}
 
 	public String printMacroService() {

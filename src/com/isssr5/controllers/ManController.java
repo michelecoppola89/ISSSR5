@@ -44,7 +44,6 @@ public class ManController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		ModelAndView model = new ModelAndView("handbook");
 		String username = auth.getName();
-		System.out.println(auth.getName());
 		model.addObject("username", username);
 		return model;
 
