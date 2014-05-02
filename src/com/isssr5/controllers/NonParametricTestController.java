@@ -22,46 +22,17 @@ import com.isssr5.service.OperandTransaction;
 import com.isssr5.service.ServiceUserTransaction;
 
 @Controller
-@RequestMapping("/NonParametricTest")
-public class Kolmogorov_ConfidenceIntervalController {
+@RequestMapping("/nonParametricTest")
+public class NonParametricTestController {
+
 	private static ServiceUserTransaction serviceUserTransaction;
 	private static OperandTransaction operandTransaction;
-	
+
 	@Autowired
-	public Kolmogorov_ConfidenceIntervalController(ServiceUserTransaction str,OperandTransaction otr)
-	{
-		Kolmogorov_ConfidenceIntervalController.serviceUserTransaction=str;
-		Kolmogorov_ConfidenceIntervalController.operandTransaction=otr;
-	}
-	@RequestMapping(value = "/ConfidenceInterval/{user}/{opId}/{level}", method = RequestMethod.GET)
-	public @ResponseBody
-	Result getConfidenceIntervalUrl(@PathVariable String user,
-			@PathVariable long opId, @PathVariable double level)
-			throws NotExistingUserException, NotExistingOperandException {
-		return getConfidenceInterval(user, opId, level);
-
-	}
-
-	public static Result getConfidenceInterval(String user, long opId, double level)
-			throws NotExistingUserException, NotExistingOperandException {
-		ServiceUser u = serviceUserTransaction.getUserById(user);
-		if (u == null)
-			throw new NotExistingUserException();
-		Operand op = operandTransaction.findOperandById(opId);
-		if (op == null)
-			throw new NotExistingOperandException();
-		if (!op.getUser().getUserid().equals(user))
-			throw new NotExistingOperandException();
-		List<Long> operands = new ArrayList<Long>();
-		operands.add(opId);
-		List<ResultValue> resultValues = new ArrayList<ResultValue>();
-		ResultValue rv = new ResultValue("ConfidenceInterval",
-				Double.toString(MacroService.Confidence_Interval(op, level)));
-		resultValues.add(rv);
-		Result result = new Result(operands, resultValues);
-
-		return result;
-
+	public NonParametricTestController(ServiceUserTransaction str,
+			OperandTransaction otr) {
+		NonParametricTestController.serviceUserTransaction = str;
+		NonParametricTestController.operandTransaction = otr;
 	}
 
 	@RequestMapping(value = "/1SampleKolmogrov/{user}/{opId}/{distribution}", method = RequestMethod.GET)
@@ -132,8 +103,8 @@ public class Kolmogorov_ConfidenceIntervalController {
 	@RequestMapping(value = "/2SampleKolmogrov/{user}/{op1Id}/{op2Id}", method = RequestMethod.GET)
 	public @ResponseBody
 	Result getTwoSampleKolmogrovUrl(@PathVariable String user,
-			@PathVariable long op1Id, @PathVariable long op2Id) throws NotExistingUserException,
-			NotExistingOperandException {
+			@PathVariable long op1Id, @PathVariable long op2Id)
+			throws NotExistingUserException, NotExistingOperandException {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
 			throw new NotExistingUserException();
@@ -160,8 +131,8 @@ public class Kolmogorov_ConfidenceIntervalController {
 	}
 
 	public @ResponseBody
-	static Result getTwoSampleKolmogrov(String user, long op1Id, long op2Id) throws NotExistingUserException,
-			NotExistingOperandException {
+	static Result getTwoSampleKolmogrov(String user, long op1Id, long op2Id)
+			throws NotExistingUserException, NotExistingOperandException {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
 		if (u == null)
 			throw new NotExistingUserException();
@@ -186,5 +157,4 @@ public class Kolmogorov_ConfidenceIntervalController {
 
 		return result;
 	}
-
 }

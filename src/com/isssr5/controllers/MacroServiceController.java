@@ -127,17 +127,17 @@ public class MacroServiceController {
 			WrongScaleForMacroServiceId {
 
 		if (service.equals("ConfidenceInterval"))
-			return Kolmogorov_ConfidenceIntervalController
+			return ConfidenceIntervalController
 					.getConfidenceInterval(user,
 							Long.parseLong(parametersArray.get(0)),
 							Double.parseDouble(parametersArray.get(1)));
 		else if (service.equals("1SampleKolmogrov"))
-			return Kolmogorov_ConfidenceIntervalController
+			return NonParametricTestController
 					.getOneSampleKolmogrov(user,
 							Long.parseLong(parametersArray.get(0)),
 							parametersArray.get(1));
 		else if (service.equals("2SampleKolmogrov"))
-			return Kolmogorov_ConfidenceIntervalController
+			return NonParametricTestController
 					.getTwoSampleKolmogrov(user,
 							Long.parseLong(parametersArray.get(0)),
 							Long.parseLong(parametersArray.get(0)));
