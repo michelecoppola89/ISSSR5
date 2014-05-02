@@ -681,7 +681,7 @@ public class DefaultServicesTable {
 		String description = "Performs confidence interval on a data sample <BR>"
 				+ "Return half width of confidence interval centered on sample mean <BR>"
 				+ "Usage: GET method<BR>"
-				+ "http://localhost:8080/ISSSR5/ConfidenceInterval/{user}/{opId}/{level}";
+				+ "http://localhost:8080/ISSSR5/ConfidenceIntervalOperation/ConfidenceInterval/{userid}/{idOp}/{level}/";
 
 		ArrayList<String> keywords = new ArrayList<String>();
 		keywords.add("confidence interval");
@@ -703,7 +703,7 @@ public class DefaultServicesTable {
 		String description = "Return statistic for Kolmogorov-Smironov test <BR>"
 				+ "{distribution} should be uniform, normal or lognormal."
 				+ "Usage: GET method<BR>"
-				+ "http://localhost:8080/ISSSR5/1SampleKolmogrov/{user}/{opId}/{distribution}";
+				+ "http://localhost:8080/ISSSR5/nonParametricTest/1SampleKolmogrov/{userid}/{idOp}/{distribution}/";
 
 		ArrayList<String> keywords = new ArrayList<String>();
 		keywords.add("kolmogorov");
@@ -723,9 +723,9 @@ public class DefaultServicesTable {
 	private void add_2SampleKolmogrov() {
 		MacroService ms = new MacroService();
 		String description = "Return statistic for Kolmogorov-Smironov test to verify null hypothesis"
-				+ " that 2 samples have the same distribution <BR>"
+				+ " that 2 samples with {idOp1} and {idOp2} have the same distribution <BR>"
 				+ "Usage: GET method<BR>"
-				+ "http://localhost:8080/ISSSR5/2SampleKolmogrov/{user}/{msId}/{op1Id}/{op2Id}";
+				+ "http://localhost:8080/ISSSR5/nonParametricTest/2SampleKolmogrov/{userId}/{idOp1}/{idOp2}/";
 
 		ArrayList<String> keywords = new ArrayList<String>();
 		keywords.add("kolmogorov");
