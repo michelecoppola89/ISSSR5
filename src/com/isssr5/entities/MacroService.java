@@ -29,7 +29,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 
 import com.isssr5.exceptions.NotExistingMacroServiceException;
-import com.isssr5.exceptions.WrongScaleForMacroServiceId;
+
 
 @XmlRootElement(name = "macroService")
 @Entity

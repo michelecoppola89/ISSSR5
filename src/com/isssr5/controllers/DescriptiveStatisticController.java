@@ -380,7 +380,7 @@ public class DescriptiveStatisticController {
 		List<Long> list_id = new ArrayList<Long>();
 		list_id.add(new Long(id1));
 
-		Result res = new Result(null, list_id, null);
+		Result res = new Result(list_id, null);
 		List<ResultValue> listVal = new ArrayList<ResultValue>();
 
 		ResultValue rv = new ResultValue();
