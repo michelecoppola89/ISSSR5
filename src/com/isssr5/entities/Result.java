@@ -11,7 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Result")
 public class Result {
-	private MacroService macroService;
 
 	private List<Long> idOperand= new ArrayList<Long>();
 
@@ -23,19 +22,11 @@ public class Result {
 	}
 
 
-	public Result(MacroService ms, List<Long> list_id, List<ResultValue> rV) {
-		macroService = ms;
+	public Result(List<Long> list_id, List<ResultValue> rV) {
+
 		idOperand = list_id;
 		resultValueList = rV;
 
-	}
-
-	public MacroService getMacroService() {
-		return macroService;
-	}
-
-	public void setMacroService(MacroService macroService) {
-		this.macroService = macroService;
 	}
 
 

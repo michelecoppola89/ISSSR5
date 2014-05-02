@@ -58,7 +58,7 @@ public class Kolmogorov_ConfidenceIntervalController {
 		ResultValue rv = new ResultValue("ConfidenceInterval",
 				Double.toString(MacroService.Confidence_Interval(op, level)));
 		resultValues.add(rv);
-		Result result = new Result(null, operands, resultValues);
+		Result result = new Result(operands, resultValues);
 
 		return result;
 
@@ -92,7 +92,7 @@ public class Kolmogorov_ConfidenceIntervalController {
 			resultValues.add(rv);
 		} else
 			throw new WrongDistributionException();
-		Result result = new Result(null, operands, resultValues);
+		Result result = new Result(operands, resultValues);
 
 		return result;
 
@@ -123,7 +123,7 @@ public class Kolmogorov_ConfidenceIntervalController {
 			resultValues.add(rv);
 		} else
 			throw new WrongDistributionException();
-		Result result = new Result(null, operands, resultValues);
+		Result result = new Result(operands, resultValues);
 
 		return result;
 
@@ -154,7 +154,7 @@ public class Kolmogorov_ConfidenceIntervalController {
 		ResultValue rv = new ResultValue(null, Double.toString(MacroService
 				.kolmogorovSmirnovStatistic(op1, op2)));
 		resultValues.add(rv);
-		Result result = new Result(null, operands, resultValues);
+		Result result = new Result(operands, resultValues);
 
 		return result;
 	}
@@ -182,7 +182,7 @@ public class Kolmogorov_ConfidenceIntervalController {
 		ResultValue rv = new ResultValue(null, Double.toString(MacroService
 				.kolmogorovSmirnovStatistic(op1, op2)));
 		resultValues.add(rv);
-		Result result = new Result(null, operands, resultValues);
+		Result result = new Result(operands, resultValues);
 
 		return result;
 	}
