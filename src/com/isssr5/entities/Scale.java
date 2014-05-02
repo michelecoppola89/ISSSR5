@@ -36,7 +36,7 @@ public class Scale {
 	@OneToOne(mappedBy = "scale", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Domain dom;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_user", nullable = false)
 	private ServiceUser user;
 

@@ -48,6 +48,7 @@ public class DefaultServicesTable {
 		add_minValue();
 		add_stdDeviation();
 		add_variance();
+		add_frequency();
 	}
 
 	public static DefaultServicesTable getInstance() {
@@ -675,6 +676,31 @@ public class DefaultServicesTable {
 
 		table.put(ms.getIdCode(), ms);
 	}
+	
+	private void add_frequency() {
+		MacroService ms = new MacroService();
+		String description = "Performs frequency for data sample with ordinal or nominal scale <BR>"
+				+ "Usage: GET method<BR>"
+				+ "http://localhost:8080/ISSSR5/descriptiveStatistic/{user}/frequency/{id1}";
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("frequency");
+		keywords.add("ordinal");
+		keywords.add("nominal");
+	
+		
+
+		ms.setIdCode("frequency");
+		ms.setNumOperand(1);
+		ms.setDescription(description);
+		ms.setIs_private(false);
+		ms.setKeywords(keywords);
+
+		table.put(ms.getIdCode(), ms);
+	}
+
+	
+	
 	
 	private void add_ConfidenceInterval() {
 		MacroService ms = new MacroService();

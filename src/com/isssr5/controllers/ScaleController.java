@@ -330,5 +330,19 @@ public class ScaleController {
 
 		return new Wrapper(u.getScaleList());
 	}
+	
+	
+	@RequestMapping(value = "/{user}/deleteScales", method = RequestMethod.DELETE)
+	public @ResponseBody
+	void deleteScales(@PathVariable String user) throws NotExistingUserException {
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if(u==null)
+			throw new NotExistingUserException();
+		for(int i=0; i<u.getScaleList().size();i++){
+			scaleTransaction.deleteScale(u.getScaleList().get(i));
+		}
+
+	}
+
 
 }

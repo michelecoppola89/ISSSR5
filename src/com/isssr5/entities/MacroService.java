@@ -22,6 +22,7 @@ import org.apache.commons.math3.distribution.RealDistribution;
 import org.apache.commons.math3.distribution.TDistribution;
 import org.apache.commons.math3.distribution.UniformRealDistribution;
 import org.apache.commons.math3.exception.MathIllegalArgumentException;
+import org.apache.commons.math3.stat.Frequency;
 import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.stat.inference.TestUtils;
@@ -29,6 +30,7 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 
 import com.isssr5.exceptions.NotExistingMacroServiceException;
+import com.isssr5.exceptions.WrongScaleForMacroServiceId;
 
 @XmlRootElement(name = "macroService")
 @Entity
@@ -522,7 +524,6 @@ public class MacroService {
 			data[i] = Double.parseDouble((op.getDataSeries().get(i)));
 		}
 
-
 		final int n = data.length;
 		final double nd = n;
 		final double[] dataCopy = new double[n];
@@ -533,12 +534,12 @@ public class MacroService {
 		if (dist.equals("lognormal"))
 			distribution = new LogNormalDistribution();
 		else
-			
-		if(dist.equals("normal"))
+
+		if (dist.equals("normal"))
 			distribution = new NormalDistribution();
 		else
 			distribution = new UniformRealDistribution();
-		
+
 		// ---------------------------------------------------------
 
 		double d = 0d;
@@ -663,8 +664,6 @@ public class MacroService {
 		return stat.getVariance();
 	}
 
-
-	
 	public static Double compute_geometricMean(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
@@ -675,9 +674,6 @@ public class MacroService {
 		return stat.getGeometricMean();
 	}
 
-
-	
-	
 	public static Double compute_minValue(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
@@ -688,7 +684,6 @@ public class MacroService {
 		return stat.getMin();
 	}
 
-	
 	public static Double compute_maxValue(Operand op) {
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
@@ -699,9 +694,7 @@ public class MacroService {
 		return stat.getMax();
 	}
 
-		
 	public static Double compute_standardDeviation(Operand op) {
-
 
 		DescriptiveStatistics stat = new DescriptiveStatistics();
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
@@ -711,13 +704,9 @@ public class MacroService {
 		return stat.getStandardDeviation();
 	}
 
-	
-	
 	public static Double compute_median(Operand op) {
-		
-		
-		double values []= new double[op.getDataSeries().size()];
 
+		double values[] = new double[op.getDataSeries().size()];
 
 		for (int i = 0; i < op.getDataSeries().size(); i++) {
 			values[i] = Double.parseDouble(op.getDataSeries().get(i));
@@ -726,6 +715,33 @@ public class MacroService {
 		Median median = new Median();
 
 		return median.evaluate(values);
+
+	}
+
+	public static String compute_frequency(Operand op) {
+
+		String ret = "";
+
+		Frequency freq = new Frequency();
+		for (int i = 0; i < op.getDataSeries().size(); i++) {
+			freq.addValue(op.getDataSeries().get(i));
+		}
+
+		for (int i = 0; i < ((EnumerateDomain) op.getScale().getDom())
+				.getScalePoints().size(); i++) {
+			ret += ((EnumerateDomain) op.getScale().getDom()).getScalePoints()
+					.get(i);
+
+			ret += " = ";
+
+			ret += freq.getCount(((EnumerateDomain) op.getScale().getDom())
+					.getScalePoints().get(i));
+			
+			ret += ";";
+
+		}
+
+		return ret;
 
 	}
 

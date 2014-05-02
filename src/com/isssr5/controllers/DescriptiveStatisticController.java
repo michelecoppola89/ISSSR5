@@ -357,5 +357,59 @@ public class DescriptiveStatisticController {
 
 		return get_median(user, id1);
 	}
+	
+	
+	
+	public static Result get_frequency(String user, int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
+			throw new NotExistingUserException();
+
+		Operand op = operandTransaction.findOperandById(id1);
+
+		if (op == null)
+			throw new NotExistingOperandException();
+		if (!op.getUser().getUserid().equals(user))
+			throw new NotExistingOperandException();
+		if (!(op.getScale().getDom() instanceof EnumerateDomain))
+			throw new WrongScaleForMacroServiceId();
+
+		List<Long> list_id = new ArrayList<Long>();
+		list_id.add(new Long(id1));
+
+		Result res = new Result(null, list_id, null);
+		List<ResultValue> listVal = new ArrayList<ResultValue>();
+
+		ResultValue rv = new ResultValue();
+
+		rv.setOperand("frequency");
+		rv.setValue(MacroService.compute_frequency(op));
+
+		listVal.add(rv);
+
+		res.setResultValueList(listVal);
+
+		return res;
+
+	}
+
+	@RequestMapping(value = "/{user}/frequency/{id1}", method = RequestMethod.GET)
+	public @ResponseBody
+	Result frequency(@PathVariable String user, @PathVariable int id1)
+			throws NotExistingUserException, NotExistingOperandException,
+			WrongScaleForMacroServiceId {
+
+		return get_frequency(user, id1);
+	}
+
+	
+	
+	
+	
+	
+	
 
 }
