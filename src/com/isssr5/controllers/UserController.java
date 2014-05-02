@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.isssr5.entities.ServiceUser;
+import com.isssr5.exceptions.ExistentUserException;
 import com.isssr5.exceptions.NotExistingUserException;
+import com.isssr5.exceptions.NullUPswUserException;
+import com.isssr5.exceptions.NullUserException;
 import com.isssr5.service.ServiceUserTransaction;
 
 @Controller
@@ -26,7 +28,14 @@ public class UserController {
 
 	@RequestMapping(value = "/insertUser", method = RequestMethod.POST)
 	public @ResponseBody
-	String createUser(@RequestBody ServiceUser user, HttpServletResponse response) {
+	String createUser(@RequestBody ServiceUser user, HttpServletResponse response) throws NullUPswUserException, NullUserException, ExistentUserException {
+if(user.getPsw()==null)
+	throw new NullUPswUserException();
+if(user.getUserid()==null)
+	throw new NullUserException();
+if(serviceUserTransaction.getUserById(user.getUserid())!=null)
+	throw new ExistentUserException();
+
 		serviceUserTransaction.addUser(user);
 		response.setHeader("Location",  "/user/getUserById/" + user.getUserid()
 				);

@@ -180,6 +180,24 @@ public class ExceptionController {
 	public String WrongDistributionExceptionHandler() {
 		return "err";
 	}
+	
+	@ExceptionHandler(ExistentUserException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "User id already exists")
+	public String ExistentUserExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(NullUserException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Missing User id")
+	public String NullUserExceptionHandler() {
+		return "err";
+	}
+	
+	@ExceptionHandler(NullUPswUserException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Missing User psw")
+	public String NullUPswUserExceptionHandler() {
+		return "err";
+	}
 
 
 }
