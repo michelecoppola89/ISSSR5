@@ -94,6 +94,8 @@
 		<LI><A HREF="#7"> Obtain all user's customized MacroServices</A></LI>
 		<LI><A HREF="#8"> Insert Operand</A></LI>
 		<LI><A HREF="#9"> Obtain user's Dataseries by ID</A></LI>
+		<LI><A HREF="#10"> Calculate a macroService</A></LI>
+		
 	</UL>
 
 	<HR WIDTH="100%">
@@ -693,8 +695,7 @@ Type: Double OperandMode: E Data Series: 3.1 4 5.5 8 <BR>
 	<BR>
 	<H2 align="center">Monitored Errors</H2>
 	<HR WIDTH="100%">
-
-	<H1 align="center">
+<H1 align="center">
 		<A id="9"></A> Obtain user's Dataseries by ID
 	</H1>
 	<H2 align="center">Used HTTP methods</H2>
@@ -745,7 +746,78 @@ Type: Double OperandMode: E Data Series: 3.1 4 5.5 8 <BR>
 	-wrong username
 	<BR> -wrong operand ID
 	<BR>
+	<H1 align="center">
+	
+		<A id="10"></A> Calculate a macroService
+	</H1>
+	<H2 align="center">Used HTTP methods</H2>
+	GET: the client uses get primitive to ask for the result of a macroservice.
+	<BR> the asked informations (in the url) are:
+	<BR> -User id
+	<BR> -type of macroservice
+	<BR> - id of operands to use
+	<BR>
+	<H2 align="center">Example 1</H2>
+	The user "root" want to obtain mean (an elementary service); operand id is "1".
+	<BR> REQUEST:
+	<BR> header: Content-Type application/xml
+	<BR> url: http://localhost:8080/ISSSR5/descriptiveStatistic/root/mean/1
+	<BR> RESPONSE:
+	<BR> header:
+    <BR>Status Code: 200 OK
+    <BR>Content-Type: application/xhtml+xml
+    <BR>Date: Fri, 02 May 2014 08:14:08 GMT
+    <BR>Server: Apache-Coyote/1.1
+    <BR>Transfer-Encoding: chunked<BR>
 
+
+	<BR> body:
+	<BR>
+	<textarea rows="10" cols="40" style="border: none;"disabled="disabled">
+	  <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    <Result>
+	<idOperand>1</idOperand>
+	<resultValueList>
+	<idCode>mean</idCode>
+	<value>6.15</value>
+	</resultValueList>
+	</Result>
+	</textarea>
+	
+	
+	<H2 align="center">Example 2</H2>
+	The user "root" want to obtain AVGVAR (a customized macro service); operand id is "1".
+	<BR> REQUEST:
+	<BR> header: Content-Type application/xml
+	<BR> url:http://localhost:8080/ISSSR5/macroService/root/resolve/AVGVAR/2_1/
+	<BR> RESPONSE:
+	<BR> header:
+    <BR>Status Code: 200 OK
+    <BR>Content-Type: application/xhtml+xml
+    <BR>Date: Fri, 02 May 2014 08:14:08 GMT
+    <BR>Server: Apache-Coyote/1.1
+    <BR>Transfer-Encoding: chunked<BR>
+
+
+	<BR> body:
+	<BR>
+	<textarea rows="10" cols="40" style="border: none;"disabled="disabled">
+	 <Result>
+	<resultValueList>
+	<idCode>mean</idCode>
+	<value>7.175</value>
+	</resultValueList>
+	<resultValueList>
+	<idCode>variance</idCode>
+	<value>4.590000000000001</value>
+	</resultValueList>
+	</Result>
+	</textarea>
+	<H2 align="center">Monitored Errors</H2>
+	<BR>-user using private macroservice of another user
+	<BR> -wrong user ID
+	<BR> -wrong macroservice ID
+	<BR>
 	<HR WIDTH="100%">
 	<P>
 </BODY>
