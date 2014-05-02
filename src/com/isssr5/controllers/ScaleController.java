@@ -37,6 +37,7 @@ public class ScaleController {
 	static String ORDINAL = "OrdinalScale";
 	static String ENUMDOM = "EnumeralDomain";
 	static String RATIODOM = "RatioDomain";
+
 	private ScaleTransaction scaleTransaction;
 	private ServiceUserTransaction serviceUserTransaction;
 
@@ -65,15 +66,15 @@ public class ScaleController {
 				&& (d.getScalePoints().get(0).equals("")))
 			throw new EnumerateDomainException();
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		if(u==null)
+		if (u == null)
 			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
-		
+
 		response.setHeader("Location", "/scale/" + u.getUserid()
 				+ "/getScaleById/" + scale.getId());
-		
+
 		return string;
 
 	}
@@ -81,8 +82,9 @@ public class ScaleController {
 	@RequestMapping(value = "/{user}/ordinalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createOrdinalScale(@RequestBody Scale scale,
-			@PathVariable String user, HttpServletResponse response) throws DomainException,
-			NullDomainException, EnumerateDomainException, NotExistingUserException {
+			@PathVariable String user, HttpServletResponse response)
+			throws DomainException, NullDomainException,
+			EnumerateDomainException, NotExistingUserException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
 		if (scale.getDom() instanceof IntervalDomain)
@@ -99,12 +101,12 @@ public class ScaleController {
 		// + d.printScalePoint();
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		if(u==null)
+		if (u == null)
 			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
-		
+
 		response.setHeader("Location", "/scale/" + u.getUserid()
 				+ "/getScaleById/" + scale.getId());
 
@@ -114,7 +116,8 @@ public class ScaleController {
 
 	@RequestMapping(value = "/{user}/ratioScale", method = RequestMethod.POST)
 	public @ResponseBody
-	String createRatioScale(@RequestBody Scale scale, @PathVariable String user, HttpServletResponse response)
+	String createRatioScale(@RequestBody Scale scale,
+			@PathVariable String user, HttpServletResponse response)
 			throws DomainException, IntervalDomainException,
 			NullDomainException, NotExistingUserException {
 
@@ -133,12 +136,12 @@ public class ScaleController {
 		// + "\nmax: " + d.getMax();
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		if(u==null)
+		if (u == null)
 			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
-		
+
 		response.setHeader("Location", "/scale/" + u.getUserid()
 				+ "/getScaleById/" + scale.getId());
 
@@ -149,8 +152,9 @@ public class ScaleController {
 	@RequestMapping(value = "/{user}/intervalScale", method = RequestMethod.POST)
 	public @ResponseBody
 	String createIntervalScale(@RequestBody Scale scale,
-			@PathVariable String user,HttpServletResponse response) throws NullDomainException,
-			DomainException, IntervalDomainException, NotExistingUserException {
+			@PathVariable String user, HttpServletResponse response)
+			throws NullDomainException, DomainException,
+			IntervalDomainException, NotExistingUserException {
 		if (scale.getDom() == null)
 			throw new NullDomainException();
 		if (scale.getDom() instanceof EnumerateDomain)
@@ -166,12 +170,12 @@ public class ScaleController {
 		// + "\nmax: " + d.getMax();
 
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		if(u==null)
+		if (u == null)
 			throw new NotExistingUserException();
 		scale.setUser(u);
 		scale.getDom().setScale(scale);
 		scaleTransaction.addScale(scale);
-		
+
 		response.setHeader("Location", "/scale/" + u.getUserid()
 				+ "/getScaleById/" + scale.getId());
 
@@ -278,15 +282,14 @@ public class ScaleController {
 	public @ResponseBody
 	Scale getScaleById(@PathVariable String user, @PathVariable long scaleId)
 			throws NotExistingUserException, NotExistingScaleException {
-		ServiceUser u=serviceUserTransaction.getUserById(user);
-		if(u==null)
+		ServiceUser u = serviceUserTransaction.getUserById(user);
+		if (u == null)
 			throw new NotExistingUserException();
-		Scale s=scaleTransaction.findScaleById(scaleId);
-		if(s==null)
-		{
+		Scale s = scaleTransaction.findScaleById(scaleId);
+		if (s == null) {
 			throw new NotExistingScaleException();
 		}
-		if(!s.getUser().getUserid().equals(user))
+		if (!s.getUser().getUserid().equals(user))
 			throw new NotExistingScaleException();
 		return s;
 	}
@@ -322,27 +325,14 @@ public class ScaleController {
 
 	@RequestMapping(value = "/{user}/getAllScales", method = RequestMethod.GET)
 	public @ResponseBody
-	Wrapper getAllScales(@PathVariable String user) throws NotExistingUserException {
+	Wrapper getAllScales(@PathVariable String user)
+			throws NotExistingUserException {
 		ServiceUser u = serviceUserTransaction.getUserById(user);
-		if(u==null)
+		if (u == null)
 			throw new NotExistingUserException();
 		System.out.println("grandezza list scale:" + u.getScaleList().size());
 
 		return new Wrapper(u.getScaleList());
 	}
-	
-	
-	@RequestMapping(value = "/{user}/deleteScales", method = RequestMethod.DELETE)
-	public @ResponseBody
-	void deleteScales(@PathVariable String user) throws NotExistingUserException {
-		ServiceUser u = serviceUserTransaction.getUserById(user);
-		if(u==null)
-			throw new NotExistingUserException();
-		for(int i=0; i<u.getScaleList().size();i++){
-			scaleTransaction.deleteScale(u.getScaleList().get(i));
-		}
-
-	}
-
 
 }
